@@ -46,20 +46,15 @@ class MovieAdapter(
             val item = getItem(position)
             val posterPath = item?.posterPath
 
+            binding.isShowPoster = isShowPoster
             with(binding) {
-                txtTitle.text = item?.title
-                txtVoteAvg.text = item?.voteAverage.toString()
+                movie = item
+
                 cardRcvMovie.setOnClickListener {
                     if (item != null) {
                         onClickCallback.invoke(item.id)
                     }
                 }
-
-                 if (posterPath != null && isShowPoster) {
-                     Glide.with(root.context)
-                         .load(Uri.parse("https://image.tmdb.org/t/p/w185$posterPath"))
-                         .into(imgRcv)
-                 }
 
             }
 

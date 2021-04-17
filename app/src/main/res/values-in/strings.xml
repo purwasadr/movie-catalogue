@@ -2,4 +2,5 @@
 <resources>
     <string name="movie">Film</string>
     <string name="tv">Tv</string>
+    <string name="overview_txt">Overview</string>
 </resources>
