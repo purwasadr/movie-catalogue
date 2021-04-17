@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/search_main"
+        android:icon="@drawable/ic_round_search_24"
+        android:title="Search"
+        app:showAsAction="always" />
+    <group >
+        <item
+            android:id="@+id/show_poster"
+            android:checkable="true"
+            android:checked="false"
+            android:enabled="true"
+            android:title="Show Poster" />
+    </group>
+
+</menu>
