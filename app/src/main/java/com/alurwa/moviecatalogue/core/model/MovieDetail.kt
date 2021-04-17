@@ -23,6 +23,8 @@ data class MovieDetail(
 
         val status: String,
 
-        val voteAverage: Number
+        val voteAverage: Number,
+
+        val genres: List<Genre>
 ) : Parcelable
 
