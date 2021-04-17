@@ -76,7 +76,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/title_txt"
+                android:id="@+id/txt_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -89,7 +89,7 @@
                 tools:text="Your Name (2017)" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/txt_overview_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -102,7 +102,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/poster_card" />
 
             <TextView
-                android:id="@+id/overview_txt_val"
+                android:id="@+id/txt_overview_val"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -113,7 +113,7 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/txt_overview_info"
                 tools:text="Overview value" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
