@@ -76,7 +76,6 @@ class DetailActivity : AppCompatActivity() {
         }
 
         if (binding.chipGroup.childCount != 0) binding.chipGroup.removeAllViews()
-
         data.genres.forEach {
             val chip = Chip(binding.chipGroup.context)
 
