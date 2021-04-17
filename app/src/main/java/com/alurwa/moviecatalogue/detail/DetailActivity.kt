@@ -8,6 +8,7 @@ import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.MovieDetail
 import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,6 +55,7 @@ class DetailActivity : AppCompatActivity() {
         val backdropPath = data.backdropPath
 
         supportActionBar?.title = data.title
+
         if (posterPath != null) {
             Glide.with(this)
                     .load(Uri.parse("https://image.tmdb.org/t/p/w185$posterPath"))
@@ -66,8 +68,21 @@ class DetailActivity : AppCompatActivity() {
                     .into(binding.imgBackdrop)
         }
         with(binding) {
-            overviewTxtVal.text = data.overview
-            titleTxt.text = data.title
+            txtTitle.text = data.title
+            txtOverviewVal.text = data.overview
+            txtRuntime.text = "${data.runtime} m"
+            txtVoteAvg.text = data.voteAverage.toString()
+        }
+
+        if (binding.chipGroup.childCount != 0) binding.chipGroup.removeAllViews()
+
+        data.genres.forEach {
+            val chip = Chip(binding.chipGroup.context)
+
+            chip.text = it.name
+            chip.isCheckable = false
+
+            binding.chipGroup.addView(chip)
         }
 
     }
