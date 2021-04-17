@@ -72,6 +72,7 @@ class DetailActivity : AppCompatActivity() {
             txtOverviewVal.text = data.overview
             txtRuntime.text = "${data.runtime} m"
             txtVoteAvg.text = data.voteAverage.toString()
+            txtDateLite.text = data.releaseDate.split("-").let { "${it.get(1).toInt()}.${it.get(0)}" }
         }
 
         if (binding.chipGroup.childCount != 0) binding.chipGroup.removeAllViews()
