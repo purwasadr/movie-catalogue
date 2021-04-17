@@ -63,7 +63,7 @@
                     android:layout_height="150dp"
                     android:elevation="12dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_launcher_background" />
+                    app:srcCompat="@drawable/ic_round_image_24" />
             </com.google.android.material.card.MaterialCardView>
 
             <View
@@ -81,12 +81,62 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="?android:attr/textColorPrimary"
+                android:textColor="@color/material_on_background_emphasis_high_type"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/poster_card"
+                app:layout_constraintBottom_toTopOf="@id/txt_runtime"
                 app:layout_constraintStart_toEndOf="@id/poster_card"
                 app:layout_constraintTop_toTopOf="@id/poster_card"
+                app:layout_constraintVertical_chainStyle="packed"
                 tools:text="Your Name (2017)" />
+
+            <TextView
+                android:id="@+id/txt_runtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/poster_card"
+                app:layout_constraintStart_toEndOf="@id/poster_card"
+                app:layout_constraintTop_toBottomOf="@id/txt_title"
+                tools:text="120 m" />
+
+            <ImageView
+                android:id="@+id/img_runtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
+                app:layout_constraintStart_toEndOf="@+id/txt_runtime"
+                app:layout_constraintTop_toTopOf="@+id/txt_runtime"
+                app:srcCompat="@drawable/ic_round_timelapse_24"
+                app:tint="?android:attr/textColorPrimary" />
+
+            <TextView
+                android:id="@+id/txt_vote_avg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="sans-serif"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/txt_runtime"
+                app:layout_constraintStart_toEndOf="@id/img_runtime"
+                app:layout_constraintTop_toTopOf="@id/txt_runtime"
+                tools:text="8.7" />
+
+            <ImageView
+                android:id="@+id/img_vote_avg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
+                app:layout_constraintStart_toEndOf="@+id/txt_vote_avg"
+                app:layout_constraintTop_toTopOf="@+id/txt_runtime"
+                app:srcCompat="@drawable/ic_round_star_24"
+                app:tint="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/txt_overview_info"
@@ -106,7 +156,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:textAlignment="textStart"
                 android:textColor="?android:attr/textColorPrimary"
