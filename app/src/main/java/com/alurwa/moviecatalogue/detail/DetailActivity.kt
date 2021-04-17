@@ -2,6 +2,8 @@ package com.alurwa.moviecatalogue.detail
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.alurwa.moviecatalogue.core.data.Resource
@@ -51,16 +53,16 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupView(data: MovieDetail) {
-        val posterPath = data.posterPath
-        val backdropPath = data.backdropPath
-
         supportActionBar?.title = data.title
+        binding.movieDetail = data
 
-        if (posterPath != null) {
+       /* if (posterPath != null) {
             Glide.with(this)
                     .load(Uri.parse("https://image.tmdb.org/t/p/w185$posterPath"))
                     .into(binding.imgPoster)
         }
+
+
 
         if (backdropPath != null) {
             Glide.with(this)
@@ -68,11 +70,16 @@ class DetailActivity : AppCompatActivity() {
                     .into(binding.imgBackdrop)
         }
         with(binding) {
-            txtTitle.text = data.title
             txtOverviewVal.text = data.overview
             txtRuntime.text = "${data.runtime} m"
             txtVoteAvg.text = data.voteAverage.toString()
-            txtDateLite.text = data.releaseDate.split("-").let { "${it.get(1).toInt()}.${it.get(0)}" }
+            txtDateLite.text = data.releaseDate.split("-").let {
+                if (it.size >= 2) {
+                    "${it[1].toInt()}.${it[0]}"
+                } else {
+                    "-"
+                }
+            }
         }
 
         if (binding.chipGroup.childCount != 0) binding.chipGroup.removeAllViews()
@@ -85,6 +92,8 @@ class DetailActivity : AppCompatActivity() {
             binding.chipGroup.addView(chip)
         }
 
+        */
+
     }
 
     private fun setupToolbar() {
@@ -92,6 +101,17 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
 
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+
+            else -> false
         }
     }
 

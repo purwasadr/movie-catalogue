@@ -1,211 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".detail.DetailActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <data>
+        <variable
+            name="movieDetail"
+            type="com.alurwa.moviecatalogue.core.model.MovieDetail" />
+    </data>
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/black"
-            android:elevation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        tools:context=".detail.DetailActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/img_backdrop"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@color/black" />
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/black"
+                android:elevation="0dp"
+                app:layout_scrollFlags="scroll|enterAlways" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-            <Space
-                android:id="@+id/spacer"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="@id/img_backdrop"
-                app:layout_constraintEnd_toEndOf="@id/img_backdrop"
-                app:layout_constraintStart_toStartOf="@id/img_backdrop" />
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/poster_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                app:cardElevation="12dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spacer">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/img_poster"
-                    android:layout_width="100dp"
-                    android:layout_height="150dp"
-                    android:elevation="12dp"
+                    android:id="@+id/img_backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_round_image_24" />
-            </com.google.android.material.card.MaterialCardView>
+                    imageBackdrop="@{movieDetail.backdropPath}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@color/black" />
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="2000dp"
-                android:background="?android:attr/listDivider"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <Space
+                    android:id="@+id/spacer"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="@id/img_backdrop"
+                    app:layout_constraintEnd_toEndOf="@id/img_backdrop"
+                    app:layout_constraintStart_toStartOf="@id/img_backdrop" />
 
-            <TextView
-                android:id="@+id/txt_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@color/material_on_background_emphasis_high_type"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@id/txt_runtime"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/poster_card"
-                app:layout_constraintTop_toTopOf="@id/poster_card"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Your Name (2017)" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/poster_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:cardElevation="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spacer">
 
-            <TextView
-                android:id="@+id/txt_runtime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="2dp"
-                android:fontFamily="sans-serif"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toTopOf="@id/txt_date_lite"
-                app:layout_constraintStart_toEndOf="@id/poster_card"
-                app:layout_constraintTop_toBottomOf="@id/txt_title"
-                tools:text="120 m" />
+                    <ImageView
+                        android:id="@+id/img_poster"
+                        android:layout_width="100dp"
+                        android:layout_height="150dp"
+                        android:elevation="12dp"
+                        android:scaleType="centerCrop"
+                        imagePoster="@{movieDetail.posterPath}"
+                        app:srcCompat="@drawable/ic_round_image_24" />
+                </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:id="@+id/img_runtime"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="2dp"
-                android:scaleType="centerInside"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
-                app:layout_constraintStart_toEndOf="@+id/txt_runtime"
-                app:layout_constraintTop_toTopOf="@+id/txt_runtime"
-                app:srcCompat="@drawable/ic_round_timelapse_24"
-                app:tint="?android:attr/textColorPrimary" />
+                <TextView
+                    android:id="@+id/txt_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/material_on_background_emphasis_high_type"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@id/txt_runtime"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/poster_card"
+                    app:layout_constraintTop_toTopOf="@id/poster_card"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    android:text="@{movieDetail.title}"
+                    tools:text="Your Name (2017)" />
 
-            <TextView
-                android:id="@+id/txt_vote_avg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="sans-serif"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/txt_runtime"
-                app:layout_constraintStart_toEndOf="@id/img_runtime"
-                app:layout_constraintTop_toTopOf="@id/txt_runtime"
-                tools:text="8.7" />
+                <TextView
+                    android:id="@+id/txt_runtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="14sp"
+                    android:text="@{movieDetail.runtime + ` m`}"
+                    app:layout_constraintBottom_toTopOf="@id/txt_date_lite"
+                    app:layout_constraintStart_toEndOf="@id/poster_card"
+                    app:layout_constraintTop_toBottomOf="@id/txt_title"
+                    tools:text="120 m" />
 
-            <ImageView
-                android:id="@+id/img_vote_avg"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="2dp"
-                android:scaleType="centerInside"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
-                app:layout_constraintStart_toEndOf="@+id/txt_vote_avg"
-                app:layout_constraintTop_toTopOf="@+id/txt_runtime"
-                app:srcCompat="@drawable/ic_round_star_24"
-                app:tint="?android:attr/textColorPrimary" />
+                <ImageView
+                    android:id="@+id/img_runtime"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="2dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
+                    app:layout_constraintStart_toEndOf="@+id/txt_runtime"
+                    app:layout_constraintTop_toTopOf="@+id/txt_runtime"
+                    app:srcCompat="@drawable/ic_round_timelapse_24"
+                    app:tint="?android:attr/textColorPrimary" />
 
-            <TextView
-                android:id="@+id/txt_date_lite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="2.2021"
-                android:textColor="?android:attr/textColorPrimary"
-                app:layout_constraintBottom_toBottomOf="@id/poster_card"
-                app:layout_constraintStart_toStartOf="@+id/txt_runtime"
-                app:layout_constraintTop_toBottomOf="@+id/txt_runtime" />
+                <TextView
+                    android:id="@+id/txt_vote_avg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_runtime"
+                    app:layout_constraintStart_toEndOf="@id/img_runtime"
+                    app:layout_constraintTop_toTopOf="@id/txt_runtime"
+                    android:text="@{movieDetail.voteAverage.toString()}"
+                    tools:text="8.7" />
 
-            <ImageView
-                android:id="@+id/img_date"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="2dp"
-                android:scaleType="centerInside"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_date_lite"
-                app:layout_constraintStart_toEndOf="@+id/txt_date_lite"
-                app:layout_constraintTop_toTopOf="@+id/txt_date_lite"
-                app:srcCompat="@drawable/ic_round_event_24"
-                app:tint="?android:attr/textColorPrimary" />
-            <TextView
-                android:id="@+id/txt_overview_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:text="Overview"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/poster_card" />
+                <ImageView
+                    android:id="@+id/img_vote_avg"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="2dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
+                    app:layout_constraintStart_toEndOf="@+id/txt_vote_avg"
+                    app:layout_constraintTop_toTopOf="@+id/txt_runtime"
+                    app:srcCompat="@drawable/ic_round_star_24"
+                    app:tint="?android:attr/textColorPrimary" />
 
-            <TextView
-                android:id="@+id/txt_overview_val"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:textAlignment="textStart"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_overview_info"
-                tools:text="Overview value" />
+                <TextView
+                    android:id="@+id/txt_date_lite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="2.2021"
+                    android:textColor="?android:attr/textColorPrimary"
+                    app:layout_constraintBottom_toBottomOf="@id/poster_card"
+                    app:layout_constraintStart_toStartOf="@+id/txt_runtime"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_runtime" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_overview_val">
+                <ImageView
+                    android:id="@+id/img_date"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="2dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="@+id/txt_date_lite"
+                    app:layout_constraintStart_toEndOf="@+id/txt_date_lite"
+                    app:layout_constraintTop_toTopOf="@+id/txt_date_lite"
+                    app:srcCompat="@drawable/ic_round_event_24"
+                    app:tint="?android:attr/textColorPrimary" />
 
-            </com.google.android.material.chip.ChipGroup>
+                <TextView
+                    android:id="@+id/txt_overview_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Overview"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/poster_card" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <TextView
+                    android:id="@+id/txt_overview_val"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:textAlignment="textStart"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_overview_info"
+                    android:text="@{movieDetail.overview}"
+                    tools:text="Overview value" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    chipGenres="@{movieDetail.genres}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_overview_val">
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
