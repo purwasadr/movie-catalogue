@@ -1,8 +1,6 @@
 package com.alurwa.moviecatalogue.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.MovieDetail
@@ -13,7 +11,14 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val repository: IMovieCatalogueRepository
 ) : ViewModel() {
+
+    var movieDetail: LiveData<Resource<MovieDetail>>? = null
+
+
     fun getMovieDetail(id: Int): LiveData<Resource<MovieDetail>> {
-        return repository.getMovieDetail(id).asLiveData()
+        // Just check if not null because the id never changed
+        return movieDetail ?: repository.getMovieDetail(id).asLiveData().also {
+            movieDetail = it
+        }
     }
 }

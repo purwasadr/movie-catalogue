@@ -54,46 +54,8 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setupView(data: MovieDetail) {
         supportActionBar?.title = data.title
+
         binding.movieDetail = data
-
-       /* if (posterPath != null) {
-            Glide.with(this)
-                    .load(Uri.parse("https://image.tmdb.org/t/p/w185$posterPath"))
-                    .into(binding.imgPoster)
-        }
-
-
-
-        if (backdropPath != null) {
-            Glide.with(this)
-                    .load(Uri.parse("https://image.tmdb.org/t/p/w500$backdropPath"))
-                    .into(binding.imgBackdrop)
-        }
-        with(binding) {
-            txtOverviewVal.text = data.overview
-            txtRuntime.text = "${data.runtime} m"
-            txtVoteAvg.text = data.voteAverage.toString()
-            txtDateLite.text = data.releaseDate.split("-").let {
-                if (it.size >= 2) {
-                    "${it[1].toInt()}.${it[0]}"
-                } else {
-                    "-"
-                }
-            }
-        }
-
-        if (binding.chipGroup.childCount != 0) binding.chipGroup.removeAllViews()
-        data.genres.forEach {
-            val chip = Chip(binding.chipGroup.context)
-
-            chip.text = it.name
-            chip.isCheckable = false
-
-            binding.chipGroup.addView(chip)
-        }
-
-        */
-
     }
 
     private fun setupToolbar() {
