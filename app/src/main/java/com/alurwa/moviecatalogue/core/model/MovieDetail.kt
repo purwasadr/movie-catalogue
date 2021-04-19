@@ -19,6 +19,10 @@ data class MovieDetail(
 
         val revenue: Int,
 
+        val budget: Int,
+
+        val originalLanguage: String,
+
         val runtime: Int?,
 
         val status: String,

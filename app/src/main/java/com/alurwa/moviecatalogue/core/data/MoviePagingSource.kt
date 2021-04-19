@@ -51,9 +51,11 @@ class MoviePagingSource(
             )
 
         } catch (ex: IOException) {
+            Log.d(TAG, "IOException")
             return LoadResult.Error(ex)
 
         } catch (ex: HttpException) {
+            Log.d(TAG, "HttpException")
             return LoadResult.Error(ex)
         }
     }
@@ -77,5 +79,6 @@ class MoviePagingSource(
 
     companion object {
         const val STARTING_PAGING_INDEX = 1
+        const val TAG = "MoviePagingSource"
     }
 }

@@ -23,7 +23,6 @@ import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.core.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.ActivitySearchBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -31,7 +30,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
@@ -85,18 +83,12 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        lifecycleScope.launchWhenCreated {
+      /*  lifecycleScope.launchWhenCreated {
             mAdapter.loadStateFlow
                     .distinctUntilChangedBy { it.refresh }
                     .filter { it.refresh is LoadState.Error }
                     .collect {
-                        val errorMsg = it.refresh as LoadState.Error
 
-                        Toast.makeText(
-                                applicationContext,
-                                "Error bro ${errorMsg.error.message}",
-                                Toast.LENGTH_SHORT
-                        ).show()
                     }
         }
 
@@ -111,6 +103,33 @@ class SearchActivity : AppCompatActivity() {
                         binding.pb.isVisible = false
                         binding.rcvSearch.isVisible = true
                         binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() && mAdapter.itemCount == 0)
+                    }
+        }
+
+       */
+
+        lifecycleScope.launchWhenCreated {
+            mAdapter.loadStateFlow
+                    // Only emit when REFRESH LoadState for RemoteMediator changes.
+                    .distinctUntilChangedBy { it.refresh }
+                    // Only react to cases where Remote REFRESH completes i.e., NotLoading or Error.
+                    .filter { it.refresh is LoadState.NotLoading || it.refresh is LoadState.Error }
+                    .collect {
+                        val state = it.refresh
+                        if (state is LoadState.NotLoading) {
+                            binding.rcvSearch.scrollToPosition(0)
+                            binding.rcvSearch.isVisible = true
+                            binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() && mAdapter.itemCount == 0)
+                        } else if (state is LoadState.Error) {
+
+                            Toast.makeText(
+                                    applicationContext,
+                                    "Error bro ${state.error.message}",
+                                    Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        binding.pb.isVisible = false
                     }
         }
     }

@@ -41,6 +41,8 @@ object DataMapper {
                     backdropPath = input.backdropPath,
                     releaseDate = input.releaseDate,
                     revenue = input.revenue,
+                    budget = input.budget,
+                    originalLanguage = input.originalLanguage,
                     runtime = input.runtime,
                     status = input.status,
                     voteAverage = input.voteAverage,

@@ -25,8 +25,14 @@ data class MovieDetailResponse(
         @field:SerializedName("revenue")
         val revenue: Int,
 
+        @field:SerializedName("budget")
+        val budget: Int,
+
         @field:SerializedName("runtime")
         val runtime: Int,
+
+        @field:SerializedName("original_language")
+        val originalLanguage: String,
 
         @field:SerializedName("status")
         val status: String,

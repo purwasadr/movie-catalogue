@@ -57,4 +57,18 @@ object BindingAdapters {
         } ?: ""
 
     }
+
+    @JvmStatic
+    @BindingAdapter("txtDate")
+    fun txtDate(txt: TextView, date: String?) {
+        txt.text = date?.let {
+            val dateArray = date.split("-")
+            if (dateArray.size == 3) {
+                "${dateArray[2]}/${dateArray[1]}/${dateArray[0]}"
+            } else {
+                "-"
+            }
+        } ?: ""
+
+    }
 }

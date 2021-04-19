@@ -132,7 +132,6 @@ class MovieFragment : Fragment() {
     private fun getMovies(sortEnum: MovieSortEnum) {
         lifecycleScope.launch {
             mViewModel.getMovies(sortEnum).collectLatest {
-               // Log.d(TAG, "Collect Lastest")
                 adapter.submitData(it)
             }
         }
