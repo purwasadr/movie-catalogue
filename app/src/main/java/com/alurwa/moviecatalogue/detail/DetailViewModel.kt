@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.MovieDetail
+import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -13,7 +14,6 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     var movieDetail: LiveData<Resource<MovieDetail>>? = null
-
 
     fun getMovieDetail(id: Int): LiveData<Resource<MovieDetail>> {
         // Just check if not null because the id never changed
