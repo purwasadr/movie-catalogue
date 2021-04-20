@@ -1,4 +1,4 @@
-package com.alurwa.moviecatalogue.core.utils
+package com.alurwa.moviecatalogue.utils
 
 import com.alurwa.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieDetailResponse

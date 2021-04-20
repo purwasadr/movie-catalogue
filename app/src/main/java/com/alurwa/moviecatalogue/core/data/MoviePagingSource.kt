@@ -5,7 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.core.utils.DataMapper
+import com.alurwa.moviecatalogue.utils.DataMapper
 import com.alurwa.moviecatalogue.main.MovieSortEnum
 import retrofit2.HttpException
 import java.io.IOException

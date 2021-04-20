@@ -7,7 +7,7 @@ import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
 import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.core.model.MovieDetail
-import com.alurwa.moviecatalogue.core.utils.DataMapper
+import com.alurwa.moviecatalogue.utils.DataMapper
 import com.alurwa.moviecatalogue.main.MovieSortEnum
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject

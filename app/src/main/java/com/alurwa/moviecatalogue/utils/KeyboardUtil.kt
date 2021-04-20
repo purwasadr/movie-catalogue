@@ -1,4 +1,4 @@
-package com.alurwa.moviecatalogue.core.utils
+package com.alurwa.moviecatalogue.utils
 
 import android.content.Context
 import android.view.View

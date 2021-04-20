@@ -1,7 +1,6 @@
 package com.alurwa.moviecatalogue.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
-import com.alurwa.moviecatalogue.core.utils.SharedPreferencesUtil
+import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

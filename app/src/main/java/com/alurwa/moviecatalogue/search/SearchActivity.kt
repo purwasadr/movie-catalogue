@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,7 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.alurwa.moviecatalogue.R
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
-import com.alurwa.moviecatalogue.core.utils.SharedPreferencesUtil
+import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.ActivitySearchBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,6 +69,7 @@ class SearchActivity : AppCompatActivity() {
             } else {
                 currentQueryString = savedInstanceState.getString(QUERY_STRING_STATE, "")
                 title = currentQueryString
+                searchMovies(currentQueryString)
             }
         }
     }
@@ -83,31 +85,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-      /*  lifecycleScope.launchWhenCreated {
-            mAdapter.loadStateFlow
-                    .distinctUntilChangedBy { it.refresh }
-                    .filter { it.refresh is LoadState.Error }
-                    .collect {
-
-                    }
-        }
-
-        lifecycleScope.launchWhenCreated {
-            mAdapter.loadStateFlow
-                    // Only emit when REFRESH LoadState for RemoteMediator changes.
-                    .distinctUntilChangedBy { it.refresh }
-                    // Only react to cases where Remote REFRESH completes i.e., NotLoading.
-                    .filter { it.refresh is LoadState.NotLoading }
-                    .collect {
-                        binding.rcvSearch.scrollToPosition(0)
-                        binding.pb.isVisible = false
-                        binding.rcvSearch.isVisible = true
-                        binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() && mAdapter.itemCount == 0)
-                    }
-        }
-
-       */
-
         lifecycleScope.launchWhenCreated {
             mAdapter.loadStateFlow
                     // Only emit when REFRESH LoadState for RemoteMediator changes.
@@ -119,7 +96,8 @@ class SearchActivity : AppCompatActivity() {
                         if (state is LoadState.NotLoading) {
                             binding.rcvSearch.scrollToPosition(0)
                             binding.rcvSearch.isVisible = true
-                            binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() && mAdapter.itemCount == 0)
+                            binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() &&
+                                    mAdapter.itemCount == 0)
                         } else if (state is LoadState.Error) {
 
                             Toast.makeText(
@@ -146,7 +124,6 @@ class SearchActivity : AppCompatActivity() {
             )
             if (savedInstanceState != null) {
 
-                searchMovies(currentQueryString)
                 rcvSearch.layoutManager?.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_STATE))
             }
         }
@@ -154,8 +131,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun navigateToDetail(extraId: Int) {
         Intent(this, DetailActivity::class.java)
-            .putExtra(DetailActivity.EXTRA_ID, extraId)
-            .also { startActivity(it) }
+                .putExtra(DetailActivity.EXTRA_ID, extraId)
+                .also { startActivity(it) }
     }
 
     private fun setupSearchInput(menu: Menu) {
@@ -230,10 +207,12 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
         outState.putString(QUERY_STRING_STATE, currentQueryString)
         outState.putParcelable(LIST_STATE, binding.rcvSearch.layoutManager?.onSaveInstanceState())
+        super.onSaveInstanceState(outState)
+
+        Log.d(TAG, "onSaveInstanceState")
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -256,5 +235,6 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val QUERY_STRING_STATE = "query_string_state"
         const val LIST_STATE = "list_state"
+        const val TAG = "SearchActivity"
     }
 }

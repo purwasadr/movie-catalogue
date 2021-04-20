@@ -10,7 +10,7 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.alurwa.moviecatalogue.R
-import com.alurwa.moviecatalogue.core.utils.SharedPreferencesUtil
+import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.ActivityMainBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
 import com.alurwa.moviecatalogue.search.SearchActivity

@@ -8,6 +8,8 @@
         <variable
             name="movieDetail"
             type="com.alurwa.moviecatalogue.core.model.MovieDetail" />
+
+        <import type="com.alurwa.moviecatalogue.utils.NumberFormatUtil"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -38,7 +40,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="24dp">
 
                 <ImageView
                     android:id="@+id/img_backdrop"
@@ -59,11 +62,11 @@
                     app:layout_constraintStart_toStartOf="@id/img_backdrop" />
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/poster_card"
+                    android:id="@+id/card_poster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    app:cardElevation="4dp"
+                    app:cardElevation="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/spacer">
 
@@ -87,11 +90,13 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@id/txt_runtime"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/poster_card"
-                    app:layout_constraintTop_toTopOf="@id/poster_card"
+                    app:layout_constraintStart_toEndOf="@id/card_poster"
+                    app:layout_constraintTop_toTopOf="@id/card_poster"
                     app:layout_constraintVertical_chainStyle="packed"
                     android:text="@{movieDetail.title}"
                     tools:text="Your Name (2017)" />
+
+
 
                 <TextView
                     android:id="@+id/txt_runtime"
@@ -103,8 +108,8 @@
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="14sp"
                     android:text="@{movieDetail.runtime + ` m`}"
-                    app:layout_constraintBottom_toBottomOf="@id/poster_card"
-                    app:layout_constraintStart_toEndOf="@id/poster_card"
+                    app:layout_constraintBottom_toBottomOf="@id/card_poster"
+                    app:layout_constraintStart_toEndOf="@id/card_poster"
                     app:layout_constraintTop_toBottomOf="@id/txt_title"
                     tools:text="120 m" />
 
@@ -115,11 +120,10 @@
                     android:layout_marginStart="2dp"
                     android:scaleType="centerInside"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
-                    app:layout_constraintStart_toEndOf="@+id/txt_runtime"
+                    app:layout_constraintStart_toEndOf="@id/txt_runtime"
                     app:layout_constraintTop_toTopOf="@+id/txt_runtime"
                     app:srcCompat="@drawable/ic_round_timelapse_24"
                     app:tint="?android:attr/textColorPrimary" />
-
                 <TextView
                     android:id="@+id/txt_vote_avg"
                     android:layout_width="wrap_content"
@@ -154,6 +158,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="2dp"
                     android:textColor="?android:attr/textColorPrimary"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@+id/img_vote_avg"
                     app:layout_constraintTop_toTopOf="@+id/txt_runtime"
@@ -165,6 +170,7 @@
                     android:layout_height="16dp"
                     android:layout_marginStart="2dp"
                     android:scaleType="centerInside"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_date_lite"
                     app:layout_constraintStart_toEndOf="@+id/txt_date_lite"
                     app:layout_constraintTop_toTopOf="@+id/txt_date_lite"
@@ -182,7 +188,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/poster_card" />
+                    app:layout_constraintTop_toBottomOf="@+id/card_poster" />
 
                 <TextView
                     android:id="@+id/txt_overview_val"
@@ -302,7 +308,7 @@
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_budget_info"
-                    tools:text="@{`$` + movieDetail.budget}" />
+                    tools:text="@{`$` + NumberFormatUtil.INSTANCE.withComma(movieDetail.budget)}" />
 
                 <TextView
                     android:id="@+id/txt_revenue_info"
@@ -324,7 +330,7 @@
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_revenue_info"
-                    tools:text="@{`$` + movieDetail.revenue}" />
+                    tools:text="@{`$` + NumberFormatUtil.INSTANCE.withComma(movieDetail.revenue)}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
