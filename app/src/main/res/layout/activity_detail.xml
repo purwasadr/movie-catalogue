@@ -96,8 +96,6 @@
                     android:text="@{movieDetail.title}"
                     tools:text="Your Name (2017)" />
 
-
-
                 <TextView
                     android:id="@+id/txt_runtime"
                     android:layout_width="wrap_content"
@@ -107,7 +105,7 @@
                     android:fontFamily="sans-serif"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="14sp"
-                    android:text="@{movieDetail.runtime + ` m`}"
+                    android:text="@{NumberFormatUtil.INSTANCE.timeHoursAndMinute(movieDetail.runtime)}"
                     app:layout_constraintBottom_toBottomOf="@id/card_poster"
                     app:layout_constraintStart_toEndOf="@id/card_poster"
                     app:layout_constraintTop_toBottomOf="@id/txt_title"

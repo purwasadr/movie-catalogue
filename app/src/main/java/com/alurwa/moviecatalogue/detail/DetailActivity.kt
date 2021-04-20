@@ -78,9 +78,9 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun strTime(time: Int): String? {
+    private fun strTime(time: Int): String {
         var result = ""
-        val ba = (time / 60).toDouble()
+        val ba = (time / 60)
         result = if (time % 60 == 0 && time >= 60) {
             "$ba j "
         } else if (time < 60) {
@@ -88,6 +88,7 @@ class DetailActivity : AppCompatActivity() {
         } else {
             "$ba j "+(time % 60)+" m"
         }
+
         return result
     }
     companion object {
