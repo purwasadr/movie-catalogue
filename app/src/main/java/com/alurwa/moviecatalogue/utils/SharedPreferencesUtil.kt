@@ -4,10 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 
 object SharedPreferencesUtil {
-    private const val SHARED_PREFERENCES_KEY = "movie_catalogue"
 
     fun getSharedPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(Constants.SharedPreference.APP_KEY, Context.MODE_PRIVATE)
     }
 
     fun getIsShowPosterPreferences(context: Context): Boolean {
