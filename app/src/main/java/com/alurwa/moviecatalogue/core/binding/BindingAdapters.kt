@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.alurwa.moviecatalogue.core.model.Genre
+import com.alurwa.moviecatalogue.utils.NumberFormatUtil
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -69,6 +70,29 @@ object BindingAdapters {
                 "-"
             }
         } ?: ""
+    }
 
+    @JvmStatic
+    @BindingAdapter("title", "year")
+    fun txtTitleWithYear(txt: TextView, title: String?, date: String?) {
+        if (title != null && date != null) {
+            val year = date.split("-").let { if (it.isNotEmpty()) it[0] else "" }
+            txt.text = "$title ($year)"
+
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("txtPrice")
+    fun txtPrice(txt: TextView, price: Int?) {
+        if (price != null) {
+            val result = if (price == 0) {
+                "-"
+            } else {
+               "$" + NumberFormatUtil.withComma(price)
+            }
+
+            txt.text = result
+        }
     }
 }

@@ -20,7 +20,7 @@ interface ApiService {
     @GET("3/search/movie?api_key=${BuildConfig.API_KEY}")
     suspend fun searchMovies(@Query("query")query: String,  @Query("page")pagePos: Int): ListMovieResponse
 
-    @GET("3/movie/{id}?api_key=" + BuildConfig.API_KEY + "&language=en-US")
+    @GET("3/movie/{id}?api_key=" + BuildConfig.API_KEY)
     suspend fun getDetailMovie(@Path("id")id: Int): MovieDetailResponse
 
     @GET("3/discover/tv?api_key=" + BuildConfig.API_KEY)
