@@ -76,8 +76,8 @@ object BindingAdapters {
     @BindingAdapter("title", "year")
     fun txtTitleWithYear(txt: TextView, title: String?, date: String?) {
         if (title != null && date != null) {
-            val year = date.split("-").let { if (it.isNotEmpty()) it[0] else "" }
-            txt.text = "$title ($year)"
+            val year = date.split("-").let { if (it.isNotEmpty()) "(${it[0]})" else "" }
+            txt.text = "$title $year"
 
         }
     }
