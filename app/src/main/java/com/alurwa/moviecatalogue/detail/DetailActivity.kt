@@ -1,18 +1,14 @@
 package com.alurwa.moviecatalogue.detail
 
-import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.SavedStateHandle
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.MovieDetail
 import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
-import com.bumptech.glide.Glide
-import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
@@ -77,6 +73,8 @@ class DetailActivity : AppCompatActivity() {
             else -> false
         }
     }
+
+
 
     private fun strTime(time: Int): String {
         var result = ""

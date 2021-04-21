@@ -10,6 +10,7 @@
             type="com.alurwa.moviecatalogue.core.model.MovieDetail" />
 
         <import type="com.alurwa.moviecatalogue.utils.NumberFormatUtil"/>
+        <import type="com.alurwa.moviecatalogue.utils.CommonUtil"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -225,7 +226,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Status"
+                    android:text="@string/status"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/chip_group" />
@@ -248,7 +249,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Release Date"
+                    android:text="@string/release_date"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_status_val" />
@@ -270,7 +271,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Original Language"
+                    android:text="@string/original_language"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_release_date_val" />
@@ -283,7 +284,7 @@
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_original_language_info"
-                    android:text="@{movieDetail.originalLanguage}"
+                    android:text="@{CommonUtil.INSTANCE.getLanguageName(movieDetail.originalLanguage)}"
                     tools:text="Indonesia" />
 
                 <TextView
@@ -315,7 +316,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Revenue"
+                    android:text="@string/revenue"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_budget_val" />
