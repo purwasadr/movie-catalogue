@@ -11,7 +11,7 @@ object CommonUtil {
         return Locale.getAvailableLocales().find {
             it.language == language
         }.let {
-            it?.displayLanguage
+            it?.getDisplayLanguage(Locale.ENGLISH)
         }
     }
 }
