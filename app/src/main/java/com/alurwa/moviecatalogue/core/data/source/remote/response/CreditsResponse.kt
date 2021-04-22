@@ -1,4 +1,8 @@
 package com.alurwa.moviecatalogue.core.data.source.remote.response
 
-class CreditsResponse {
-}
+import com.google.gson.annotations.SerializedName
+
+data class CreditsResponse(
+    @field:SerializedName("cast")
+    val cast: List<CastResponse>
+)
