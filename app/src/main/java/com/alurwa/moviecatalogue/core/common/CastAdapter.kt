@@ -17,14 +17,14 @@ class CastAdapter(private val castList: List<Cast>?) : RecyclerView.Adapter<Cast
             )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind()
+        holder.bind(position)
     }
 
     override fun getItemCount(): Int = castList?.size ?: 0
 
-    inner class ViewHolder(binding: RcvItemCastBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
-
+    inner class ViewHolder(private val binding: RcvItemCastBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(position: Int) {
+            binding.cast = castList?.get(position)
         }
     }
 }
