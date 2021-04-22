@@ -95,4 +95,14 @@ object BindingAdapters {
             txt.text = result
         }
     }
+
+    @JvmStatic
+    @BindingAdapter("loadProfileImage")
+    fun loadProfileImage(imageView: ImageView, profilePath: String?) {
+        if (!profilePath.isNullOrEmpty()) {
+            Glide.with(imageView.context)
+                    .load(Uri.parse("https://image.tmdb.org/t/p/w185$profilePath"))
+                    .into(imageView)
+        }
+    }
 }
