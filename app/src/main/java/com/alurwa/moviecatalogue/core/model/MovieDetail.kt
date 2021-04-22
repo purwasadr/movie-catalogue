@@ -29,6 +29,8 @@ data class MovieDetail(
 
         val voteAverage: Number,
 
-        val genres: List<Genre>
+        val genres: List<Genre>,
+
+        val cast: List<Cast>
 ) : Parcelable
 

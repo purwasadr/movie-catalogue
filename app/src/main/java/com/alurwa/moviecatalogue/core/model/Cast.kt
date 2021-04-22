@@ -1,5 +1,10 @@
 package com.alurwa.moviecatalogue.core.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Cast(
-        val name: String
-)
+        val name: String,
+        val profile_path: String?
+) : Parcelable
