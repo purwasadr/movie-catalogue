@@ -7,5 +7,5 @@ data class CastResponse(
         val name: String,
 
         @field:SerializedName("profile_path")
-        val profilePath: List<GenreResponse>
+        val profilePath: String
 )
