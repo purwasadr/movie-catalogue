@@ -75,21 +75,6 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-
-
-    private fun strTime(time: Int): String {
-        var result = ""
-        val ba = (time / 60)
-        result = if (time % 60 == 0 && time >= 60) {
-            "$ba j "
-        } else if (time < 60) {
-            "$time m"
-        } else {
-            "$ba j "+(time % 60)+" m"
-        }
-
-        return result
-    }
     companion object {
         const val EXTRA_ID = "EXTRA_ID"
     }
