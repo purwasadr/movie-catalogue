@@ -44,5 +44,5 @@ data class MovieDetailResponse(
         val genres: List<GenreResponse>,
 
         @field:SerializedName("credits")
-        val credits: List<GenreResponse>
+        val credits: List<CastResponse>
 )
