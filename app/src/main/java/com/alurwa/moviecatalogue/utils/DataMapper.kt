@@ -3,6 +3,7 @@ package com.alurwa.moviecatalogue.utils
 import com.alurwa.moviecatalogue.core.data.source.local.entity.MovieEntity
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
+import com.alurwa.moviecatalogue.core.model.Cast
 import com.alurwa.moviecatalogue.core.model.Genre
 import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.core.model.MovieDetail
@@ -48,7 +49,9 @@ object DataMapper {
                     voteAverage = input.voteAverage,
                     genres = input.genres.map {
                         Genre(it.id, it.name)
+                    },
+                    cast = input.credits.map {
+                        Cast(it.name, it.profilePath)
                     }
-
             )
 }
