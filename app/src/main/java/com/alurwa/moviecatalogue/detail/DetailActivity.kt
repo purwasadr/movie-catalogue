@@ -64,7 +64,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+ /*   override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 finish()
@@ -75,6 +75,12 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+  */
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
     companion object {
         const val EXTRA_ID = "EXTRA_ID"
     }
