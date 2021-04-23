@@ -3,7 +3,12 @@ package com.alurwa.moviecatalogue.core.binding
 import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.alurwa.moviecatalogue.core.common.CastAdapter
+import com.alurwa.moviecatalogue.core.model.Cast
 import com.alurwa.moviecatalogue.core.model.Genre
 import com.alurwa.moviecatalogue.utils.NumberFormatUtil
 import com.bumptech.glide.Glide
@@ -103,6 +108,18 @@ object BindingAdapters {
             Glide.with(imageView.context)
                     .load(Uri.parse("https://image.tmdb.org/t/p/w185$profilePath"))
                     .into(imageView)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("rcvCast")
+    fun rcvCast(rcv: RecyclerView, castList: List<Cast>?) {
+        if (!castList.isNullOrEmpty()) {
+            val adapter = CastAdapter(castList)
+
+            rcv.layoutManager = LinearLayoutManager(rcv.context, LinearLayoutManager.HORIZONTAL, false)
+            rcv.setHasFixedSize(true)
+            rcv.adapter = adapter
         }
     }
 }

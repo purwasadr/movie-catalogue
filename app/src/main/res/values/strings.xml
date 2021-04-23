@@ -10,4 +10,6 @@
     <string name="revenue">Revenue</string>
     <string name="vote_avg_desc">Image Vote Average</string>
     <string name="search_hint">Input text</string>
+    <string name="budget_detail">Budget</string>
+    <string name="cast_detail">Cast</string>
 </resources>

@@ -223,6 +223,29 @@
                 </com.google.android.material.chip.ChipGroup>
 
                 <TextView
+                    android:id="@+id/txt_cast_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/cast_detail"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/chip_group" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcv_cast"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_cast_info"
+                    tools:listitem="@layout/rcv_item_cast"
+                    rcvCast="@{movieDetail.cast}"/>
+
+                <TextView
                     android:id="@+id/txt_status_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -232,7 +255,7 @@
                     android:text="@string/status"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/chip_group" />
+                    app:layout_constraintTop_toBottomOf="@id/rcv_cast" />
 
                 <TextView
                     android:id="@+id/txt_status_val"
@@ -297,7 +320,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Budget"
+                    android:text="@string/budget_detail"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_original_language_val" />
