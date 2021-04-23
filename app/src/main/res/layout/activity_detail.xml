@@ -237,13 +237,13 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_cast"
+                    rcvCast="@{movieDetail.cast}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_cast_info"
-                    tools:listitem="@layout/rcv_item_cast"
-                    rcvCast="@{movieDetail.cast}"/>
+                    tools:listitem="@layout/rcv_item_cast" />
 
                 <TextView
                     android:id="@+id/txt_status_info"

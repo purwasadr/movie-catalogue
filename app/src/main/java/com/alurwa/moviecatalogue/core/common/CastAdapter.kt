@@ -2,6 +2,7 @@ package com.alurwa.moviecatalogue.core.common
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.marginEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.core.model.Cast
 import com.alurwa.moviecatalogue.databinding.RcvItemCastBinding
