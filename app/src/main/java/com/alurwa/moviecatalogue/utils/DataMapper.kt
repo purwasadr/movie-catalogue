@@ -50,7 +50,7 @@ object DataMapper {
                     genres = input.genres.map {
                         Genre(it.id, it.name)
                     },
-                    cast = input.credits.map {
+                    cast = input.credits.cast.map {
                         Cast(it.name, it.profilePath)
                     }
             )
