@@ -1,3 +1,14 @@
 <component name="CopyrightManager">
-  <settings default="MIT License" />
+  <settings default="MIT License">
+    <LanguageOptions name="JAVA">
+      <option name="fileTypeOverride" value="3" />
+      <option name="separateBefore" value="true" />
+      <option name="lenBefore" value="2" />
+    </LanguageOptions>
+    <LanguageOptions name="Kotlin">
+      <option name="fileTypeOverride" value="3" />
+      <option name="separateBefore" value="true" />
+      <option name="lenBefore" value="2" />
+    </LanguageOptions>
+  </settings>
 </component>

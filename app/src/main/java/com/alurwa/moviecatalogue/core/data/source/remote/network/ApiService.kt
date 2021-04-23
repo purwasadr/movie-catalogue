@@ -1,4 +1,4 @@
-/*
+/**
  * MIT License
  *
  * Copyright (c) 2021 Purwa Shadr Al 'urwa
@@ -49,4 +49,5 @@ interface ApiService {
 
     @GET("3/discover/tv?api_key=" + BuildConfig.API_KEY)
     suspend fun getAllTvShows()
+
 }
