@@ -24,7 +24,6 @@ class MoviePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val position = params.key ?: STARTING_PAGING_INDEX
         return try {
-         //   val response = apiService.getDiscoverMovies(position)
             val response = when {
                 sort != null -> getMovieApi(sort, position)
                 query != null -> {
