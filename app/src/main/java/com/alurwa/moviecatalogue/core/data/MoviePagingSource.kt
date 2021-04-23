@@ -1,4 +1,4 @@
-/*
+/**
  * MIT License
  *
  * Copyright (c) 2021 Purwa Shadr Al 'urwa
@@ -94,9 +94,6 @@ class MoviePagingSource(
                 MovieSortEnum.DISCOVER -> apiService.getDiscoverMovies(position)
                 MovieSortEnum.POPULAR -> apiService.getMovies("popular", position)
                 MovieSortEnum.UPCOMING -> apiService.getMovies("upcoming", position)
-                else -> {
-                    throw IllegalArgumentException("illegal")
-                }
     }
 
     companion object {
