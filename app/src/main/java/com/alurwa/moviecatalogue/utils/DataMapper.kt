@@ -51,7 +51,7 @@ object DataMapper {
                         Genre(it.id, it.name)
                     },
                     cast = input.credits.cast.map {
-                        Cast(it.name, it.profilePath)
+                        Cast(it.name, it.profilePath, it.character)
                     }
             )
 }

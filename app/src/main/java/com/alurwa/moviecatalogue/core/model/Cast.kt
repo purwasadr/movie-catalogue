@@ -6,5 +6,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Cast(
         val name: String,
-        val profilePath: String?
+        val profilePath: String?,
+        val character: String
 ) : Parcelable
