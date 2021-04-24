@@ -45,7 +45,7 @@
                 android:text="@{cast.name}"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/end_space"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_cast"
                 tools:text="Kanna Hashimoto" />
@@ -62,10 +62,22 @@
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/end_space"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_cast_name"
                 tools:text="Kaguya" />
+
+            <View
+                android:id="@+id/end_space"
+                android:layout_width="16dp"
+                android:layout_height="0dp"
+                android:background="@null"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/img_cast"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>
