@@ -1,3 +1,27 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2021 Purwa Shadr Al 'urwa
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.alurwa.moviecatalogue.main
 
 import android.content.Intent
@@ -14,6 +38,7 @@ import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.ActivityMainBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
 import com.alurwa.moviecatalogue.search.SearchActivity
+import com.alurwa.moviecatalogue.utils.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -69,8 +94,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getIsShowPosterPref(): Boolean {
-        val pref = SharedPreferencesUtil.getSharedPreferences(applicationContext)
-        return pref.getBoolean("is_show_poster", false)
+        return SharedPreferencesUtil.getIsShowPosterPreferences(applicationContext)
     }
 
     private fun navigateToSearch() {
@@ -105,13 +129,13 @@ class MainActivity : AppCompatActivity() {
 
                 if (item.isChecked) {
                     pref.edit {
-                        putBoolean("is_show_poster", true)
+                        putBoolean(Constants.SharedPreference.IS_SHOW_POSTER, true)
                         apply()
                     }
 
                 } else {
                     pref.edit {
-                        putBoolean("is_show_poster", false)
+                        putBoolean(Constants.SharedPreference.IS_SHOW_POSTER, false)
                         apply()
                     }
                 }
