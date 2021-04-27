@@ -1,6 +1,7 @@
 package com.alurwa.moviecatalogue.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,10 @@ class DetailActivity : AppCompatActivity() {
 
                     setupView(data)
                 }
+
+                is Resource.Error -> {
+                    Log.d(TAG, it.message.toString())
+                }
             }
         }
     }
@@ -83,5 +88,6 @@ class DetailActivity : AppCompatActivity() {
     }
     companion object {
         const val EXTRA_ID = "EXTRA_ID"
+        const val TAG = "DetailActivity"
     }
 }
