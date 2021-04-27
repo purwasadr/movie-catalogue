@@ -36,7 +36,10 @@ interface ApiService {
     suspend fun getAllMovies(): ListMovieResponse
 
     @GET("3/discover/movie?api_key=" + BuildConfig.API_KEY)
-    suspend fun getDiscoverMovies(@Query("page")pagePos: Int): ListMovieResponse
+    suspend fun getDiscoverMovies(@Query("sort_by")sortBy: String,
+                                  @Query("page")pagePos: Int
+
+    ): ListMovieResponse
 
     @GET("3/movie/{type}?api_key=" + BuildConfig.API_KEY)
     suspend fun getMovies(@Path("type")type: String, @Query("page")pagePos: Int): ListMovieResponse
@@ -48,6 +51,17 @@ interface ApiService {
     suspend fun getDetailMovie(@Path("id")id: Int): MovieDetailResponse
 
     @GET("3/discover/tv?api_key=" + BuildConfig.API_KEY)
-    suspend fun getAllTvShows()
+    suspend fun getDiscoverTv(@Query("sort_by")sortBy: String,
+                              @Query("page")pagePos: Int
 
+    ): ListMovieResponse
+
+    @GET("3/tv/{type}?api_key=" + BuildConfig.API_KEY)
+    suspend fun getTv(@Path("type")type: String, @Query("page")pagePos: Int): ListMovieResponse
+
+    @GET("3/search/tv?api_key=${BuildConfig.API_KEY}")
+    suspend fun searchTv(@Query("query")query: String,  @Query("page")pagePos: Int): ListMovieResponse
+
+    @GET("3/tv/{id}?api_key=" + BuildConfig.API_KEY + "&append_to_response=credits")
+    suspend fun getDetailTv(@Path("id")id: Int): MovieDetailResponse
 }
