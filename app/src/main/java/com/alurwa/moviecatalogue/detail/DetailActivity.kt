@@ -5,10 +5,14 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import com.alurwa.moviecatalogue.R
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.MovieDetail
+import com.alurwa.moviecatalogue.core.model.TvDetail
 import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
+import com.alurwa.moviecatalogue.databinding.ActivityTvDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.*
@@ -16,9 +20,9 @@ import java.util.*
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
-    private val binding : ActivityDetailBinding by lazy {
-        ActivityDetailBinding.inflate(layoutInflater)
-    }
+  //  private val binding : ActivityDetailBinding by lazy {
+  //      ActivityDetailBinding.inflate(layoutInflater)
+  //  }
 
     private val mViewModel: DetailViewModel by viewModels()
 
@@ -33,15 +37,37 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(binding.root)
+        if (mFilmOrTv == FilmOrTv.FILM.code) {
+            val binding = ActivityDetailBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        setupToolbar()
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.run {
+                setDisplayHomeAsUpEnabled(true)
+                title = ""
 
-        getMovieDetail()
+            }
+            getMovieDetail(binding)
+        } else {
+            val binding = ActivityTvDetailBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.run {
+                setDisplayHomeAsUpEnabled(true)
+                title = ""
+
+            }
+
+            getTvDetail(binding)
+
+        }
+    //    setupToolbar()
+
+
     }
 
-    private fun getMovieDetail() {
-        if (mFilmOrTv == FilmOrTv.FILM.code) {
+    private fun getMovieDetail(binding: ActivityDetailBinding) {
             mViewModel.getMovieDetail(id).observe(this) {
                 when (it) {
                     is Resource.Loading -> {
@@ -50,7 +76,7 @@ class DetailActivity : AppCompatActivity() {
 
                     is Resource.Success -> {
                         val data = it.data!!
-                        setupView(data)
+                        setupMovieView(binding, data)
                     }
 
                     is Resource.Error -> {
@@ -58,35 +84,41 @@ class DetailActivity : AppCompatActivity() {
                     }
                 }
             }
-        } else {
-            mViewModel.getTvDetail(id).observe(this) {
-                when (it) {
-                    is Resource.Loading -> {
-
-                    }
-
-                    is Resource.Success -> {
-                        val data = it.data!!
-                        setupView(data)
-                    }
-
-                    is Resource.Error -> {
-                        Timber.d(it.message.toString())
-                    }
-                }
-            }
-        }
-
 
     }
 
-    private fun setupView(data: MovieDetail) {
+    private fun getTvDetail(binding: ActivityTvDetailBinding) {
+        mViewModel.getTvDetail(id).observe(this) {
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    val data = it.data!!
+                    setupTvView(binding, data)
+                }
+
+                is Resource.Error -> {
+                    Timber.d(it.message.toString())
+                }
+            }
+        }
+    }
+
+    private fun setupMovieView(binding: ActivityDetailBinding, data: MovieDetail) {
         supportActionBar?.title = data.title
 
         binding.movieDetail = data
     }
 
-    private fun setupToolbar() {
+    private fun setupTvView(binding: ActivityTvDetailBinding,data: TvDetail) {
+        supportActionBar?.title = data.name
+
+        binding.tvDetail = data
+    }
+
+   /* private fun setupToolbar(binding) {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
@@ -94,6 +126,8 @@ class DetailActivity : AppCompatActivity() {
 
         }
     }
+
+    */
 
  /*   override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

@@ -88,6 +88,7 @@ object DataMapper {
                                 it.airDate, it.episodeCount,
                                 it.seasonNumber)
 
+
                     },
                     cast = input.credits.cast.map {
                         Cast(it.name,it.profilePath, it.character)
