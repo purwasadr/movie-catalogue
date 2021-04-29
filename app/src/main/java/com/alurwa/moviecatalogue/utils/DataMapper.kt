@@ -1,7 +1,10 @@
 package com.alurwa.moviecatalogue.utils
 
 import com.alurwa.moviecatalogue.core.data.source.local.entity.MovieEntity
-import com.alurwa.moviecatalogue.core.data.source.remote.response.*
+import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieDetailResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.TvResponse
 import com.alurwa.moviecatalogue.core.model.*
 
 object DataMapper {
@@ -57,15 +60,37 @@ object DataMapper {
             Movie(
                     id = it.id,
                     title = it.name,
-                    releaseDate  = it.firstAirDate,
+                    releaseDate = it.firstAirDate,
                     posterPath = it.posterPath,
                     voteAverage = it.voteAverage
             )
         }
     }
 
-    fun tvDetailResponseToDomain(input: List<TvDetailResponse>): List<TvDetail> =
+    fun tvDetailResponseToDomain(input: TvDetailResponse): TvDetail =
             TvDetail(
+                    id = input.id,
+                    name = input.name,
+                    overview = input.overview,
+                    posterPath = input.posterPath,
+                    backdropPath = input.backdropPath,
+                    firstAirDate = input.firstAirDate,
+                    originalLanguage = input.originalLanguage,
+                    originalName = input.originalName,
+                    status = input.status,
+                    voteAverage = input.voteAverage,
+                    genres = input.genres.map {
+                        Genre(it.id, it.name)
+                    },
+                    seasons = input.seasons.map {
+                        Season(it.id, it.name,
+                                it.overview, it.posterPath,
+                                it.airDate, it.episodeCount,
+                                it.seasonNumber)
 
+                    },
+                    cast = input.credits.cast.map {
+                        Cast(it.name,it.profilePath, it.character)
+                    }
             )
 }
