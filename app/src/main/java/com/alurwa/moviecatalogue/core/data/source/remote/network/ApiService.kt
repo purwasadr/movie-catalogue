@@ -27,6 +27,8 @@ package com.alurwa.moviecatalogue.core.data.source.remote.network
 import com.alurwa.moviecatalogue.BuildConfig
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.ListMovieResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.TvListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -54,14 +56,14 @@ interface ApiService {
     suspend fun getDiscoverTv(@Query("sort_by")sortBy: String,
                               @Query("page")pagePos: Int
 
-    ): ListMovieResponse
+    ): TvListResponse
 
     @GET("3/tv/{type}?api_key=" + BuildConfig.API_KEY)
-    suspend fun getTv(@Path("type")type: String, @Query("page")pagePos: Int): ListMovieResponse
+    suspend fun getTv(@Path("type")type: String, @Query("page")pagePos: Int): TvListResponse
 
     @GET("3/search/tv?api_key=${BuildConfig.API_KEY}")
-    suspend fun searchTv(@Query("query")query: String,  @Query("page")pagePos: Int): ListMovieResponse
+    suspend fun searchTv(@Query("query")query: String,  @Query("page")pagePos: Int): TvListResponse
 
     @GET("3/tv/{id}?api_key=" + BuildConfig.API_KEY + "&append_to_response=credits")
-    suspend fun getDetailTv(@Path("id")id: Int): MovieDetailResponse
+    suspend fun getTvDetail(@Path("id")id: Int): TvDetailResponse
 }

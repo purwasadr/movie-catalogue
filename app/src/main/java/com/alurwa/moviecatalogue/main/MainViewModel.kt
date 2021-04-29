@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
 import com.alurwa.moviecatalogue.core.model.Movie
+import com.alurwa.moviecatalogue.core.model.Tv
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import retrofit2.HttpException
@@ -20,6 +21,10 @@ class MainViewModel @Inject constructor(
     var currentSort: MovieSortEnum? = null
 
     var currentMovieResult: Flow<PagingData<Movie>>? = null
+
+    private var currentTvResult: Flow<PagingData<Movie>>? = null
+
+    private var currentTvSort: MovieSortEnum? = null
 
     var listState: Parcelable? = null
 
@@ -37,6 +42,22 @@ class MainViewModel @Inject constructor(
         val newResult = repository.getDiscoveryMovies(sortEnum).cachedIn(viewModelScope)
 
         currentMovieResult = newResult
+
+        return newResult
+    }
+
+    fun getTv(sortEnum: MovieSortEnum): Flow<PagingData<Movie>> {
+        val tvResult = currentTvResult
+
+        if (sortEnum == currentTvSort && tvResult != null) {
+            return tvResult
+        }
+
+        currentTvSort = sortEnum
+
+        val newResult = repository.getTvList(sortEnum).cachedIn(viewModelScope)
+
+        currentTvResult = newResult
 
         return newResult
     }

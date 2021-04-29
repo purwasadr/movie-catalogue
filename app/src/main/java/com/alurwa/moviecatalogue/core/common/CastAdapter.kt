@@ -1,13 +1,20 @@
 package com.alurwa.moviecatalogue.core.common
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.core.model.Cast
 import com.alurwa.moviecatalogue.databinding.RcvItemCastBinding
+import com.bumptech.glide.load.engine.Resource
 
 class CastAdapter(private val castList: List<Cast>?) : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
+
+    val Int.px: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(
@@ -32,7 +39,11 @@ class CastAdapter(private val castList: List<Cast>?) : RecyclerView.Adapter<Cast
             binding.cast = cast
 
             if (castList?.size == (position + 1)) {
-                binding.endSpace.visibility = View.VISIBLE
+              //  val cardCastParams = binding.cardCast.layoutParams as ViewGroup.MarginLayoutParams
+             //   cardCastParams.marginEnd = 16.px
+                binding.isLastItem = true
+            }  else {
+                binding.isLastItem = false
             }
         }
     }

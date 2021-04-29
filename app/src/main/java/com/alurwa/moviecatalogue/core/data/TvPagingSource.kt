@@ -24,35 +24,31 @@
 
 package com.alurwa.moviecatalogue.core.data
 
-import android.util.Log
-import androidx.constraintlayout.solver.state.Dimension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
-import com.alurwa.moviecatalogue.core.data.source.remote.response.ListMovieResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.TvListResponse
 import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.utils.DataMapper
+import com.alurwa.moviecatalogue.core.model.Tv
 import com.alurwa.moviecatalogue.main.MovieSortEnum
+import com.alurwa.moviecatalogue.utils.DataMapper
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
-import kotlin.IllegalArgumentException
 
-open class MoviePagingSource(
-    private val apiService: ApiService,
-    private val sort: MovieSortEnum? = null,
-    private val query: String? = null
+class TvPagingSource(
+        private val apiService: ApiService,
+        private val sort: MovieSortEnum? = null,
+        private val query: String? = null
 ) : PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val position = params.key ?: STARTING_PAGING_INDEX
         return try {
             val response = when {
-                sort != null -> getMovieApi(sort, position)
+                sort != null -> getTvApi(sort, position)
                 query != null -> {
-                        apiService.searchMovies(query, position)
-
+                        apiService.searchTv(query, position)
                 }
                 else -> {
                     throw IllegalArgumentException()
@@ -60,7 +56,7 @@ open class MoviePagingSource(
             }
 
             val maxPage = response.totalPages
-            val repos = DataMapper.movieResponseToDomain(response.results)
+            val repos = DataMapper.tvListResponseToDomain(response.results)
             val nextKey = if (position == maxPage || maxPage == 0) {
                 null
             } else {
@@ -68,38 +64,37 @@ open class MoviePagingSource(
             }
 
             LoadResult.Page(
-                data = repos,
-                prevKey = if (position == 1) null else position - 1,
-                nextKey = nextKey
+                    data = repos,
+                    prevKey = if (position == 1) null else position - 1,
+                    nextKey = nextKey
             )
 
         } catch (ex: IOException) {
             Timber.d(ex)
-            return LoadResult.Error(ex)
+            LoadResult.Error(ex)
 
         } catch (ex: HttpException) {
             Timber.d(ex)
-            return LoadResult.Error(ex)
+            LoadResult.Error(ex)
         }
     }
 
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return state.anchorPosition?.let { pos ->
             state.closestPageToPosition(pos)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(pos)?.nextKey?.minus(1)
+                    ?: state.closestPageToPosition(pos)?.nextKey?.minus(1)
         }
     }
 
-    open suspend fun getMovieApi(sort: MovieSortEnum, position: Int): ListMovieResponse {
+    private suspend fun getTvApi(sort: MovieSortEnum, position: Int): TvListResponse {
         return if (sort == MovieSortEnum.DISCOVER) {
-                apiService.getDiscoverMovies(sort.code, position)
+                apiService.getDiscoverTv(sort.code, position)
             } else {
-                apiService.getMovies(sort.code, position)
+                apiService.getTv(sort.code, position)
             }
         }
 
     companion object {
         const val STARTING_PAGING_INDEX = 1
-        const val TAG = "MoviePagingSource"
     }
 }

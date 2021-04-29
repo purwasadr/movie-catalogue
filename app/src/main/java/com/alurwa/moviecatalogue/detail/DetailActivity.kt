@@ -5,10 +5,12 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.MovieDetail
 import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -24,6 +26,10 @@ class DetailActivity : AppCompatActivity() {
         intent.getIntExtra(EXTRA_ID, -1)
     }
 
+    private val mFilmOrTv: Int by lazy {
+        intent.getIntExtra(EXTRA_FILM_OR_TV, -1)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,23 +41,43 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getMovieDetail() {
-        mViewModel.getMovieDetail(id).observe(this) {
-            when (it) {
-                is Resource.Loading -> {
+        if (mFilmOrTv == FilmOrTv.FILM.code) {
+            mViewModel.getMovieDetail(id).observe(this) {
+                when (it) {
+                    is Resource.Loading -> {
 
+                    }
+
+                    is Resource.Success -> {
+                        val data = it.data!!
+                        setupView(data)
+                    }
+
+                    is Resource.Error -> {
+                        Timber.d(it.message.toString())
+                    }
                 }
+            }
+        } else {
+            mViewModel.getTvDetail(id).observe(this) {
+                when (it) {
+                    is Resource.Loading -> {
 
-                is Resource.Success -> {
-                    val data = it.data!!
+                    }
 
-                    setupView(data)
-                }
+                    is Resource.Success -> {
+                        val data = it.data!!
+                        setupView(data)
+                    }
 
-                is Resource.Error -> {
-                    Log.d(TAG, it.message.toString())
+                    is Resource.Error -> {
+                        Timber.d(it.message.toString())
+                    }
                 }
             }
         }
+
+
     }
 
     private fun setupView(data: MovieDetail) {
@@ -88,6 +114,7 @@ class DetailActivity : AppCompatActivity() {
     }
     companion object {
         const val EXTRA_ID = "EXTRA_ID"
+        const val EXTRA_FILM_OR_TV = "extra_film_or_tv"
         const val TAG = "DetailActivity"
     }
 }

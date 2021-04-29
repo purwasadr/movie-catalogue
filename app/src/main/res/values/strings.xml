@@ -12,4 +12,8 @@
     <string name="search_hint">Input text</string>
     <string name="budget_detail">Budget</string>
     <string name="cast_detail">Cast</string>
+    <string name="popular_chip">Popular</string>
+    <string name="upcoming_chip">Upcoming</string>
+    <string name="top_rated_chip">Top rated</string>
+    <string name="discovery_chip">Discovery</string>
 </resources>

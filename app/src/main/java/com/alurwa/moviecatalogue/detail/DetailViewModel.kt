@@ -13,12 +13,21 @@ class DetailViewModel @Inject constructor(
     private val repository: IMovieCatalogueRepository
 ) : ViewModel() {
 
-    var movieDetail: LiveData<Resource<MovieDetail>>? = null
+    private var movieDetail: LiveData<Resource<MovieDetail>>? = null
+
+    private var tvDetail: LiveData<Resource<MovieDetail>>? = null
 
     fun getMovieDetail(id: Int): LiveData<Resource<MovieDetail>> {
         // Just check if not null because the id never changed
         return movieDetail ?: repository.getMovieDetail(id).asLiveData().also {
             movieDetail = it
+        }
+    }
+
+    fun getTvDetail(id: Int): LiveData<Resource<MovieDetail>> {
+        // Just check if not null because the id never changed
+        return tvDetail ?: repository.getTvDetail(id).asLiveData().also {
+            tvDetail = it
         }
     }
 }

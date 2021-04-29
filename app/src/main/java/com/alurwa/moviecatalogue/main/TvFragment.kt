@@ -1,5 +1,6 @@
 package com.alurwa.moviecatalogue.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,10 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alurwa.moviecatalogue.R
+import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.databinding.FragmentTvBinding
+import com.alurwa.moviecatalogue.detail.DetailActivity
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -31,7 +34,7 @@ class TvFragment : Fragment() {
 
     private val mAdapter by lazy {
         MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(requireContext())) {
-            (activity as MainActivity).navigateToDetail(it)
+           navigateToDetail(it)
         }
     }
 
@@ -53,6 +56,13 @@ class TvFragment : Fragment() {
         setupRecyclerView()
 
         setupSwipeToRefresh()
+    }
+
+    private fun navigateToDetail(extraId: Int) {
+        Intent(requireContext(), DetailActivity::class.java)
+                .putExtra(DetailActivity.EXTRA_ID, extraId)
+                .putExtra(DetailActivity.EXTRA_FILM_OR_TV, FilmOrTv.TV.code)
+                .also { requireContext().startActivity(it) }
     }
 
     private fun setupAdapter() {

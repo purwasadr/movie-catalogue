@@ -1,5 +1,7 @@
 package com.alurwa.moviecatalogue.core.data
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.alurwa.moviecatalogue.core.data.source.local.LocalDataSource
 import com.alurwa.moviecatalogue.core.data.source.remote.RemoteDataSource
@@ -7,6 +9,7 @@ import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
 import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.core.model.MovieDetail
+import com.alurwa.moviecatalogue.core.model.Tv
 import com.alurwa.moviecatalogue.utils.DataMapper
 import com.alurwa.moviecatalogue.main.MovieSortEnum
 import kotlinx.coroutines.flow.*
@@ -89,5 +92,37 @@ class MovieCatalogueRepository @Inject constructor(
             }
         }
     }
+
+    override fun getTvList(sort: MovieSortEnum): Flow<PagingData<Movie>> =
+            Pager(
+                    config = PagingConfig(
+                            pageSize = 20,
+                            enablePlaceholders = true,
+
+                            maxSize = 60
+                    ),
+                    pagingSourceFactory = {
+                        TvPagingSource(
+                            apiService = remoteDataSource.apiService,
+                            sort = sort
+                    ) }
+            ).flow
+
+    override fun getTvDetail(id: Int): Flow<Resource<MovieDetail>> = flow<Resource<MovieDetail>> {
+        emit(Resource.Loading())
+        val response = remoteDataSource.getTvDetail(id)
+
+        when (val apiResponse = response.first()) {
+            is ApiResponse.Success -> {
+                emit(Resource.Success(DataMapper.tvDetailResponseToDomain(apiResponse.data)))
+            }
+
+            is ApiResponse.Error -> {
+                emit(Resource.Error(apiResponse.errorMessage))
+            }
+        }
+
+    }
+
 
 }

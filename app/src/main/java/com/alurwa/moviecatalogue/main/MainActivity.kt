@@ -26,6 +26,7 @@ package com.alurwa.moviecatalogue.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.FloatMath
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -34,6 +35,7 @@ import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.alurwa.moviecatalogue.R
+import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.ActivityMainBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
@@ -106,6 +108,7 @@ class MainActivity : AppCompatActivity() {
     fun navigateToDetail(extraId: Int) {
         Intent(this, DetailActivity::class.java)
             .putExtra(DetailActivity.EXTRA_ID, extraId)
+                .putExtra(DetailActivity.EXTRA_FILM_OR_TV, FilmOrTv.FILM.code)
             .also { startActivity(it) }
     }
 

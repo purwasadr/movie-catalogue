@@ -8,6 +8,10 @@
         <variable
             name="cast"
             type="com.alurwa.moviecatalogue.core.model.Cast" />
+
+        <variable
+            name="isLastItem"
+            type="Boolean" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -17,7 +21,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        app:cardElevation="4dp">
+        app:cardElevation="4dp"
+        layoutMarginEnd="@{isLastItem ? 16 : 0}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"

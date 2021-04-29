@@ -73,11 +73,15 @@ class MovieFragment : Fragment() {
 
         setupAdapter()
 
-        setupChips(savedInstanceState)
+        setupChips()
 
         setupRecyclerView()
 
         setupSwipeToRefresh()
+
+    }
+
+    private fun navigateToDetail() {
 
     }
 
@@ -112,7 +116,6 @@ class MovieFragment : Fragment() {
 
         }
 
-
         binding.rcvMovie.layoutManager = gridLayoutManager
         //   binding.rcvMovie.layoutManager = AutoFitGridLayout(requireContext(), 500)
         binding.rcvMovie.setHasFixedSize(true)
@@ -130,20 +133,15 @@ class MovieFragment : Fragment() {
         }
     }
 
-    private fun setupChips(savedInstanceState: Bundle?) {
+    private fun setupChips() {
         val chipState = mViewModel.chipState
 
         binding.chipGroupMovie.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                binding.cpDiscover.id -> {
-                    getMovies(MovieSortEnum.DISCOVER)
-                }
-                binding.cpPopular.id -> {
-                    getMovies(MovieSortEnum.POPULAR)
-                }
-                binding.cpUpcoming.id -> {
-                    getMovies(MovieSortEnum.UPCOMING)
-                }
+                binding.cpDiscovery.id -> getMovies(MovieSortEnum.DISCOVER)
+                binding.cpPopular.id -> getMovies(MovieSortEnum.POPULAR)
+                binding.cpUpcoming.id -> getMovies(MovieSortEnum.UPCOMING)
+                binding.cpTopRated.id -> getMovies(MovieSortEnum.TOP_RATING)
             }
         }
 
@@ -151,7 +149,7 @@ class MovieFragment : Fragment() {
             binding.chipGroupMovie.check(chipState)
             mViewModel.chipState = null
         } else {
-            binding.chipGroupMovie.check(binding.cpDiscover.id)
+            binding.chipGroupMovie.check(binding.cpDiscovery.id)
         }
     }
     private fun getMovies(sortEnum: MovieSortEnum) {

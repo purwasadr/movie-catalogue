@@ -1,6 +1,9 @@
 package com.alurwa.moviecatalogue.core.binding
 
+import android.content.res.Resources
 import android.net.Uri
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -122,4 +125,13 @@ object BindingAdapters {
             rcv.adapter = adapter
         }
     }
+
+    @JvmStatic
+    @BindingAdapter("layoutMarginEnd")
+    fun layoutMarginEnd(view: View, end: Int) {
+        val viewParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        viewParams.marginEnd = (end * Resources.getSystem().displayMetrics.density).toInt()
+    }
+
+    //TODO: Margin setting for MovieAdapter
 }

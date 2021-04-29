@@ -24,40 +24,25 @@
 
 package com.alurwa.moviecatalogue.core.data
 
-import android.util.Log
-import androidx.constraintlayout.solver.state.Dimension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.alurwa.moviecatalogue.core.data.source.remote.response.ListMovieResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.ListResponse
 import com.alurwa.moviecatalogue.core.model.Movie
+import com.alurwa.moviecatalogue.core.model.Tv
 import com.alurwa.moviecatalogue.utils.DataMapper
-import com.alurwa.moviecatalogue.main.MovieSortEnum
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
-import kotlin.IllegalArgumentException
 
-open class MoviePagingSource(
-    private val apiService: ApiService,
-    private val sort: MovieSortEnum? = null,
-    private val query: String? = null
-) : PagingSource<Int, Movie>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
+/* abstract class AppPagingSource<Response, DataList : Any> : PagingSource<Int, DataList>() {
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataList> {
         val position = params.key ?: STARTING_PAGING_INDEX
         return try {
-            val response = when {
-                sort != null -> getMovieApi(sort, position)
-                query != null -> {
-                        apiService.searchMovies(query, position)
-
-                }
-                else -> {
-                    throw IllegalArgumentException()
-                }
-            }
+            val response = getMovieApi(position)
 
             val maxPage = response.totalPages
             val repos = DataMapper.movieResponseToDomain(response.results)
@@ -68,10 +53,13 @@ open class MoviePagingSource(
             }
 
             LoadResult.Page(
-                data = repos,
-                prevKey = if (position == 1) null else position - 1,
-                nextKey = nextKey
+                    data = repos,
+                    prevKey = if (position == 1) null else position - 1,
+                    nextKey = nextKey
             )
+
+
+
 
         } catch (ex: IOException) {
             Timber.d(ex)
@@ -83,23 +71,25 @@ open class MoviePagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, DataList>): Int? {
         return state.anchorPosition?.let { pos ->
             state.closestPageToPosition(pos)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(pos)?.nextKey?.minus(1)
+                    ?: state.closestPageToPosition(pos)?.nextKey?.minus(1)
         }
     }
 
-    open suspend fun getMovieApi(sort: MovieSortEnum, position: Int): ListMovieResponse {
-        return if (sort == MovieSortEnum.DISCOVER) {
-                apiService.getDiscoverMovies(sort.code, position)
-            } else {
-                apiService.getMovies(sort.code, position)
-            }
-        }
+    protected abstract suspend fun getMovieApi(position: Int): ListResponse<Response>
+
+    protected abstract suspend fun maxPage(): Int
+
+    protected abstract suspend fun Mapper(): List<DataList>
+
+ //   fun getsResponse(): Response? = response
 
     companion object {
         const val STARTING_PAGING_INDEX = 1
-        const val TAG = "MoviePagingSource"
+        const val TAG = "AppPagingSource"
     }
 }
+
+ */

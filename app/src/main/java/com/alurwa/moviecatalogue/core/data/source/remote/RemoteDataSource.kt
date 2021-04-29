@@ -3,12 +3,15 @@ package com.alurwa.moviecatalogue.core.data.source.remote
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.MoviePagingSource
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
 import com.alurwa.moviecatalogue.core.model.Movie
+import com.alurwa.moviecatalogue.core.model.Tv
 import com.alurwa.moviecatalogue.main.MovieSortEnum
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +21,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
+class RemoteDataSource @Inject constructor(val apiService: ApiService) {
     suspend fun getAllMovies(): Flow<ApiResponse<List<MovieResponse>>> {
         return flow {
             try {
@@ -65,7 +68,7 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
                         maxSize = 60,
                 ),
-                pagingSourceFactory = { MoviePagingSource(apiService, sort) }
+                pagingSourceFactory = { MoviePagingSource(apiService,sort = sort) }
         ).flow
     }
 
@@ -77,7 +80,7 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
                             maxSize = 60
                     ),
-                    pagingSourceFactory = { MoviePagingSource(apiService, query) }
+                    pagingSourceFactory = { MoviePagingSource(apiService,query = query) }
             ).flow
 
     fun getMovieDetail(id: Int) = flow<ApiResponse<MovieDetailResponse>> {
@@ -88,5 +91,15 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         } catch (e: Exception) {
             emit(ApiResponse.Error(e.toString()))
         }
+    }.flowOn(Dispatchers.IO)
+
+    fun getTvDetail(id: Int) = flow<ApiResponse<TvDetailResponse>> {
+            try {
+                val results = apiService.getTvDetail(id)
+                emit(ApiResponse.Success(results))
+
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
+            }
     }.flowOn(Dispatchers.IO)
 }
