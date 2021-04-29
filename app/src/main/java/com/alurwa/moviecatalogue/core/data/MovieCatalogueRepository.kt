@@ -10,6 +10,7 @@ import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
 import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.core.model.MovieDetail
 import com.alurwa.moviecatalogue.core.model.Tv
+import com.alurwa.moviecatalogue.core.model.TvDetail
 import com.alurwa.moviecatalogue.utils.DataMapper
 import com.alurwa.moviecatalogue.main.MovieSortEnum
 import kotlinx.coroutines.flow.*
@@ -108,7 +109,7 @@ class MovieCatalogueRepository @Inject constructor(
                     ) }
             ).flow
 
-    override fun getTvDetail(id: Int): Flow<Resource<MovieDetail>> = flow<Resource<MovieDetail>> {
+    override fun getTvDetail(id: Int): Flow<Resource<TvDetail>> = flow<Resource<TvDetail>> {
         emit(Resource.Loading())
         val response = remoteDataSource.getTvDetail(id)
 
