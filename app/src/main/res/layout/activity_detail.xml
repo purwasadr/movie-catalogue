@@ -7,7 +7,7 @@
     <data>
         <variable
             name="movieDetail"
-            type="com.alurwa.moviecatalogue.core.model.MovieDetail" />
+            type="com.alurwa.moviecatalogue.core.model.FilmDetail" />
 
         <import type="com.alurwa.moviecatalogue.utils.NumberFormatUtil"/>
 

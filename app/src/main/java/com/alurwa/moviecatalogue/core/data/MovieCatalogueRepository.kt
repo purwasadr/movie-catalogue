@@ -8,8 +8,7 @@ import com.alurwa.moviecatalogue.core.data.source.remote.RemoteDataSource
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
 import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.core.model.MovieDetail
-import com.alurwa.moviecatalogue.core.model.Tv
+import com.alurwa.moviecatalogue.core.model.FilmDetail
 import com.alurwa.moviecatalogue.core.model.TvDetail
 import com.alurwa.moviecatalogue.utils.DataMapper
 import com.alurwa.moviecatalogue.main.MovieSortEnum
@@ -79,7 +78,7 @@ class MovieCatalogueRepository @Inject constructor(
         return remoteDataSource.getSearchMovies(query)
     }
 
-    override fun getMovieDetail(id: Int) = flow<Resource<MovieDetail>> {
+    override fun getMovieDetail(id: Int) = flow<Resource<FilmDetail>> {
         emit(Resource.Loading())
         val response = remoteDataSource.getMovieDetail(id)
 

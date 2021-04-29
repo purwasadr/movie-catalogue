@@ -1,15 +1,11 @@
 package com.alurwa.moviecatalogue.detail
 
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import com.alurwa.moviecatalogue.R
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.Resource
-import com.alurwa.moviecatalogue.core.model.MovieDetail
+import com.alurwa.moviecatalogue.core.model.FilmDetail
 import com.alurwa.moviecatalogue.core.model.TvDetail
 import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
 import com.alurwa.moviecatalogue.databinding.ActivityTvDetailBinding
@@ -106,7 +102,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupMovieView(binding: ActivityDetailBinding, data: MovieDetail) {
+    private fun setupMovieView(binding: ActivityDetailBinding, data: FilmDetail) {
         supportActionBar?.title = data.title
 
         binding.movieDetail = data

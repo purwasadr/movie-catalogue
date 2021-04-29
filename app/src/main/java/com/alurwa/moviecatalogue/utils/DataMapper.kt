@@ -33,7 +33,7 @@ object DataMapper {
     }
 
     fun movieDetailResponseToDomain(input: MovieDetailResponse) =
-            MovieDetail(
+            FilmDetail(
                     id = input.id,
                     title = input.title,
                     overview = input.overview,
