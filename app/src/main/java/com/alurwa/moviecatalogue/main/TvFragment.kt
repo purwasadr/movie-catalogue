@@ -17,6 +17,8 @@ import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.databinding.FragmentTvBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
+import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
+import com.alurwa.moviecatalogue.utils.Constants
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -59,9 +61,8 @@ class TvFragment : Fragment() {
     }
 
     private fun navigateToDetail(extraId: Int) {
-        Intent(requireContext(), DetailActivity::class.java)
-                .putExtra(DetailActivity.EXTRA_ID, extraId)
-                .putExtra(DetailActivity.EXTRA_FILM_OR_TV, FilmOrTv.TV.code)
+        Intent(requireContext(), TvDetailActivity::class.java)
+                .putExtra(Constants.EXTRA_ID, extraId)
                 .also { requireContext().startActivity(it) }
     }
 

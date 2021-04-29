@@ -7,6 +7,7 @@ import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.TvDetail
 import com.alurwa.moviecatalogue.databinding.ActivityTvDetailBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
+import com.alurwa.moviecatalogue.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -20,7 +21,7 @@ class TvDetailActivity : AppCompatActivity() {
     }
 
     private val id: Int by lazy {
-        intent.getIntExtra(DetailActivity.EXTRA_ID, -1)
+        intent.getIntExtra(Constants.EXTRA_ID, -1)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
