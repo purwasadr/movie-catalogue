@@ -30,4 +30,5 @@ object Constants {
         const val IS_SHOW_POSTER = "is_show_poster"
     }
 
+    const val EXTRA_ID = "extra_id"
 }
