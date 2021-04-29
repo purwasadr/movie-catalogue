@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moviecatalogue">
-        <activity android:name="com.alurwa.moviecatalogue.tvdetail.TvDetailActivity"></activity>
+        <activity android:name="com.alurwa.moviecatalogue.tvdetail.TvDetailActivity"
+            android:theme="@style/Theme.Moviecatalogue.NoActionBar"/>
         <activity
             android:name=".detail.DetailActivity"
             android:theme="@style/Theme.Moviecatalogue.NoActionBar.Detail" />
