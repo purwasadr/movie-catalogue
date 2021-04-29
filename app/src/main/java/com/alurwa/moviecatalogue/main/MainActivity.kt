@@ -100,7 +100,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToSearch() {
-        Intent(this, SearchActivity::class.java).also {
+        val filmOrTv = if (binding.bottomNavMain.selectedItemId == R.id.movie) {
+            0
+        } else {
+            1
+        }
+
+        Intent(this, SearchActivity::class.java)
+            .putExtra(Constants.EXTRA_ID, filmOrTv)
+            .also {
             startActivity(it)
         }
     }

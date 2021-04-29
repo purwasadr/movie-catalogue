@@ -40,6 +40,7 @@ import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
+import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -86,7 +87,7 @@ class MovieFragment : Fragment() {
 
     private fun navigateToDetail(extraId: Int) {
        Intent(requireContext(), DetailActivity::class.java)
-            .putExtra(DetailActivity.EXTRA_ID, extraId)
+            .putExtra(EXTRA_ID, extraId)
             .also { requireContext().startActivity(it) }
     }
 
