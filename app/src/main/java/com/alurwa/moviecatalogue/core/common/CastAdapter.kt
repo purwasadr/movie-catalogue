@@ -36,15 +36,16 @@ class CastAdapter(private val castList: List<Cast>?) : RecyclerView.Adapter<Cast
         fun bind(position: Int) {
             val cast = castList?.get(position)
 
-            binding.cast = cast
-
+            // FIXME: Margin in end of item still bad
             if (castList?.size == (position + 1)) {
-              //  val cardCastParams = binding.cardCast.layoutParams as ViewGroup.MarginLayoutParams
-             //   cardCastParams.marginEnd = 16.px
+                //  val cardCastParams = binding.cardCast.layoutParams as ViewGroup.MarginLayoutParams
+                //   cardCastParams.marginEnd = 16.px
                 binding.isLastItem = true
             }  else {
                 binding.isLastItem = false
             }
+
+            binding.cast = cast
         }
     }
 }

@@ -13,8 +13,6 @@
         android:background="@null"
         app:elevation="0dp">
 
-        <!-- TODO: Fix ChipGroup scrolling -->
-
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,55 +20,62 @@
             android:scrollbars="none"
             app:layout_scrollFlags="scroll|enterAlways">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group_movie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                app:selectionRequired="true"
-                app:singleLine="true"
-                app:singleSelection="true">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/cp_discovery"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_movie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/discovery_chip"
-                    app:checkedIconVisible="false" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:selectionRequired="true"
+                    app:singleLine="true"
+                    app:singleSelection="true">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/cp_popular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/popular_chip"
-                    app:checkedIconVisible="false" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cp_discovery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/discovery_chip"
+                        app:checkedIconVisible="false" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/cp_upcoming"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/upcoming_chip"
-                    app:checkedIconVisible="false" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cp_popular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/popular_chip"
+                        app:checkedIconVisible="false" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/cp_top_rated"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkable="true"
-                    android:text="@string/top_rated_chip"
-                    app:checkedIconVisible="false" />
-            </com.google.android.material.chip.ChipGroup>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cp_upcoming"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/upcoming_chip"
+                        app:checkedIconVisible="false" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/cp_top_rated"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/top_rated_chip"
+                        app:checkedIconVisible="false" />
+                </com.google.android.material.chip.ChipGroup>
+
+            </FrameLayout>
         </HorizontalScrollView>
+
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="?android:attr/listDivider"
-            app:layout_scrollFlags="scroll|enterAlways" />
+            app:layout_scrollFlags="scroll|enterAlways"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
