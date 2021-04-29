@@ -19,11 +19,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alurwa.moviecatalogue.R
+import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.ActivitySearchBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
+import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
+import com.alurwa.moviecatalogue.utils.Constants
+import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -47,6 +51,10 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private val filmOrTv: Int by lazy {
+        intent.getIntExtra(EXTRA_ID, -1)
+    }
+
     private var currentQueryString: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,9 +75,11 @@ class SearchActivity : AppCompatActivity() {
             if (savedInstanceState == null) {
                 title = ""
             } else {
+
+                // FIXME: Cannot save state
                 currentQueryString = savedInstanceState.getString(QUERY_STRING_STATE, "")
                 title = currentQueryString
-                searchMovies(currentQueryString)
+              //  searchMovies(currentQueryString)
             }
         }
     }
@@ -130,9 +140,17 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun navigateToDetail(extraId: Int) {
-        Intent(this, DetailActivity::class.java)
-                .putExtra(DetailActivity.EXTRA_ID, extraId)
-                .also { startActivity(it) }
+        Intent().putExtra(EXTRA_ID, extraId)
+            .also {
+                if (filmOrTv == FilmOrTv.FILM.code) {
+                    it.setClass(this,  DetailActivity::class.java)
+
+                } else {
+                    it.setClass(this, TvDetailActivity::class.java)
+                }
+                startActivity(it)
+            }
+
     }
 
     private fun setupSearchInput(menu: Menu) {
@@ -192,16 +210,16 @@ class SearchActivity : AppCompatActivity() {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             if (query.isNotEmpty()) {
-                mViewModel.searchMovie(query).collectLatest {
-                    mAdapter.submitData(it)
-                }
+                    mViewModel.searchMovie(filmOrTv, query).collectLatest {
+                        mAdapter.submitData(it)
+                    }
             }
         }
     }
 
     private fun hideKeyboard(context: Context, focus: View?) {
         if (focus != null) {
-            (context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager)
+            (context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
                     .hideSoftInputFromWindow(focus.windowToken, 0)
         }
     }
@@ -210,8 +228,6 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(QUERY_STRING_STATE, currentQueryString)
         outState.putParcelable(LIST_STATE, binding.rcvSearch.layoutManager?.onSaveInstanceState())
         super.onSaveInstanceState(outState)
-
-        Log.d(TAG, "onSaveInstanceState")
 
     }
 

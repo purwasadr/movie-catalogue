@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
 import com.alurwa.moviecatalogue.core.model.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,7 @@ class SearchViewModel @Inject constructor(
 
     var listState: Parcelable? = null
 
-    fun searchMovie(query: String): Flow<PagingData<Movie>> {
+    fun searchMovie(filmOrTv: Int, query: String): Flow<PagingData<Movie>> {
         val lastResult = currentSearchResult
         if (query == currentQuery && lastResult != null) {
             return lastResult
@@ -29,8 +30,11 @@ class SearchViewModel @Inject constructor(
 
         currentQuery = query
 
-        val newResult = movieCatalogueRepository.getSearchMovies(query)
-                .cachedIn(viewModelScope)
+        val newResult = if (filmOrTv == FilmOrTv.FILM.code) {
+            movieCatalogueRepository.getSearchMovies(query).cachedIn(viewModelScope)
+        } else {
+            movieCatalogueRepository.getTvSearch(query).cachedIn(viewModelScope)
+        }
 
         currentSearchResult = newResult
 

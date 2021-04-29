@@ -124,5 +124,14 @@ class MovieCatalogueRepository @Inject constructor(
 
     }
 
+    override fun getTvSearch(query: String): Flow<PagingData<Movie>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = true,
 
+                maxSize = 60
+            ),
+            pagingSourceFactory = { TvPagingSource(remoteDataSource.apiService, query = query) }
+        ).flow
 }
