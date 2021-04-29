@@ -12,12 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moviecatalogue">
-        <activity android:name=".detail.DetailActivity"
-            android:theme="@style/Theme.Moviecatalogue.NoActionBar.Detail"></activity>
+        <activity android:name="com.alurwa.moviecatalogue.tvdetail.TvDetailActivity"></activity>
+        <activity
+            android:name=".detail.DetailActivity"
+            android:theme="@style/Theme.Moviecatalogue.NoActionBar.Detail" />
         <activity
             android:name=".search.SearchActivity"
-            android:theme="@style/Theme.Moviecatalogue.NoActionBar.Search">
-        </activity>
+            android:theme="@style/Theme.Moviecatalogue.NoActionBar.Search"></activity>
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

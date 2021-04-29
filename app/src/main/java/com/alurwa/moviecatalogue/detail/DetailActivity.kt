@@ -11,7 +11,6 @@ import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
 import com.alurwa.moviecatalogue.databinding.ActivityTvDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.util.*
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
@@ -43,7 +42,7 @@ class DetailActivity : AppCompatActivity() {
                 title = ""
 
             }
-            getMovieDetail(binding)
+            getFilmDetail(binding)
         } else {
             val binding = ActivityTvDetailBinding.inflate(layoutInflater)
             setContentView(binding.root)
@@ -63,7 +62,7 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun getMovieDetail(binding: ActivityDetailBinding) {
+    private fun getFilmDetail(binding: ActivityDetailBinding) {
             mViewModel.getMovieDetail(id).observe(this) {
                 when (it) {
                     is Resource.Loading -> {
