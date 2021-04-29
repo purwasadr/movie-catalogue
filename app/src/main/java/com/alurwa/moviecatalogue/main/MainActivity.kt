@@ -105,12 +105,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun navigateToDetail(extraId: Int) {
-        Intent(this, DetailActivity::class.java)
-            .putExtra(DetailActivity.EXTRA_ID, extraId)
-                .putExtra(DetailActivity.EXTRA_FILM_OR_TV, FilmOrTv.FILM.code)
-            .also { startActivity(it) }
-    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
