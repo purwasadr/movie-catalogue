@@ -26,45 +26,53 @@ package com.alurwa.moviecatalogue.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.FloatMath
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.GridLayoutManager
 import com.alurwa.moviecatalogue.R
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
-import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
+import com.alurwa.moviecatalogue.core.common.MovieAdapter
+import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.databinding.ActivityMainBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
 import com.alurwa.moviecatalogue.search.SearchActivity
+import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
 import com.alurwa.moviecatalogue.utils.Constants
+import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val fragmentManager: FragmentManager = supportFragmentManager
+    //private val fragmentManager: FragmentManager = supportFragmentManager
 
     private val bottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener {
-        val fragment: Fragment
+        // val fragment: Fragment
 
         when (it.itemId) {
             R.id.movie -> {
-                fragment = MovieFragment()
-                fragmentManager.beginTransaction()
-                        .replace(R.id.content_main, fragment, MovieFragment.TAG)
-                        .commit()
+                submitMovieAdapter(getSortFromChip(binding.chipGroupMovie.checkedChipId))
                 true
             }
 
             R.id.tv -> {
-                fragment = TvFragment()
-                fragmentManager.beginTransaction()
-                        .replace(R.id.content_main, fragment, TvFragment.TAG)
-                        .commit()
+                /*     fragment = TvFragment()
+                     fragmentManager.beginTransaction()
+                             .replace(R.id.content_main, fragment, TvFragment.TAG)
+                             .commit()
+
+                 */
+                submitTvAdapter(getSortFromChip(binding.chipGroupMovie.checkedChipId))
                 true
             }
 
@@ -76,6 +84,25 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private val filmOrTv
+        get() = when (binding.bottomNavMain.selectedItemId) {
+            R.id.movie -> {
+                FilmOrTv.FILM
+            }
+            R.id.tv -> {
+                FilmOrTv.TV
+            }
+            else -> {
+                throw IllegalArgumentException("Out of range buttom nav")
+            }
+        }
+
+    private val adapter by lazy {
+        MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(this)) {
+            navigateToDetail(it)
+        }
+    }
+
     private val mViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(
@@ -85,14 +112,91 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupBottomNavigation(savedInstanceState)
+
+        setupAdapter()
+
+        setupChips()
+
+        setupRecyclerView()
+
+        setupSwipeToRefresh()
+
+        initSubmitAdapter(savedInstanceState)
+    }
+
+    private fun initSubmitAdapter(savedInstanceState: Bundle?) {
+        submitMovieAdapter(MovieSortEnum.DISCOVER)
     }
 
     private fun setupBottomNavigation(savedInstanceState: Bundle?) {
-        binding.bottomNavMain.setOnNavigationItemSelectedListener(bottomNavigationListener)
-
         if (savedInstanceState == null) {
             binding.bottomNavMain.selectedItemId = R.id.movie
         }
+        binding.bottomNavMain.setOnNavigationItemSelectedListener(bottomNavigationListener)
+    }
+
+    private fun setupAdapter() {
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest { loadStates ->
+                binding.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
+            }
+        }
+
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow
+                    // Only emit when REFRESH LoadState for RemoteMediator changes.
+                    .distinctUntilChangedBy { it.refresh }
+                    // Only react to cases where Remote REFRESH completes i.e., NotLoading.
+                    .filter { it.refresh is LoadState.NotLoading }
+                    .collect {
+                        binding.rcvMovie.scrollToPosition(0)
+                    }
+        }
+    }
+
+    private fun setupRecyclerView() {
+
+        // Create span for centering Progress Bar
+        val gridLayoutManager = GridLayoutManager(applicationContext, 2)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                val viewType = adapter.getItemViewType(position)
+                return if (viewType == MovieAdapter.VIEW_TYPE_MOVIE) 1 else 2
+            }
+
+        }
+
+        binding.rcvMovie.layoutManager = gridLayoutManager
+        //   binding.rcvMovie.layoutManager = AutoFitGridLayout(requireContext(), 500)
+        binding.rcvMovie.setHasFixedSize(true)
+
+        binding.rcvMovie.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = MovieLoadStateAdapter(),
+                footer = MovieLoadStateAdapter() {
+                    adapter.retry()
+                }
+        )
+    }
+
+    private fun setupChips() {
+        val chipState = mViewModel.chipState
+
+        if (chipState == null) {
+            binding.chipGroupMovie.check(R.id.cp_discovery)
+        }
+
+        binding.chipGroupMovie.setOnCheckedChangeListener { _, checkedId ->
+            if (filmOrTv == FilmOrTv.FILM) {
+                submitMovieAdapter(getSortFromChip(checkedId))
+            } else {
+                submitTvAdapter(getSortFromChip(checkedId))
+            }
+
+        }
+    }
+
+    private fun setupSwipeToRefresh() {
+        binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
     }
 
     private fun getIsShowPosterPref(): Boolean {
@@ -100,20 +204,54 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToSearch() {
-        val filmOrTv = if (binding.bottomNavMain.selectedItemId == R.id.movie) {
-            0
+        Intent(this, SearchActivity::class.java)
+                .putExtra(Constants.EXTRA_ID, filmOrTv.code)
+                .also {
+                    startActivity(it)
+                }
+    }
+
+    private fun navigateToDetail(id: Int) {
+        if (filmOrTv == FilmOrTv.FILM) {
+            Intent(this, DetailActivity::class.java)
+                    .putExtra(Constants.EXTRA_ID, id)
+                    .also { startActivity(it) }
         } else {
-            1
+            Intent(this, TvDetailActivity::class.java)
+                    .putExtra(Constants.EXTRA_ID, id)
+                    .also { startActivity(it) }
         }
 
-        Intent(this, SearchActivity::class.java)
-            .putExtra(Constants.EXTRA_ID, filmOrTv)
-            .also {
-            startActivity(it)
+    }
+
+    private fun getSortFromChip(checkedId: Int): MovieSortEnum {
+        return when (checkedId) {
+            binding.cpDiscovery.id -> MovieSortEnum.DISCOVER
+            binding.cpPopular.id -> MovieSortEnum.POPULAR
+            binding.cpUpcoming.id -> MovieSortEnum.UPCOMING
+            binding.cpTopRated.id -> MovieSortEnum.TOP_RATING
+            else -> MovieSortEnum.DISCOVER
         }
     }
 
+    private fun submitMovieAdapter(sortEnum: MovieSortEnum) {
 
+        lifecycleScope.launch {
+            mViewModel.getMovies(sortEnum).collectLatest {
+                adapter.submitData(it)
+            }
+
+        }
+    }
+
+    private fun submitTvAdapter(sortEnum: MovieSortEnum) {
+        lifecycleScope.launch {
+            mViewModel.getTv(sortEnum).collectLatest {
+                adapter.submitData(it)
+            }
+        }
+
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
