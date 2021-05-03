@@ -11,6 +11,8 @@
         <import type="com.alurwa.moviecatalogue.utils.NumberFormatUtil"/>
 
         <import type="com.alurwa.moviecatalogue.utils.CommonUtil"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -220,6 +222,7 @@
 
                 </com.google.android.material.chip.ChipGroup>
 
+                <!-- TODO: Visibility set gone when cast isEmpty -->
                 <TextView
                     android:id="@+id/txt_cast_info"
                     android:layout_width="wrap_content"
@@ -245,27 +248,27 @@
                     tools:listitem="@layout/rcv_item_cast" />
 
                 <TextView
-                    android:id="@+id/txt_status_info"
+                    android:id="@+id/txt_original_name_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="@string/status"
+                    android:text="@string/original_name_detail"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rcv_cast" />
 
                 <TextView
-                    android:id="@+id/txt_status_val"
+                    android:id="@+id/txt_original_name_val"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:fontFamily="sans-serif"
-                    android:text="@{tvDetail.status}"
+                    android:text="@{tvDetail.originalName}"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_status_info" />
+                    app:layout_constraintTop_toBottomOf="@id/txt_original_name_info" />
 
                 <TextView
                     android:id="@+id/txt_release_date_info"
@@ -277,7 +280,7 @@
                     android:text="@string/release_date"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_status_val" />
+                    app:layout_constraintTop_toBottomOf="@id/txt_original_name_val" />
 
                 <TextView
                     android:id="@+id/txt_release_date_val"
@@ -290,6 +293,28 @@
                     app:layout_constraintTop_toBottomOf="@id/txt_release_date_info" />
 
                 <TextView
+                    android:id="@+id/txt_status_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/status_detail"
+                    android:textColor="?android:attr/textColorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_release_date_val" />
+
+                <TextView
+                    android:id="@+id/txt_status_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    txtDate="@{tvDetail.status}"
+                    android:textColor="?android:attr/textColorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_status_info" />
+
+                <TextView
                     android:id="@+id/txt_original_language_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -299,7 +324,7 @@
                     android:text="@string/original_language"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_release_date_val" />
+                    app:layout_constraintTop_toBottomOf="@id/txt_status_val" />
 
                 <TextView
                     android:id="@+id/txt_original_language_val"
@@ -313,27 +338,29 @@
                     tools:text="Indonesia" />
 
                 <TextView
-                    android:id="@+id/txt_budget_info"
+                    android:id="@+id/txt_type_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="@string/budget_detail"
+                    android:text="@string/type_tv_detail"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_original_language_val" />
 
                 <TextView
-                    android:id="@+id/txt_budget_val"
+                    android:id="@+id/txt_type_val"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_budget_info"
+                    android:text="@{tvDetail.type}"
+                    app:layout_constraintTop_toBottomOf="@id/txt_type_info"
                     />
 
+                <!-- TODO: Change to something-->
                 <TextView
                     android:id="@+id/txt_revenue_info"
                     android:layout_width="wrap_content"
@@ -344,7 +371,7 @@
                     android:text="@string/revenue"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_budget_val" />
+                    app:layout_constraintTop_toBottomOf="@id/txt_type_val" />
 
                 <TextView
                     android:id="@+id/txt_revenue_val"

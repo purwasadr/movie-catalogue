@@ -15,7 +15,7 @@ class TvDetailViewModel @javax.inject.Inject constructor(
 ) : ViewModel(){
 
 
-    private var tvDetail: LiveData<Resource<TvDetail>>? = null
+    var tvDetail: LiveData<Resource<TvDetail>>? = null
 
     fun getTvDetail(id: Int): LiveData<Resource<TvDetail>> {
         // Just check if not null because the id never changed

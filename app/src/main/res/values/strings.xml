@@ -16,4 +16,7 @@
     <string name="upcoming_chip">Upcoming</string>
     <string name="top_rated_chip">Top rated</string>
     <string name="discovery_chip">Discovery</string>
+    <string name="type_tv_detail">Type</string>
+    <string name="status_detail">Status</string>
+    <string name="original_name_detail">Original Name</string>
 </resources>

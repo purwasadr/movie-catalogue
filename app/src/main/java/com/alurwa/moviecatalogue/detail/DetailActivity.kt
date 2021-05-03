@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.FilmDetail
 import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
+import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -86,7 +87,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_ID = "EXTRA_ID"
         const val EXTRA_FILM_OR_TV = "extra_film_or_tv"
         const val TAG = "DetailActivity"
     }
