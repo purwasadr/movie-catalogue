@@ -68,7 +68,6 @@ class MovieAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = getItem(position)
-            val posterPath = item?.posterPath
 
             binding.isShowPoster = isShowPoster
             with(binding) {
