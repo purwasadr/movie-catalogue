@@ -79,6 +79,7 @@ object DataMapper {
                     originalName = input.originalName,
                     status = input.status,
                     voteAverage = input.voteAverage,
+                    type = input.type,
                     genres = input.genres.map {
                         Genre(it.id, it.name)
                     },

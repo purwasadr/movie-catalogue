@@ -57,6 +57,9 @@ data class TvDetailResponse(
         @field:SerializedName("vote_average")
         val voteAverage: Number,
 
+        @field:SerializedName("type")
+        val type: String,
+
         @field:SerializedName("genres")
         val genres: List<GenreResponse>,
 
