@@ -31,6 +31,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
@@ -54,30 +55,23 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    //private val fragmentManager: FragmentManager = supportFragmentManager
-
     private val bottomNavigationListener = BottomNavigationView.OnNavigationItemSelectedListener {
-        // val fragment: Fragment
-
         when (it.itemId) {
             R.id.movie -> {
-                submitMovieAdapter(getSortFromChip(binding.chipGroupMovie.checkedChipId))
+                submitAdapter(FilmOrTv.FILM, sortFromChip)
+                binding.appbar.setExpanded(true, true)
                 true
             }
 
             R.id.tv -> {
-                /*     fragment = TvFragment()
-                     fragmentManager.beginTransaction()
-                             .replace(R.id.content_main, fragment, TvFragment.TAG)
-                             .commit()
-
-                 */
-                submitTvAdapter(getSortFromChip(binding.chipGroupMovie.checkedChipId))
+                submitAdapter(FilmOrTv.TV, sortFromChip)
+                binding.appbar.setExpanded(true, true)
                 true
             }
 
             else -> false
         }
+
     }
 
     private val binding by lazy {
@@ -93,9 +87,13 @@ class MainActivity : AppCompatActivity() {
                 FilmOrTv.TV
             }
             else -> {
-                throw IllegalArgumentException("Out of range buttom nav")
+                throw IllegalArgumentException("Out of range button nav")
             }
         }
+
+    private val sortFromChip
+    get() = getSortFromChip(binding.chipGroupMovie.checkedChipId)
+
 
     private val adapter by lazy {
         MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(this)) {
@@ -125,7 +123,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initSubmitAdapter(savedInstanceState: Bundle?) {
-        submitMovieAdapter(MovieSortEnum.DISCOVER)
+        if (savedInstanceState == null) {
+            submitAdapter(filmOrTv, getSortFromChip(binding.chipGroupMovie.checkedChipId))
+        }
+
     }
 
     private fun setupBottomNavigation(savedInstanceState: Bundle?) {
@@ -139,6 +140,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest { loadStates ->
                 binding.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
+
             }
         }
 
@@ -147,9 +149,21 @@ class MainActivity : AppCompatActivity() {
                     // Only emit when REFRESH LoadState for RemoteMediator changes.
                     .distinctUntilChangedBy { it.refresh }
                     // Only react to cases where Remote REFRESH completes i.e., NotLoading.
-                    .filter { it.refresh is LoadState.NotLoading }
+                    .filter { it.refresh is LoadState.NotLoading || it.refresh is LoadState.Error }
                     .collect {
-                        binding.rcvMovie.scrollToPosition(0)
+                        val state = it.refresh
+                        if (state is LoadState.NotLoading) {
+                            binding.rcvMovie.scrollToPosition(0)
+
+                            binding.appbar.scrollTo(0,0)
+                            binding.rcvMovie.isVisible = true
+                            binding.txtError.isVisible = false
+                        } else if (state is LoadState.Error) {
+                            binding.rcvMovie.isVisible = false
+                            binding.txtError.text = state.error.message
+                            binding.txtError.isVisible = true
+                        }
+
                     }
         }
     }
@@ -186,12 +200,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.chipGroupMovie.setOnCheckedChangeListener { _, checkedId ->
-            if (filmOrTv == FilmOrTv.FILM) {
-                submitMovieAdapter(getSortFromChip(checkedId))
-            } else {
-                submitTvAdapter(getSortFromChip(checkedId))
-            }
-
+            submitAdapter(filmOrTv, getSortFromChip(checkedId))
         }
     }
 
@@ -230,25 +239,22 @@ class MainActivity : AppCompatActivity() {
             binding.cpPopular.id -> MovieSortEnum.POPULAR
             binding.cpUpcoming.id -> MovieSortEnum.UPCOMING
             binding.cpTopRated.id -> MovieSortEnum.TOP_RATING
-            else -> MovieSortEnum.DISCOVER
+            else -> throw IllegalArgumentException("Out of chip id")
         }
     }
 
-    private fun submitMovieAdapter(sortEnum: MovieSortEnum) {
-
+    private fun submitAdapter(filmOrTv: FilmOrTv, sort: MovieSortEnum) {
         lifecycleScope.launch {
-            mViewModel.getMovies(sortEnum).collectLatest {
-                adapter.submitData(it)
+            if (filmOrTv == FilmOrTv.FILM) {
+                mViewModel.getFilm(sort).collectLatest {
+                    adapter.submitData(it)
+                }
+            } else {
+                mViewModel.getTv(sort).collectLatest {
+                    adapter.submitData(it)
+                }
             }
 
-        }
-    }
-
-    private fun submitTvAdapter(sortEnum: MovieSortEnum) {
-        lifecycleScope.launch {
-            mViewModel.getTv(sortEnum).collectLatest {
-                adapter.submitData(it)
-            }
         }
 
     }

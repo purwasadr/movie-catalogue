@@ -26,22 +26,24 @@ package com.alurwa.moviecatalogue.main
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
-import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
 import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
-import kotlinx.coroutines.flow.*
+import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 
 class MovieFragment : Fragment() {
@@ -160,7 +162,7 @@ class MovieFragment : Fragment() {
     }
     private fun getMovies(sortEnum: MovieSortEnum) {
         lifecycleScope.launch {
-            mViewModel.getMovies(sortEnum).collectLatest {
+            mViewModel.getFilm(sortEnum).collectLatest {
                 adapter.submitData(it)
             }
         }

@@ -7,10 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
 import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.core.model.Tv
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +28,7 @@ class MainViewModel @Inject constructor(
 
     var chipState: Int? = null
 
-    fun getMovies(sortEnum: MovieSortEnum): Flow<PagingData<Movie>> {
+    fun getFilm(sortEnum: MovieSortEnum): Flow<PagingData<Movie>> {
         val movieResult = currentMovieResult
 
         if (sortEnum == currentSort && movieResult != null) {
