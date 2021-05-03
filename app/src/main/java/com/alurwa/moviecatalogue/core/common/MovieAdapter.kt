@@ -24,7 +24,6 @@
 
 package com.alurwa.moviecatalogue.core.common
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -32,7 +31,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.databinding.RcvItemMovieBinding
-import com.bumptech.glide.Glide
 
 class MovieAdapter(
         private val isShowPoster: Boolean,
