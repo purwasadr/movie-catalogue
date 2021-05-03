@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -22,12 +21,11 @@ import com.alurwa.moviecatalogue.R
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
-import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import com.alurwa.moviecatalogue.databinding.ActivitySearchBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
 import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
-import com.alurwa.moviecatalogue.utils.Constants
 import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
+import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -109,7 +107,6 @@ class SearchActivity : AppCompatActivity() {
                             binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() &&
                                     mAdapter.itemCount == 0)
                         } else if (state is LoadState.Error) {
-
                             Toast.makeText(
                                     applicationContext,
                                     "Error bro ${state.error.message}",
