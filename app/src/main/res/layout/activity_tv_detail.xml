@@ -52,6 +52,7 @@
                     android:layout_height="160dp"
                     android:scaleType="centerCrop"
                     imageBackdrop="@{tvDetail.backdropPath}"
+                    android:contentDescription="@string/backdrop_img_desc"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@color/black" />
 

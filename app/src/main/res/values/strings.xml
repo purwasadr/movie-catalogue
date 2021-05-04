@@ -19,4 +19,5 @@
     <string name="type_tv_detail">Type</string>
     <string name="status_detail">Status</string>
     <string name="original_name_detail">Original Name</string>
+    <string name="backdrop_img_desc">Backdrop Image</string>
 </resources>
