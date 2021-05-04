@@ -28,6 +28,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -71,7 +72,6 @@ class MainActivity : AppCompatActivity() {
 
             else -> false
         }
-
     }
 
     private val binding by lazy {
@@ -153,15 +153,20 @@ class MainActivity : AppCompatActivity() {
                     .collect {
                         val state = it.refresh
                         if (state is LoadState.NotLoading) {
-                            binding.rcvMovie.scrollToPosition(0)
+                            with(binding) {
+                                rcvMovie.scrollToPosition(0)
 
-                            binding.appbar.scrollTo(0,0)
-                            binding.rcvMovie.isVisible = true
-                            binding.txtError.isVisible = false
+                                txtError.isVisible = false
+                                rcvMovie.visibility = View.VISIBLE
+                            }
+
                         } else if (state is LoadState.Error) {
-                            binding.rcvMovie.isVisible = false
-                            binding.txtError.text = state.error.message
-                            binding.txtError.isVisible = true
+                            with(binding) {
+                                rcvMovie.visibility = View.GONE
+                                txtError.text = state.error.message
+                                txtError.isVisible = true
+                            }
+
                         }
 
                     }
@@ -221,6 +226,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToDetail(id: Int) {
+      //  val sww = if (filmOrTv == FilmOrTv.FILM) DetailActivity::class.java else TvDetailActivity::class.java
         if (filmOrTv == FilmOrTv.FILM) {
             Intent(this, DetailActivity::class.java)
                     .putExtra(Constants.EXTRA_ID, id)
@@ -239,7 +245,7 @@ class MainActivity : AppCompatActivity() {
             binding.cpPopular.id -> MovieSortEnum.POPULAR
             binding.cpUpcoming.id -> MovieSortEnum.UPCOMING
             binding.cpTopRated.id -> MovieSortEnum.TOP_RATING
-            else -> throw IllegalArgumentException("Out of chip id")
+            else -> throw IllegalArgumentException("Chip id not found")
         }
     }
 
@@ -254,9 +260,7 @@ class MainActivity : AppCompatActivity() {
                     adapter.submitData(it)
                 }
             }
-
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -291,7 +295,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
-
             else -> false
         }
     }

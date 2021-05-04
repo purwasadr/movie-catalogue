@@ -15,7 +15,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: IMovieCatalogueRepository
 ) : ViewModel() {
-    // val allMovie = movieCatalogueDatabase.getAllMovies().asLiveData()
+
     var currentSort: MovieSortEnum? = null
 
     var currentMovieResult: Flow<PagingData<Movie>>? = null
