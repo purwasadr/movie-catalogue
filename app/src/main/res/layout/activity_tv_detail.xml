@@ -241,6 +241,7 @@
                     rcvCast="@{tvDetail.cast}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:scrollbars="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -309,7 +310,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    txtDate="@{tvDetail.status}"
+                    android:text="@{tvDetail.status}"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_status_info" />
