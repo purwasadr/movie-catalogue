@@ -24,14 +24,12 @@
 
 package com.alurwa.moviecatalogue.core.model
 
-import com.google.gson.annotations.SerializedName
-
 data class Season(
         val id: Int,
         val name: String,
         val overview: String,
         val posterPath: String?,
-        val airDate: String,
+        val airDate: String?,
         val episodeCount: Int,
         val seasonNumber: Int
 )
