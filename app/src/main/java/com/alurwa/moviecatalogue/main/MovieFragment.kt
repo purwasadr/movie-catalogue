@@ -32,13 +32,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.detail.DetailActivity
-import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
+import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
+import com.alurwa.moviecatalogue.utils.Constants
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -53,6 +56,8 @@ class MovieFragment : Fragment() {
 
     private val mViewModel by activityViewModels<MainViewModel>()
 
+    private val args: MovieFragmentArgs by navArgs()
+
     private val adapter by lazy {
         MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(requireContext())) {
             navigateToDetail(it)
@@ -66,9 +71,9 @@ class MovieFragment : Fragment() {
     ): View {
 
         _binding = FragmentMovieBinding.inflate(
-                inflater,
-                container,
-                false
+            inflater,
+            container,
+            false
         )
 
         return binding.root
@@ -88,9 +93,15 @@ class MovieFragment : Fragment() {
     }
 
     private fun navigateToDetail(extraId: Int) {
-       Intent(requireContext(), DetailActivity::class.java)
-            .putExtra(EXTRA_ID, extraId)
-            .also { requireContext().startActivity(it) }
+        if (args.filmOrTv == FilmOrTv.FILM) {
+            Intent(requireContext(), DetailActivity::class.java)
+                .putExtra(Constants.EXTRA_ID, extraId)
+                .also { requireContext().startActivity(it) }
+        } else {
+            Intent(requireContext(), TvDetailActivity::class.java)
+                .putExtra(Constants.EXTRA_ID, extraId)
+                .also { requireContext().startActivity(it) }
+        }
     }
 
     private fun setupAdapter() {
@@ -102,13 +113,13 @@ class MovieFragment : Fragment() {
 
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow
-                    // Only emit when REFRESH LoadState for RemoteMediator changes.
-                    .distinctUntilChangedBy { it.refresh }
-                    // Only react to cases where Remote REFRESH completes i.e., NotLoading.
-                    .filter { it.refresh is LoadState.NotLoading }
-                    .collect {
-                        binding.rcvMovie.scrollToPosition(0)
-                    }
+                // Only emit when REFRESH LoadState for RemoteMediator changes.
+                .distinctUntilChangedBy { it.refresh }
+                // Only react to cases where Remote REFRESH completes i.e., NotLoading.
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect {
+                    binding.rcvMovie.scrollToPosition(0)
+                }
         }
     }
 
@@ -121,7 +132,6 @@ class MovieFragment : Fragment() {
                 val viewType = adapter.getItemViewType(position)
                 return if (viewType == MovieAdapter.VIEW_TYPE_MOVIE) 1 else 2
             }
-
         }
 
         binding.rcvMovie.layoutManager = gridLayoutManager
@@ -129,10 +139,10 @@ class MovieFragment : Fragment() {
         binding.rcvMovie.setHasFixedSize(true)
 
         binding.rcvMovie.adapter = adapter.withLoadStateHeaderAndFooter(
-                header = MovieLoadStateAdapter(),
-                footer = MovieLoadStateAdapter() {
-                    adapter.retry()
-                }
+            header = MovieLoadStateAdapter(),
+            footer = MovieLoadStateAdapter() {
+                adapter.retry()
+            }
         )
 
         if (mViewModel.listState != null) {
@@ -160,10 +170,19 @@ class MovieFragment : Fragment() {
             binding.chipGroupMovie.check(binding.cpDiscovery.id)
         }
     }
+
     private fun getMovies(sortEnum: MovieSortEnum) {
         lifecycleScope.launch {
-            mViewModel.getFilm(sortEnum).collectLatest {
-                adapter.submitData(it)
+            if (args.filmOrTv == FilmOrTv.FILM) {
+                mViewModel.getFilm(sortEnum).collectLatest {
+                    adapter.submitData(it)
+                }
+            } else if (args.filmOrTv == FilmOrTv.TV) {
+                mViewModel.getTv(sortEnum).collectLatest {
+                    adapter.submitData(it)
+                }
+            } else {
+                throw IllegalArgumentException(TAG)
             }
         }
     }
@@ -174,8 +193,8 @@ class MovieFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mViewModel.listState = binding.rcvMovie.layoutManager?.onSaveInstanceState()
-        mViewModel.chipState = binding.chipGroupMovie.checkedChipId
+        // mViewModel.listState = binding.rcvMovie.layoutManager?.onSaveInstanceState()
+        //mViewModel.chipState = binding.chipGroupMovie.checkedChipId
         _binding = null
     }
 
