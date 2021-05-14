@@ -1,19 +1,19 @@
 package com.alurwa.moviecatalogue.core.data.source.remote
 
+import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.MoviePagingSource
-import com.alurwa.moviecatalogue.core.data.TvPagingSource
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
-import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieDetailResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.FilmDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
 import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.core.model.Tv
 import com.alurwa.moviecatalogue.main.MovieSortEnum
+import com.alurwa.moviecatalogue.utils.NetworkState
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,7 +22,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RemoteDataSource @Inject constructor(val apiService: ApiService) {
+class RemoteDataSource @Inject constructor(
+    val apiService: ApiService,
+    @ApplicationContext private val context: Context
+    ) {
     suspend fun getAllMovies(): Flow<ApiResponse<List<MovieResponse>>> {
         return flow {
             try {
@@ -84,11 +87,14 @@ class RemoteDataSource @Inject constructor(val apiService: ApiService) {
                     pagingSourceFactory = { MoviePagingSource(apiService,query = query) }
             ).flow
 
-    fun getMovieDetail(id: Int) = flow<ApiResponse<MovieDetailResponse>> {
+    fun getFilmDetail(id: Int) = flow<ApiResponse<FilmDetailResponse>> {
         try {
-            val results = apiService.getDetailMovie(id)
-            emit(ApiResponse.Success(results))
-
+            if (NetworkState.isNetworkAvailable(context)) {
+                val results = apiService.getFilmDetail(id)
+                emit(ApiResponse.Success(results))
+            } else {
+                emit(ApiResponse.NoConnection)
+            }
         } catch (e: Exception) {
             emit(ApiResponse.Error(e.toString()))
         }

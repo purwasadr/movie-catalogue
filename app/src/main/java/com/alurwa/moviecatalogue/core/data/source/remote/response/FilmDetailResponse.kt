@@ -2,7 +2,7 @@ package com.alurwa.moviecatalogue.core.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieDetailResponse(
+data class FilmDetailResponse(
 
         @field:SerializedName("id")
         val id: Int,

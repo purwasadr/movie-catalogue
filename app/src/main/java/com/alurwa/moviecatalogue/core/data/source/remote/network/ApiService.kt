@@ -25,7 +25,7 @@
 package com.alurwa.moviecatalogue.core.data.source.remote.network
 
 import com.alurwa.moviecatalogue.BuildConfig
-import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieDetailResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.FilmDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.ListMovieResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvListResponse
@@ -50,7 +50,7 @@ interface ApiService {
     suspend fun searchMovies(@Query("query")query: String,  @Query("page")pagePos: Int): ListMovieResponse
 
     @GET("3/movie/{id}?api_key=" + BuildConfig.API_KEY + "&append_to_response=credits")
-    suspend fun getDetailMovie(@Path("id")id: Int): MovieDetailResponse
+    suspend fun getFilmDetail(@Path("id")id: Int): FilmDetailResponse
 
     @GET("3/discover/tv?api_key=" + BuildConfig.API_KEY)
     suspend fun getDiscoverTv(@Query("sort_by")sortBy: String,
