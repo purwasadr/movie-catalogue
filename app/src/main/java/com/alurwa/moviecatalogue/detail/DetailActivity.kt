@@ -30,10 +30,10 @@ class DetailActivity : AppCompatActivity() {
 
         setupToolbar()
 
-        getFilmDetail(binding)
+        getFilmDetail()
     }
 
-    private fun getFilmDetail(binding: ActivityDetailBinding) {
+    private fun getFilmDetail() {
         mViewModel.getMovieDetail(id).observe(this) {
             when (it) {
                 is Resource.Loading -> {
@@ -41,8 +41,10 @@ class DetailActivity : AppCompatActivity() {
                 }
 
                 is Resource.Success -> {
-                    val data = it.data!!
-                    setupMovieView(data)
+                    val data = it.data
+                    if (data != null) {
+                        setupMovieView(data)
+                    }
                 }
 
                 is Resource.Error -> {
