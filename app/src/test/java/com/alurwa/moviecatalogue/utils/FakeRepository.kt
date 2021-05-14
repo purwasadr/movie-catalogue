@@ -27,7 +27,7 @@ class FakeRepository : IMovieCatalogueRepository {
         return emptyFlow()
     }
 
-    override fun getMovieDetail(id: Int): Flow<Resource<FilmDetail>> {
+    override fun getFilmDetail(id: Int): Flow<Resource<FilmDetail>> {
         return emptyFlow()
     }
 
