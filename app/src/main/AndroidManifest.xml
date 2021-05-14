@@ -21,7 +21,8 @@
         <activity
             android:name=".search.SearchActivity"
             android:theme="@style/Theme.Moviecatalogue.NoActionBar.Search"></activity>
-        <activity android:name=".main.MainActivity">
+        <activity android:name=".main.MainActivity"
+            android:theme="@style/Theme.Moviecatalogue.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
