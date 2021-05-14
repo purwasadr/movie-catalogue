@@ -39,4 +39,14 @@ class Converters {
         val type = object : TypeToken<List<Cast>>() {}.type
         return gson.fromJson(value, type)
     }
+
+    @TypeConverter
+    fun fromNumber(value: Number): Double {
+        return value.toDouble()
+    }
+
+    @TypeConverter
+    fun toNumber(value: Double): Number {
+        return value
+    }
 }
