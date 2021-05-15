@@ -6,22 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.FilmDetail
 import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
-import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class DetailActivity : AppCompatActivity() {
+class FilmDetailActivity : AppCompatActivity() {
 
     private val binding: ActivityDetailBinding by lazy {
         ActivityDetailBinding.inflate(layoutInflater)
     }
 
-    private val mViewModel: DetailViewModel by viewModels()
-
-    private val id: Int by lazy {
-        intent.getIntExtra(EXTRA_ID, -1)
-    }
+    private val mViewModel: FilmDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +29,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getFilmDetail() {
-        mViewModel.getMovieDetail(id).observe(this) {
+        mViewModel.filmDetail.observe(this) {
             when (it) {
                 is Resource.Loading -> {
 
@@ -89,7 +84,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_FILM_OR_TV = "extra_film_or_tv"
         const val TAG = "DetailActivity"
     }
 }

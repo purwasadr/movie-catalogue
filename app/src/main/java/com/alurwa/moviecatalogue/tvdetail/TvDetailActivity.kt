@@ -1,32 +1,24 @@
 package com.alurwa.moviecatalogue.tvdetail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.TvDetail
 import com.alurwa.moviecatalogue.databinding.ActivityTvDetailBinding
-import com.alurwa.moviecatalogue.detail.DetailActivity
-import com.alurwa.moviecatalogue.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
 class TvDetailActivity : AppCompatActivity() {
-
     private val viewModel: TvDetailViewModel by viewModels()
 
     private val binding: ActivityTvDetailBinding by lazy {
         ActivityTvDetailBinding.inflate(layoutInflater)
     }
 
-    private val id: Int by lazy {
-        intent.getIntExtra(Constants.EXTRA_ID, -1)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         setContentView(binding.root)
 
@@ -45,7 +37,7 @@ class TvDetailActivity : AppCompatActivity() {
     }
 
     private fun observeTv() {
-        viewModel.getTvDetail(id).observe(this) {
+        viewModel.tvDetail.observe(this) {
             when (it) {
                 is Resource.Loading -> {
 
@@ -53,7 +45,7 @@ class TvDetailActivity : AppCompatActivity() {
 
                 is Resource.Success -> {
                     val data = it.data!!
-                    setupTvView( data)
+                    setupTvView(data)
                 }
 
                 is Resource.Error -> {
