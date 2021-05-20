@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/filmFragment"
-        android:name="com.alurwa.moviecatalogue.main.MovieFragment"
+        android:name="com.alurwa.moviecatalogue.main.FilmFragment"
         android:label="Film"
         tools:layout="@layout/fragment_movie" >
         <argument
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/tvFragment"
-        android:name="com.alurwa.moviecatalogue.main.MovieFragment"
+        android:name="com.alurwa.moviecatalogue.main.TvFragment"
         android:label="Tv"
         tools:layout="@layout/fragment_movie" >
         <argument

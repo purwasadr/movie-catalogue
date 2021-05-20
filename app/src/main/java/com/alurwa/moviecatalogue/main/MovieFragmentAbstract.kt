@@ -1,30 +1,5 @@
-/**
- * MIT License
- *
- * Copyright (c) 2021 Purwa Shadr Al 'urwa
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.alurwa.moviecatalogue.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,33 +7,30 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
-import com.alurwa.moviecatalogue.core.common.FilmOrTv
+import com.alurwa.moviecatalogue.core.common.AutoFitGridLayout
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
-import com.alurwa.moviecatalogue.detail.DetailActivity
-import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
-import com.alurwa.moviecatalogue.utils.Constants
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.launch
 
-class MovieFragment : Fragment() {
+/**
+ * Created by Purwa Shadr Al 'urwa on 20/05/2021
+ */
+
+abstract class MovieFragmentAbstract : Fragment() {
     private var _binding: FragmentMovieBinding? = null
 
     private val binding get() = _binding!!
 
-    private val mViewModel by activityViewModels<MainViewModel>()
+    val viewModel by activityViewModels<MainViewModel>()
 
-    private val args: MovieFragmentArgs by navArgs()
-
-    private val adapter by lazy {
+    val adapter by lazy {
         MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(requireContext())) {
             navigateToDetail(it)
         }
@@ -89,20 +61,9 @@ class MovieFragment : Fragment() {
         setupRecyclerView()
 
         setupSwipeToRefresh()
-
     }
 
-    private fun navigateToDetail(extraId: Int) {
-        if (args.filmOrTv == FilmOrTv.FILM) {
-            Intent(requireContext(), DetailActivity::class.java)
-                .putExtra(Constants.EXTRA_ID, extraId)
-                .also { requireContext().startActivity(it) }
-        } else {
-            Intent(requireContext(), TvDetailActivity::class.java)
-                .putExtra(Constants.EXTRA_ID, extraId)
-                .also { requireContext().startActivity(it) }
-        }
-    }
+    abstract fun navigateToDetail(extraId: Int)
 
     private fun setupAdapter() {
         lifecycleScope.launchWhenCreated {
@@ -126,15 +87,26 @@ class MovieFragment : Fragment() {
     private fun setupRecyclerView() {
 
         // Create span for centering Progress Bar
-        val gridLayoutManager = GridLayoutManager(requireContext(), 2)
-        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        /*  val gridLayoutManager = GridLayoutManager(requireContext(), 2)
+          gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+              override fun getSpanSize(position: Int): Int {
+                  val viewType = adapter.getItemViewType(position)
+                  return if (viewType == MovieAdapter.VIEW_TYPE_MOVIE) 1 else 2
+              }
+          }
+
+         */
+
+        val autoFitGridLayout = AutoFitGridLayout(requireContext(), 150)
+
+        autoFitGridLayout.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 val viewType = adapter.getItemViewType(position)
-                return if (viewType == MovieAdapter.VIEW_TYPE_MOVIE) 1 else 2
+                return if (viewType == MovieAdapter.VIEW_TYPE_MOVIE) 1 else autoFitGridLayout.spanCount
             }
         }
 
-        binding.rcvMovie.layoutManager = gridLayoutManager
+        binding.rcvMovie.layoutManager = autoFitGridLayout
         //   binding.rcvMovie.layoutManager = AutoFitGridLayout(requireContext(), 500)
         binding.rcvMovie.setHasFixedSize(true)
 
@@ -145,14 +117,14 @@ class MovieFragment : Fragment() {
             }
         )
 
-        if (mViewModel.listState != null) {
-            binding.rcvMovie.layoutManager?.onRestoreInstanceState(mViewModel.listState)
-            mViewModel.listState = null
+        if (viewModel.listState != null) {
+            binding.rcvMovie.layoutManager?.onRestoreInstanceState(viewModel.listState)
+            viewModel.listState = null
         }
     }
 
     private fun setupChips() {
-        val chipState = mViewModel.chipState
+        val chipState = viewModel.chipState
 
         binding.chipGroupMovie.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
@@ -165,27 +137,13 @@ class MovieFragment : Fragment() {
 
         if (chipState != null) {
             binding.chipGroupMovie.check(chipState)
-            mViewModel.chipState = null
+            viewModel.chipState = null
         } else {
             binding.chipGroupMovie.check(binding.cpDiscovery.id)
         }
     }
 
-    private fun getMovies(sortEnum: MovieSortEnum) {
-        lifecycleScope.launch {
-            if (args.filmOrTv == FilmOrTv.FILM) {
-                mViewModel.getFilm(sortEnum).collectLatest {
-                    adapter.submitData(it)
-                }
-            } else if (args.filmOrTv == FilmOrTv.TV) {
-                mViewModel.getTv(sortEnum).collectLatest {
-                    adapter.submitData(it)
-                }
-            } else {
-                throw IllegalArgumentException(TAG)
-            }
-        }
-    }
+    abstract fun getMovies(sortEnum: MovieSortEnum)
 
     private fun setupSwipeToRefresh() {
         binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
@@ -196,9 +154,5 @@ class MovieFragment : Fragment() {
         // mViewModel.listState = binding.rcvMovie.layoutManager?.onSaveInstanceState()
         //mViewModel.chipState = binding.chipGroupMovie.checkedChipId
         _binding = null
-    }
-
-    companion object {
-        const val TAG = "MovieFragment"
     }
 }
