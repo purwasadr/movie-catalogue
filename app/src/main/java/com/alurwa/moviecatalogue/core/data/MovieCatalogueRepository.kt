@@ -1,5 +1,6 @@
 package com.alurwa.moviecatalogue.core.data
 
+import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,6 +14,8 @@ import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.core.model.TvDetail
 import com.alurwa.moviecatalogue.main.MovieSortEnum
 import com.alurwa.moviecatalogue.utils.DataMapper
+import com.alurwa.moviecatalogue.utils.NetworkState
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,7 +24,8 @@ import javax.inject.Singleton
 @Singleton
 class MovieCatalogueRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    @ApplicationContext private val context: Context
 ) : IMovieCatalogueRepository {
 
     override fun getAllMovies(): Flow<Resource<List<Movie>>> = flow {
@@ -89,7 +93,9 @@ class MovieCatalogueRepository @Inject constructor(
                 }
             }
 
-            override fun shouldFetch(data: FilmDetail?): Boolean = true
+            override fun shouldFetch(data: FilmDetail?): Boolean {
+                return NetworkState.isNetworkAvailable(context)
+            }
 
 
             override suspend fun createCall(): Flow<ApiResponse<FilmDetailResponse>> =
@@ -107,7 +113,7 @@ class MovieCatalogueRepository @Inject constructor(
         Pager(
             config = PagingConfig(
                 pageSize = 20,
-                enablePlaceholders = true,
+                enablePlaceholders = false,
 
                 maxSize = 60
             ),
@@ -139,7 +145,7 @@ class MovieCatalogueRepository @Inject constructor(
         Pager(
             config = PagingConfig(
                 pageSize = 20,
-                enablePlaceholders = true,
+                enablePlaceholders = false,
 
                 maxSize = 60
             ),
