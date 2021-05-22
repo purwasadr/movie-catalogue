@@ -66,6 +66,8 @@ abstract class MovieFragmentAbstract : Fragment() {
     abstract fun navigateToDetail(extraId: Int)
 
     private fun setupAdapter() {
+
+        // Show swipe refresh when LoadState is Loading
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest { loadStates ->
                 binding.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
