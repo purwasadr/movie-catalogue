@@ -1,18 +1,12 @@
 package com.alurwa.moviecatalogue.view
 
-import android.app.SearchableInfo
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
-import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.appcompat.R
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.SearchView
 
 class CustomImageView : ImageView {
     constructor(context: Context?) : super(context!!) {

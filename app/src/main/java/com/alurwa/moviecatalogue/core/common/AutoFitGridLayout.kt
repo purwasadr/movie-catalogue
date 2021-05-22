@@ -1,13 +1,13 @@
 package com.alurwa.moviecatalogue.core.common
 
-import android.R.attr.columnWidth
 import android.content.Context
+import android.util.DisplayMetrics
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 
 
-class AutoFitGridLayout(context: Context,
+class AutoFitGridLayout(private val context: Context,
                         private var columnWidth: Int
                         ) : GridLayoutManager(context, 2) {
     private var columnWidthChanged = true
@@ -17,8 +17,10 @@ class AutoFitGridLayout(context: Context,
     }
 
     fun setColumnWidth(newColumnWidth: Int) {
-        if (newColumnWidth > 0 && newColumnWidth != columnWidth) {
-            columnWidth = newColumnWidth
+        val result = newColumnWidth * context.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT
+
+        if (result > 0 && result != columnWidth) {
+            columnWidth = result
             columnWidthChanged = true
         }
     }
