@@ -28,7 +28,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.navigation.findNavController
@@ -48,8 +47,6 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-
-    private val mViewModel by viewModels<MainViewModel>()
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -120,13 +117,11 @@ class MainActivity : AppCompatActivity() {
                 if (item.isChecked) {
                     pref.edit {
                         putBoolean(Constants.SharedPreference.IS_SHOW_POSTER, true)
-                        apply()
                     }
 
                 } else {
                     pref.edit {
                         putBoolean(Constants.SharedPreference.IS_SHOW_POSTER, false)
-                        apply()
                     }
                 }
                 true

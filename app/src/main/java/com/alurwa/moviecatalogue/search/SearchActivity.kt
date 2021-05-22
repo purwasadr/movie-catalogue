@@ -22,7 +22,7 @@ import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.common.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.databinding.ActivitySearchBinding
-import com.alurwa.moviecatalogue.detail.DetailActivity
+import com.alurwa.moviecatalogue.detail.FilmDetailActivity
 import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
 import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
@@ -140,7 +140,7 @@ class SearchActivity : AppCompatActivity() {
         Intent().putExtra(EXTRA_ID, extraId)
             .also {
                 if (filmOrTv == FilmOrTv.FILM.code) {
-                    it.setClass(this,  DetailActivity::class.java)
+                    it.setClass(this,  FilmDetailActivity::class.java)
 
                 } else {
                     it.setClass(this, TvDetailActivity::class.java)
@@ -225,7 +225,6 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(QUERY_STRING_STATE, currentQueryString)
         outState.putParcelable(LIST_STATE, binding.rcvSearch.layoutManager?.onSaveInstanceState())
         super.onSaveInstanceState(outState)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -248,6 +247,5 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val QUERY_STRING_STATE = "query_string_state"
         const val LIST_STATE = "list_state"
-        const val TAG = "SearchActivity"
     }
 }

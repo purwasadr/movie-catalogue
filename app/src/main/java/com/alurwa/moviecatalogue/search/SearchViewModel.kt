@@ -1,7 +1,6 @@
 package com.alurwa.moviecatalogue.search
 
 import android.os.Parcelable
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
