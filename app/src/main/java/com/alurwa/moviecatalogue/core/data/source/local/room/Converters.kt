@@ -3,6 +3,7 @@ package com.alurwa.moviecatalogue.core.data.source.local.room
 import androidx.room.TypeConverter
 import com.alurwa.moviecatalogue.core.model.Cast
 import com.alurwa.moviecatalogue.core.model.Genre
+import com.alurwa.moviecatalogue.core.model.Season
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -48,5 +49,19 @@ class Converters {
     @TypeConverter
     fun toNumber(value: Double): Number {
         return value
+    }
+
+    @TypeConverter
+    fun fromSeasons(value: List<Season>): String {
+        val gson = Gson()
+        val type = object : TypeToken<List<Season>>() {}.type
+        return gson.toJson(value, type)
+    }
+
+    @TypeConverter
+    fun toSeasons(value: String): List<Season> {
+        val gson = Gson()
+        val type = object : TypeToken<List<Season>>() {}.type
+        return gson.fromJson(value, type)
     }
 }
