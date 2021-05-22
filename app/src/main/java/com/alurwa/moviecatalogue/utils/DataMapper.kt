@@ -1,6 +1,7 @@
 package com.alurwa.moviecatalogue.utils
 
 import com.alurwa.moviecatalogue.core.data.source.local.entity.FilmDetailEntity
+import com.alurwa.moviecatalogue.core.data.source.local.entity.TvDetailEntity
 import com.alurwa.moviecatalogue.core.data.source.remote.response.FilmDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
@@ -144,4 +145,56 @@ object DataMapper {
                 Cast(it.name, it.profilePath, it.character)
             }
         )
+
+    fun tvDetailResponseToEntity(input: TvDetailResponse): TvDetailEntity =
+        TvDetailEntity(
+            id = input.id,
+            name = input.name,
+            overview = input.overview,
+            posterPath = input.posterPath,
+            backdropPath = input.backdropPath,
+            firstAirDate = input.firstAirDate,
+            originalLanguage = input.originalLanguage,
+            originalName = input.originalName,
+            status = input.status,
+            voteAverage = input.voteAverage,
+            type = input.type,
+            genres = input.genres.map {
+                Genre(it.id, it.name)
+            },
+            seasons = input.seasons.map {
+                Season(
+                    it.id, it.name,
+                    it.overview, it.posterPath,
+                    it.airDate, it.episodeCount,
+                    it.seasonNumber
+                )
+
+
+            },
+            cast = input.credits.cast.map {
+                Cast(it.name, it.profilePath, it.character)
+            }
+        )
+
+    fun tvDetailEntityToDomain(input: TvDetailEntity?): TvDetail? =
+        input?.run {
+            TvDetail(
+                id = id,
+                name = name,
+                overview = overview,
+                posterPath = posterPath,
+                backdropPath = backdropPath,
+                firstAirDate = firstAirDate,
+                originalLanguage = originalLanguage,
+                originalName = originalName,
+                status = status,
+                voteAverage = voteAverage,
+                type = type,
+                genres = genres,
+                seasons = seasons,
+                cast = cast,
+            )
+        }
+
 }

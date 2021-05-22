@@ -44,8 +44,10 @@ class TvDetailActivity : AppCompatActivity() {
                 }
 
                 is Resource.Success -> {
-                    val data = it.data!!
-                    setupTvView(data)
+                    val data = it.data
+                    if (data != null) {
+                        setupTvView(data)
+                    }
                 }
 
                 is Resource.Error -> {

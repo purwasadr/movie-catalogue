@@ -22,5 +22,6 @@ class TvDetailViewModel @Inject constructor(
     // ViewModel dihubungkan dengan fragment
     private val id = stateHandle.get<Int>(EXTRA_ID)!!
 
-    val tvDetail: LiveData<Resource<TvDetail>> = repository.getTvDetail(id).asLiveData()
+    val tvDetail: LiveData<Resource<TvDetail?>> =
+        repository.getTvDetail(id).asLiveData()
 }
