@@ -20,7 +20,7 @@ interface IMovieCatalogueRepository {
 
     fun getTvList(sort: MovieSortEnum): Flow<PagingData<Movie>>
 
-    fun getTvDetail(id: Int): Flow<Resource<TvDetail>>
+    fun getTvDetail(id: Int): Flow<Resource<TvDetail?>>
 
     fun getTvSearch(query: String): Flow<PagingData<Movie>>
 }

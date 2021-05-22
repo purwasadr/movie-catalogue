@@ -9,6 +9,7 @@ import com.alurwa.moviecatalogue.core.data.source.remote.RemoteDataSource
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.FilmDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
+import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
 import com.alurwa.moviecatalogue.core.model.FilmDetail
 import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.core.model.TvDetail
@@ -57,7 +58,7 @@ class MovieCatalogueRepository @Inject constructor(
                 }
             }
 
-            override fun shouldFetch(data: List<Movie>?): Boolean {
+            override fun shouldFetch(): Boolean {
                 return true
             }
 
@@ -91,10 +92,9 @@ class MovieCatalogueRepository @Inject constructor(
                 }
             }
 
-            override fun shouldFetch(data: FilmDetail?): Boolean {
+            override fun shouldFetch(): Boolean {
                 return NetworkState.isNetworkAvailable(context)
             }
-
 
             override suspend fun createCall(): Flow<ApiResponse<FilmDetailResponse>> =
                 remoteDataSource.getFilmDetail(id)
@@ -123,21 +123,25 @@ class MovieCatalogueRepository @Inject constructor(
             }
         ).flow
 
-    override fun getTvDetail(id: Int): Flow<Resource<TvDetail>> = flow<Resource<TvDetail>> {
-        emit(Resource.Loading())
-        val response = remoteDataSource.getTvDetail(id)
+    override fun getTvDetail(id: Int): Flow<Resource<TvDetail?>> =
+        object : NetworkBoundResource<TvDetail?, TvDetailResponse>() {
+            override fun loadFromDB(): Flow<TvDetail?> =
+                localDataSource.getTvDetail(id).map {
+                    DataMapper.tvDetailEntityToDomain(it)
+                }
 
-        when (val apiResponse = response.first()) {
-            is ApiResponse.Success -> {
-                emit(Resource.Success(DataMapper.tvDetailResponseToDomain(apiResponse.data)))
+            override fun shouldFetch(): Boolean =
+                NetworkState.isNetworkAvailable(context)
+
+            override suspend fun createCall(): Flow<ApiResponse<TvDetailResponse>> =
+                remoteDataSource.getTvDetail(id)
+
+            override suspend fun saveCallResult(data: TvDetailResponse) {
+                localDataSource.insertTvDetail(
+                    DataMapper.tvDetailResponseToEntity(data)
+                )
             }
-
-            is ApiResponse.Error -> {
-                emit(Resource.Error(apiResponse.errorMessage))
-            }
-        }
-
-    }
+        }.asFlow()
 
     override fun getTvSearch(query: String): Flow<PagingData<Movie>> =
         Pager(
