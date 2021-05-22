@@ -34,36 +34,57 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("3/discover/movie?api_key=" + BuildConfig.API_KEY)
+    @GET("3/discover/movie?$API_SET")
     suspend fun getAllMovies(): ListMovieResponse
 
-    @GET("3/discover/movie?api_key=" + BuildConfig.API_KEY)
-    suspend fun getDiscoverMovies(@Query("sort_by")sortBy: String,
-                                  @Query("page")pagePos: Int
-
+    @GET("3/discover/movie?$API_SET")
+    suspend fun getDiscoverMovies(
+        @Query("sort_by") sortBy: String,
+        @Query("page") pagePos: Int
     ): ListMovieResponse
 
-    @GET("3/movie/{type}?api_key=" + BuildConfig.API_KEY)
-    suspend fun getMovies(@Path("type")type: String, @Query("page")pagePos: Int): ListMovieResponse
+    @GET("3/movie/{type}?$API_SET")
+    suspend fun getMovies(
+        @Path("type") type: String,
+        @Query("page") pagePos: Int
+    ): ListMovieResponse
 
-    @GET("3/search/movie?api_key=${BuildConfig.API_KEY}")
-    suspend fun searchMovies(@Query("query")query: String,  @Query("page")pagePos: Int): ListMovieResponse
+    @GET("3/search/movie?$API_SET")
+    suspend fun searchMovies(
+        @Query("query") query: String,
+        @Query("page") pagePos: Int
+    ): ListMovieResponse
 
-    @GET("3/movie/{id}?api_key=" + BuildConfig.API_KEY + "&append_to_response=credits")
-    suspend fun getFilmDetail(@Path("id")id: Int): FilmDetailResponse
+    @GET("3/movie/{id}?$API_SET&append_to_response=credits")
+    suspend fun getFilmDetail(
+        @Path("id") id: Int
+    ): FilmDetailResponse
 
-    @GET("3/discover/tv?api_key=" + BuildConfig.API_KEY)
-    suspend fun getDiscoverTv(@Query("sort_by")sortBy: String,
-                              @Query("page")pagePos: Int
+    @GET("3/discover/tv?$API_SET")
+    suspend fun getDiscoverTv(
+        @Query("sort_by") sortBy: String,
+        @Query("page") pagePos: Int
 
     ): TvListResponse
 
-    @GET("3/tv/{type}?api_key=" + BuildConfig.API_KEY)
-    suspend fun getTv(@Path("type")type: String, @Query("page")pagePos: Int): TvListResponse
+    @GET("3/tv/{type}?$API_SET")
+    suspend fun getTv(
+        @Path("type") type: String,
+        @Query("page") pagePos: Int
+    ): TvListResponse
 
-    @GET("3/search/tv?api_key=${BuildConfig.API_KEY}")
-    suspend fun searchTv(@Query("query")query: String,  @Query("page")pagePos: Int): TvListResponse
+    @GET("3/search/tv?$API_SET")
+    suspend fun searchTv(
+        @Query("query") query: String,
+        @Query("page") pagePos: Int
+    ): TvListResponse
 
-    @GET("3/tv/{id}?api_key=" + BuildConfig.API_KEY + "&append_to_response=credits")
-    suspend fun getTvDetail(@Path("id")id: Int): TvDetailResponse
+    @GET("3/tv/{id}?$API_SET&append_to_response=credits")
+    suspend fun getTvDetail(
+        @Path("id") id: Int
+    ): TvDetailResponse
+
+    companion object {
+        const val API_SET = "api_key=" + BuildConfig.API_KEY
+    }
 }
