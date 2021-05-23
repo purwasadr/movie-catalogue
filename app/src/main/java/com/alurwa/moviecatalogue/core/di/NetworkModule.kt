@@ -29,6 +29,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -60,4 +61,8 @@ object NetworkModule {
                 .build()
         return retrofit.create(ApiService::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideDispatchersIO() = Dispatchers.IO
 }
