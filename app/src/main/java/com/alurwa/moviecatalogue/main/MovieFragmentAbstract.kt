@@ -9,9 +9,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
+import com.alurwa.moviecatalogue.core.adapter.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.core.common.AutoFitGridLayout
-import com.alurwa.moviecatalogue.core.common.MovieAdapter
-import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import kotlinx.coroutines.flow.collect

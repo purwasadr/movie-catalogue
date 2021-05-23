@@ -18,9 +18,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alurwa.moviecatalogue.R
+import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
+import com.alurwa.moviecatalogue.core.adapter.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
-import com.alurwa.moviecatalogue.core.common.MovieAdapter
-import com.alurwa.moviecatalogue.core.common.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.databinding.ActivitySearchBinding
 import com.alurwa.moviecatalogue.detail.FilmDetailActivity
 import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity

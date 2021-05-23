@@ -29,7 +29,6 @@ import androidx.paging.PagingState
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvListResponse
 import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.core.model.Tv
 import com.alurwa.moviecatalogue.main.MovieSortEnum
 import com.alurwa.moviecatalogue.utils.DataMapper
 import retrofit2.HttpException
@@ -56,7 +55,7 @@ class TvPagingSource(
             }
 
             val maxPage = response.totalPages
-            val repos = DataMapper.tvListResponseToDomain(response.results)
+            val tvData = DataMapper.tvListResponseToDomain(response.results)
             val nextKey = if (position == maxPage || maxPage == 0) {
                 null
             } else {
@@ -64,7 +63,7 @@ class TvPagingSource(
             }
 
             LoadResult.Page(
-                    data = repos,
+                    data = tvData,
                     prevKey = if (position == 1) null else position - 1,
                     nextKey = nextKey
             )
