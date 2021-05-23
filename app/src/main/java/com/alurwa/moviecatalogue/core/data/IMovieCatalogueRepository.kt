@@ -8,9 +8,6 @@ import com.alurwa.moviecatalogue.main.MovieSortEnum
 import kotlinx.coroutines.flow.Flow
 
 interface IMovieCatalogueRepository {
-    fun getAllMovies(): Flow<Resource<List<Movie>>>
-
-    fun getMovies(code: String): Flow<Resource<List<Movie>>>
 
     fun getDiscoveryMovies(sort: MovieSortEnum): Flow<PagingData<Movie>>
 

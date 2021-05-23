@@ -5,31 +5,31 @@ import com.alurwa.moviecatalogue.core.data.source.local.entity.TvDetailEntity
 import com.alurwa.moviecatalogue.core.data.source.local.room.MovieCatalogueDao
 import com.alurwa.moviecatalogue.core.data.source.local.room.MovieCatalogueDatabase
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class LocalDataSource @Inject constructor(
     private val movieCatalogueDao: MovieCatalogueDao,
     private val database: MovieCatalogueDatabase
-) {
+) : ILocalDataSource {
 
-    private val tvDetailDao = database.tvDetailDao()
+   private val tvDetailDao = database.tvDetailDao()
 
-    fun getMovies() = movieCatalogueDao.getAllMovies()
+    /*  fun getMovies() = movieCatalogueDao.getAllMovies()
 
-    suspend fun deleteAllMovies() {
-        movieCatalogueDao.deleteAllMovies()
-    }
+     suspend fun deleteAllMovies() {
+         movieCatalogueDao.deleteAllMovies()
+     }
 
-    fun getFilmDetail(id: Int) = movieCatalogueDao.getFilmDetail(id)
+    */
 
-    suspend fun insertFilmDetail(filmDetailEntity: FilmDetailEntity) {
+    override fun getFilmDetail(id: Int) = movieCatalogueDao.getFilmDetail(id)
+
+    override suspend fun insertFilmDetail(filmDetailEntity: FilmDetailEntity) {
         movieCatalogueDao.insertFilmDetail(filmDetailEntity)
     }
 
-    fun getTvDetail(id: Int) = tvDetailDao.getTvDetail(id)
+    override fun getTvDetail(id: Int) = tvDetailDao.getTvDetail(id)
 
-    suspend fun insertTvDetail(tvDetailEntity: TvDetailEntity) {
+    override suspend fun insertTvDetail(tvDetailEntity: TvDetailEntity) {
         tvDetailDao.insertTvDetail(tvDetailEntity)
     }
 }

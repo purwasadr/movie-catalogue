@@ -1,28 +1,19 @@
 package com.alurwa.moviecatalogue.core.data.source.remote
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import com.alurwa.moviecatalogue.core.data.MoviePagingSource
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.alurwa.moviecatalogue.core.data.source.remote.response.FilmDetailResponse
-import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
-import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.main.MovieSortEnum
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
-import javax.inject.Singleton
+import kotlin.coroutines.CoroutineContext
 
-@Singleton
 class RemoteDataSource @Inject constructor(
-    val apiService: ApiService
-) {
-    suspend fun getAllMovies(): Flow<ApiResponse<List<MovieResponse>>> {
+   private val apiService: ApiService,
+   private val dispatchers: CoroutineContext
+): IRemoteDataSource {
+   /* suspend fun getAllMovies(): Flow<ApiResponse<List<MovieResponse>>> {
         return flow {
             try {
                 val response = apiService.getAllMovies()
@@ -60,39 +51,18 @@ class RemoteDataSource @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    fun getDiscoveryMovies(sort: MovieSortEnum): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = true,
+    */
 
-                maxSize = 60,
-            ),
-            pagingSourceFactory = { MoviePagingSource(apiService, sort = sort) }
-        ).flow
-    }
-
-    fun getSearchMovies(query: String): Flow<PagingData<Movie>> =
-        Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = true,
-
-                maxSize = 60
-            ),
-            pagingSourceFactory = { MoviePagingSource(apiService, query = query) }
-        ).flow
-
-    fun getFilmDetail(id: Int) = flow<ApiResponse<FilmDetailResponse>> {
+    override fun getFilmDetail(id: Int) = flow<ApiResponse<FilmDetailResponse>> {
         try {
             val results = apiService.getFilmDetail(id)
             emit(ApiResponse.Success(results))
         } catch (e: Exception) {
             emit(ApiResponse.Error(e.toString()))
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatchers)
 
-    fun getTvDetail(id: Int) = flow<ApiResponse<TvDetailResponse>> {
+    override fun getTvDetail(id: Int) = flow<ApiResponse<TvDetailResponse>> {
         try {
             val results = apiService.getTvDetail(id)
             emit(ApiResponse.Success(results))
@@ -100,5 +70,5 @@ class RemoteDataSource @Inject constructor(
         } catch (e: Exception) {
             emit(ApiResponse.Error(e.toString()))
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(dispatchers)
 }
