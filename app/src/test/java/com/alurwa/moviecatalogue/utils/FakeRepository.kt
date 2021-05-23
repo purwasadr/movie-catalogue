@@ -11,13 +11,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 class FakeRepository : IMovieCatalogueRepository {
-    override fun getAllMovies(): Flow<Resource<List<Movie>>> {
-        return emptyFlow()
-    }
-
-    override fun getMovies(code: String): Flow<Resource<List<Movie>>> {
-        return emptyFlow()
-    }
 
     override fun getDiscoveryMovies(sort: MovieSortEnum): Flow<PagingData<Movie>> {
         return emptyFlow()
@@ -35,7 +28,7 @@ class FakeRepository : IMovieCatalogueRepository {
         return emptyFlow()
     }
 
-    override fun getTvDetail(id: Int): Flow<Resource<TvDetail>> {
+    override fun getTvDetail(id: Int): Flow<Resource<TvDetail?>> {
         return emptyFlow()
     }
 

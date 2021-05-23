@@ -24,7 +24,50 @@
 
 package com.alurwa.moviecatalogue.core.data
 
+import android.content.Context
+import com.alurwa.moviecatalogue.core.data.source.local.ILocalDataSource
+import com.alurwa.moviecatalogue.core.data.source.remote.IRemoteDataSource
+import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
+import com.alurwa.moviecatalogue.utils.DataDummy
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
+import org.junit.Before
+import org.junit.Test
+import org.mockito.Mockito.mock
+
 
 class RepositoryTest {
+    private lateinit var tasksRemoteDataSource: IRemoteDataSource
+    private lateinit var tasksLocalDataSource: ILocalDataSource
+    private lateinit var movieCatalogueRepository: IMovieCatalogueRepository
+    private val context = mock(Context::class.java)
+    private val apiService = mock(ApiService::class.java)
+
+    @Before
+    fun createRepository() {
+        tasksRemoteDataSource = FakeRemoteDataSource()
+        tasksLocalDataSource = FakeLocalDataSource()
+        // Get a reference to the class under test
+        movieCatalogueRepository = MovieCatalogueRepository(
+            // TODO Dispatchers.Unconfined should be replaced with Dispatchers.Main
+            //  this requires understanding more about coroutines + testing
+            //  so we will keep this as Unconfined for now.
+            tasksRemoteDataSource, tasksLocalDataSource, context, apiService
+        )
+    }
+
+    @Test
+    fun getFilmDetail() = runBlocking {
+        val result = movieCatalogueRepository.getFilmDetail(111).toList()
+
+        val data = result.get(1) as Resource.Success
+        println(data.data.toString())
+
+        assertThat(data.data , `is`(DataDummy.getFilmDetail()))
+        println("swwweq")
+    }
+
 
 }
