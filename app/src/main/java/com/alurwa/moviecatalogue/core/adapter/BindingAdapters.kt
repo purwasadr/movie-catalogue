@@ -1,4 +1,4 @@
-package com.alurwa.moviecatalogue.core.binding
+package com.alurwa.moviecatalogue.core.adapter
 
 import android.content.res.Resources
 import android.net.Uri
@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alurwa.moviecatalogue.core.common.CastAdapter
 import com.alurwa.moviecatalogue.core.model.Cast
 import com.alurwa.moviecatalogue.core.model.Genre
 import com.alurwa.moviecatalogue.utils.NumberFormatUtil

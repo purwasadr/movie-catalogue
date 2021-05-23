@@ -1,4 +1,4 @@
-package com.alurwa.moviecatalogue.core.common
+package com.alurwa.moviecatalogue.core.adapter
 
 import android.content.res.Resources
 import android.view.LayoutInflater

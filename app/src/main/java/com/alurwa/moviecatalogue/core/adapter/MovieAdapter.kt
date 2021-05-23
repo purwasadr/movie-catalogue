@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.alurwa.moviecatalogue.core.common
+package com.alurwa.moviecatalogue.core.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
