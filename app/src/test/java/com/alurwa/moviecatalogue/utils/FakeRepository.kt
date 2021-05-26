@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.emptyFlow
 
 class FakeRepository : IMovieCatalogueRepository {
 
-    override fun getDiscoveryMovies(sort: MovieSortEnum): Flow<PagingData<Movie>> {
+    override fun getFilms(sort: MovieSortEnum): Flow<PagingData<Movie>> {
         return emptyFlow()
     }
 
