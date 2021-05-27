@@ -29,6 +29,16 @@ object BindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("imageListPoster")
+    fun imageListPoster(imageView: ImageView, posterPath: String?) {
+        if (!posterPath.isNullOrEmpty()) {
+            Glide.with(imageView.context)
+                .load(Uri.parse("https://image.tmdb.org/t/p/w120$posterPath"))
+                .into(imageView)
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("imageBackdrop")
     fun imageBackdrop(imageView: ImageView, backdropPath: String?) {
         if (!backdropPath.isNullOrEmpty()) {
@@ -118,7 +128,11 @@ object BindingAdapters {
         if (!castList.isNullOrEmpty()) {
             val adapter = CastAdapter(castList)
 
-            rcv.layoutManager = LinearLayoutManager(rcv.context, LinearLayoutManager.HORIZONTAL, false)
+            rcv.layoutManager = LinearLayoutManager(
+                rcv.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
             rcv.setHasFixedSize(true)
             rcv.adapter = adapter
         }

@@ -18,7 +18,7 @@ object NetworkState {
             activeNetwork != null && cm.getNetworkCapabilities(activeNetwork) != null
         } else {
             val networkInfo = cm.activeNetworkInfo
-            networkInfo != null && networkInfo.isConnectedOrConnecting
+            networkInfo != null && networkInfo.isConnected
         }
     }
 }
