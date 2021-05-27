@@ -26,6 +26,7 @@ package com.alurwa.moviecatalogue.main
 
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
+import com.alurwa.moviecatalogue.boxlist.BoxListActivity
 import com.alurwa.moviecatalogue.detail.FilmDetailActivity
 import com.alurwa.moviecatalogue.utils.Constants
 import kotlinx.coroutines.flow.collectLatest
@@ -38,9 +39,16 @@ class FilmFragment : MovieFragmentAbstract() {
             .also { requireContext().startActivity(it) }
     }
 
-    override fun getMovies(sortEnum: MovieSortEnum) {
+    override fun navigateToList(which: Int) {
+        if (which == 0) {
+            Intent(requireContext(), BoxListActivity::class.java)
+                .also { requireContext().startActivity(it) }
+        }
+    }
+
+    override fun getCarousels() {
         lifecycleScope.launch {
-            viewModel.getFilm(sortEnum).collectLatest {
+            viewModel.filmMenu.collectLatest {
                 adapter.submitData(it)
             }
         }

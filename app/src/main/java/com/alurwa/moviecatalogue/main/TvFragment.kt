@@ -15,9 +15,13 @@ class TvFragment : MovieFragmentAbstract() {
             .also { requireContext().startActivity(it) }
     }
 
-    override fun getMovies(sortEnum: MovieSortEnum) {
+    override fun navigateToList(which: Int) {
+
+    }
+
+    override fun getCarousels() {
         lifecycleScope.launch {
-            viewModel.getTv(sortEnum).collectLatest {
+            viewModel.tvMenu.collectLatest {
                 adapter.submitData(it)
             }
         }

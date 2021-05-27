@@ -33,8 +33,8 @@ import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.databinding.RcvItemMovieBinding
 
 class MovieAdapter(
-        private val isShowPoster: Boolean,
-        private val onClickCallback: (id: Int) -> Unit
+        private val isShowPoster: Boolean = true,
+        private val onClickCallback: ((id: Int) -> Unit)?
 ) : PagingDataAdapter<Movie, MovieAdapter.ViewHolder>(COMPARATOR) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -73,7 +73,7 @@ class MovieAdapter(
 
                 cardRcvMovie.setOnClickListener {
                     if (item != null) {
-                        onClickCallback.invoke(item.id)
+                        onClickCallback?.invoke(item.id)
                     }
                 }
 
@@ -81,6 +81,7 @@ class MovieAdapter(
 
         }
     }
+
 
     companion object {
         val COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {

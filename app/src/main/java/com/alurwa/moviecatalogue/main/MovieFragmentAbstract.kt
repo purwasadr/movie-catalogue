@@ -7,17 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
-import androidx.recyclerview.widget.GridLayoutManager
-import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
-import com.alurwa.moviecatalogue.core.adapter.MovieLoadStateAdapter
-import com.alurwa.moviecatalogue.core.common.AutoFitGridLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.alurwa.moviecatalogue.core.adapter.NestedMovieAdapter
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
-import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.flow.filter
 
 /**
  * Created by Purwa Shadr Al 'urwa on 20/05/2021
@@ -31,8 +23,10 @@ abstract class MovieFragmentAbstract : Fragment() {
     val viewModel by activityViewModels<MainViewModel>()
 
     val adapter by lazy {
-        MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(requireContext())) {
-            navigateToDetail(it)
+        NestedMovieAdapter(lifecycleScope, { id ->
+            navigateToDetail(id)
+        }) { which ->
+            navigateToList(which)
         }
     }
 
@@ -56,8 +50,6 @@ abstract class MovieFragmentAbstract : Fragment() {
 
         setupAdapter()
 
-        setupChips()
-
         setupRecyclerView()
 
         setupSwipeToRefresh()
@@ -65,90 +57,45 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     abstract fun navigateToDetail(extraId: Int)
 
+    abstract fun navigateToList(which: Int)
+
     private fun setupAdapter() {
+        /* lifecycleScope.launchWhenCreated {
+             adapter.submitData(viewModel.getFilmNestedVp())
+         }
 
-        // Show swipe refresh when LoadState is Loading
-        lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow.collectLatest { loadStates ->
-                binding.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
-            }
-        }
+         */
 
-        lifecycleScope.launchWhenCreated {
-            adapter.loadStateFlow
-                // Only emit when REFRESH LoadState for RemoteMediator changes.
-                .distinctUntilChangedBy { it.refresh }
-                // Only react to cases where Remote REFRESH completes i.e., NotLoading.
-                .filter { it.refresh is LoadState.NotLoading }
-                .collect {
-                    binding.rcvMovie.scrollToPosition(0)
-                }
-        }
+        getCarousels()
+
     }
 
     private fun setupRecyclerView() {
 
-        // Create span for centering Progress Bar
-        /*  val gridLayoutManager = GridLayoutManager(requireContext(), 2)
-          gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-              override fun getSpanSize(position: Int): Int {
-                  val viewType = adapter.getItemViewType(position)
-                  return if (viewType == MovieAdapter.VIEW_TYPE_MOVIE) 1 else 2
-              }
-          }
-
-         */
-
-        val autoFitGridLayout = AutoFitGridLayout(requireContext(), 150)
-
-        autoFitGridLayout.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                val viewType = adapter.getItemViewType(position)
-                return if (viewType == MovieAdapter.VIEW_TYPE_MOVIE) 1 else autoFitGridLayout.spanCount
-            }
-        }
-
-        binding.rcvMovie.layoutManager = autoFitGridLayout
-        //   binding.rcvMovie.layoutManager = AutoFitGridLayout(requireContext(), 500)
+        binding.rcvMovie.layoutManager = LinearLayoutManager(context)
         binding.rcvMovie.setHasFixedSize(true)
 
-        binding.rcvMovie.adapter = adapter.withLoadStateHeaderAndFooter(
-            header = MovieLoadStateAdapter(),
-            footer = MovieLoadStateAdapter() {
-                adapter.retry()
-            }
-        )
-
-        if (viewModel.listState != null) {
-            binding.rcvMovie.layoutManager?.onRestoreInstanceState(viewModel.listState)
-            viewModel.listState = null
-        }
+        binding.rcvMovie.adapter = adapter
     }
 
-    private fun setupChips() {
-        val chipState = viewModel.chipState
-
-        binding.chipGroupMovie.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                binding.cpDiscovery.id -> getMovies(MovieSortEnum.DISCOVER)
-                binding.cpPopular.id -> getMovies(MovieSortEnum.POPULAR)
-                binding.cpUpcoming.id -> getMovies(MovieSortEnum.UPCOMING)
-                binding.cpTopRated.id -> getMovies(MovieSortEnum.TOP_RATING)
-            }
-        }
-
-        if (chipState != null) {
-            binding.chipGroupMovie.check(chipState)
-            viewModel.chipState = null
-        } else {
-            binding.chipGroupMovie.check(binding.cpDiscovery.id)
-        }
-    }
-
-    abstract fun getMovies(sortEnum: MovieSortEnum)
+    abstract fun getCarousels()
 
     private fun setupSwipeToRefresh() {
-        binding.swipeRefresh.setOnRefreshListener { adapter.refresh() }
+        binding.swipeRefresh.setOnRefreshListener {
+            /*   for (i in 0 until (adapter.itemCount - 1)) {
+                   val viewHolder = binding.rcvMovie.layoutManager?.findViewByPosition(i)
+
+                   viewHolder?.findViewById<TextView>(
+                       R.id.txt_title
+                   )?.text = "www"
+                   (viewHolder?.findViewById<RecyclerView>(
+                       R.id.rcv
+                   )?.adapter as? MovieAdapter)?.retry()
+               }
+
+             */
+            adapter.refreshMovie()
+        }
     }
 
     override fun onDestroyView() {

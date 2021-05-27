@@ -13,8 +13,6 @@ class MovieLoadStateAdapter(
         private val retryCallback: (() -> Unit)? = null
 ) : LoadStateAdapter<MovieLoadStateAdapter.ViewHolder>() {
 
-
-
     override fun onBindViewHolder(holder: ViewHolder, loadState: LoadState) {
         holder.bind(loadState)
     }
@@ -23,7 +21,9 @@ class MovieLoadStateAdapter(
         ViewHolder(NetworkStateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
 
-    inner class ViewHolder(private val binding: NetworkStateItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(
+        private val binding: NetworkStateItemBinding
+        ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(loadState: LoadState) {
             with(binding) {
                 pb.isVisible = loadState is LoadState.Loading

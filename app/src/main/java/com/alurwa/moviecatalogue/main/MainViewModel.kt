@@ -6,9 +6,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
+import com.alurwa.moviecatalogue.core.model.CarouselMenu
 import com.alurwa.moviecatalogue.core.model.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.*
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +32,111 @@ class MainViewModel @Inject constructor(
 
     var chipState: Int? = null
 
+    //  val filmMenu = repository.getFilmMenu()
+  //  val _currentFilmMenu: MutableStateFlow<List<PagingData<Movie>>> = MutableStateFlow(emptyList())
+
+  //  val currentFilmMenu: StateFlow<List<PagingData<Movie>>> get() = _currentFilmMenu
+
+    val filmMenu = flow {
+        val carouselList = listOf(
+            CarouselMenu(
+                "Discover",
+                repository.getFilms(MovieSortEnum.DISCOVER)
+                    .cachedIn(viewModelScope).first()
+            ),
+            CarouselMenu(
+                "Popular",
+                repository.getFilms(MovieSortEnum.POPULAR)
+                    .cachedIn(viewModelScope).first()
+            ),
+            CarouselMenu(
+                "Upcoming",
+                repository.getFilms(MovieSortEnum.UPCOMING)
+                    .cachedIn(viewModelScope).first()
+            ),
+            CarouselMenu(
+                "Top Rating",
+                repository.getFilms(MovieSortEnum.TOP_RATING)
+                    .cachedIn(viewModelScope).first()
+            )
+        )
+        Timber.d("Masuk Flow")
+
+        emit(carouselList)
+    }.shareIn(viewModelScope, SharingStarted.Lazily,1)
+
+    val tvMenu = flow {
+        val carouselList = listOf(
+            CarouselMenu(
+                "Discover",
+            repository.getTvList(MovieSortEnum.DISCOVER)
+                .cachedIn(viewModelScope).first()
+            ),
+            CarouselMenu(
+                "Popular",
+                repository.getTvList(MovieSortEnum.POPULAR)
+                .cachedIn(viewModelScope).first()
+            ),
+            CarouselMenu(
+                "Upcoming",
+            repository.getTvList(MovieSortEnum.UPCOMING)
+                .cachedIn(viewModelScope).first()
+            ),
+            CarouselMenu(
+                "Top Rating",
+            repository.getTvList(MovieSortEnum.TOP_RATING)
+                .cachedIn(viewModelScope).first()
+            )
+        )
+        Timber.d("Masuk Flow")
+
+        emit(carouselList)
+    }.shareIn(viewModelScope, SharingStarted.Lazily,1)
+
+   /* fun getFilmMenu() =
+        currentFilmMenu?.let {
+            currentFilmMenu
+        } ?: repository.getFilmMenu().also {
+            currentFilmMenu = it
+        }
+
+    */
+
+  /*  init {
+        viewModelScope.launch {
+            val aww = listOf(
+                async {
+                    repository.getFilms(MovieSortEnum.DISCOVER).cachedIn(viewModelScope).first()
+                },
+                async {
+                    repository.getFilms(MovieSortEnum.POPULAR).cachedIn(viewModelScope).first()
+                },
+                async {
+                    repository.getFilms(MovieSortEnum.TOP_RATING).cachedIn(viewModelScope).first()
+                })
+
+            val result = aww.awaitAll()
+
+            _currentFilmMenu.value = result
+        }
+    }
+
+   */
+
+    suspend fun getFilmNestedVp(): List<PagingData<Movie>> {
+        val aww = listOf(
+            viewModelScope.async {
+                repository.getFilms(MovieSortEnum.DISCOVER).cachedIn(viewModelScope).first()
+            },
+            viewModelScope.async {
+                repository.getFilms(MovieSortEnum.TOP_RATING).cachedIn(viewModelScope).first()
+            })
+
+        val result = aww.awaitAll()
+
+        return result
+    }
+
     fun getFilm(sortEnum: MovieSortEnum): Flow<PagingData<Movie>> {
         val movieResult = currentMovieResult
 
@@ -37,7 +146,7 @@ class MainViewModel @Inject constructor(
 
         currentSort = sortEnum
 
-        val newResult = repository.getDiscoveryMovies(sortEnum).cachedIn(viewModelScope)
+        val newResult = repository.getFilms(sortEnum).cachedIn(viewModelScope)
 
         currentMovieResult = newResult
 
