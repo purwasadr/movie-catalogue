@@ -38,13 +38,14 @@ class NestedMovieAdapter(
             }
         }
 
-        /*scope.launch {
-            arrayAdapter.forEachIndexed {  index, data ->
+       /* scope.launch {
+            arrayAdapter.forEachIndexed { index, data ->
                 data.submitData(vpData[index])
             }
         }
 
-         */
+        */
+
          carousels.clear()
          carousels.addAll(vpData)
 

@@ -33,8 +33,8 @@ class MovieCatalogueRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
-                enablePlaceholders = true,
-
+                enablePlaceholders = false,
+                initialLoadSize = 20,
                 maxSize = 60,
             ),
             pagingSourceFactory = { MoviePagingSource(apiService, sort = sort) }
@@ -45,7 +45,7 @@ class MovieCatalogueRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
-                enablePlaceholders = true,
+                enablePlaceholders = false,
 
                 maxSize = 60
             ),

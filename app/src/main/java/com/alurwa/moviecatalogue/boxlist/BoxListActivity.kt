@@ -46,6 +46,7 @@ class BoxListActivity : AppCompatActivity() {
             list.setHasFixedSize(true)
             list.layoutManager = flexboxLayoutManager
             list.adapter = adapter
+            list.itemAnimator = null
         }
     }
 
