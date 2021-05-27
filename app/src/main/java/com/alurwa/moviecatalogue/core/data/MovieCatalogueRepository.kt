@@ -29,7 +29,7 @@ class MovieCatalogueRepository @Inject constructor(
     private val apiService: ApiService,
 ) : IMovieCatalogueRepository {
 
-    override fun getDiscoveryMovies(sort: MovieSortEnum): Flow<PagingData<Movie>> {
+    override fun getFilms(sort: MovieSortEnum): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 20,

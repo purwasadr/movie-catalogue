@@ -4,14 +4,14 @@ import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.alurwa.moviecatalogue.core.data.source.remote.response.FilmDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 class RemoteDataSource @Inject constructor(
    private val apiService: ApiService,
-   private val dispatchers: CoroutineContext
+   private val dispatchers: CoroutineDispatcher
 ): IRemoteDataSource {
    /* suspend fun getAllMovies(): Flow<ApiResponse<List<MovieResponse>>> {
         return flow {

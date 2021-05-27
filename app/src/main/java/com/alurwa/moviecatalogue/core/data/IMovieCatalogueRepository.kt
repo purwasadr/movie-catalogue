@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface IMovieCatalogueRepository {
 
-    fun getDiscoveryMovies(sort: MovieSortEnum): Flow<PagingData<Movie>>
+    fun getFilms(sort: MovieSortEnum): Flow<PagingData<Movie>>
 
     fun getSearchMovies(query: String): Flow<PagingData<Movie>>
 
