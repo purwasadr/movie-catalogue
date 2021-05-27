@@ -3,6 +3,10 @@ package com.alurwa.moviecatalogue.detail
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.alurwa.moviecatalogue.core.adapter.CastAdapter
+import com.alurwa.moviecatalogue.core.common.SpacingDecoration
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.FilmDetail
 import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
@@ -25,7 +29,24 @@ class FilmDetailActivity : AppCompatActivity() {
 
         setupToolbar()
 
+        setupRecyclerView()
+
         getFilmDetail()
+    }
+
+    private fun setupRecyclerView() {
+
+        with(binding) {
+            rcvCast.layoutManager = LinearLayoutManager(
+                applicationContext,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            rcvCast.addItemDecoration(SpacingDecoration(8, RecyclerView.HORIZONTAL))
+            rcvCast.setHasFixedSize(true)
+
+        }
+
     }
 
     private fun getFilmDetail() {
@@ -53,7 +74,11 @@ class FilmDetailActivity : AppCompatActivity() {
     private fun setupMovieView(data: FilmDetail) {
         supportActionBar?.title = data.title
 
+
+
         binding.movieDetail = data
+
+        binding.rcvCast.adapter = CastAdapter(data.cast)
     }
 
     private fun setupToolbar() {
