@@ -35,17 +35,6 @@ class CastAdapter(
         fun bind(position: Int) {
             val cast = castList?.get(position)
 
-            // FIXME: Margin in end of item still bad
-       /*     if (castList?.size == (position + 1)) {
-                //  val cardCastParams = binding.cardCast.layoutParams as ViewGroup.MarginLayoutParams
-                //   cardCastParams.marginEnd = 16.px
-                binding.isLastItem = true
-            } else {
-                binding.isLastItem = false
-            }
-
-        */
-
             binding.cast = cast
         }
     }
