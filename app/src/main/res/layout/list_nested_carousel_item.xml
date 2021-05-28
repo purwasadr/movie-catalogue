@@ -17,7 +17,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
             android:text="Popular (Misal)"
@@ -28,9 +29,8 @@
             android:id="@+id/img_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             app:srcCompat="@drawable/ic_round_arrow_forward_24" />
     </LinearLayout>
 

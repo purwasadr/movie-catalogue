@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.core.adapter.NestedMovieAdapter
+import com.alurwa.moviecatalogue.core.common.SpacingDecoration
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 
 /**
@@ -72,10 +74,15 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     private fun setupRecyclerView() {
 
-        binding.rcvMovie.layoutManager = LinearLayoutManager(context)
-        binding.rcvMovie.setHasFixedSize(true)
+        with(binding) {
+            rcvMovie.layoutManager = LinearLayoutManager(context)
+            rcvMovie.setHasFixedSize(true)
+            rcvMovie.addItemDecoration(SpacingDecoration(12, RecyclerView.VERTICAL))
+            rcvMovie.recycledViewPool.setMaxRecycledViews(1, 0)
+            rcvMovie.adapter = adapter
 
-        binding.rcvMovie.adapter = adapter
+        }
+
     }
 
     abstract fun getCarousels()

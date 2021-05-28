@@ -31,23 +31,20 @@ class NestedMovieAdapter(
 
     fun submitData(vpData: List<CarouselMenu>) {
 
-
         arrayAdapter = Array(vpData.size) {
             MovieAdapter() { pos ->
                 onClickCallback.invoke(pos)
             }
         }
 
-       /* scope.launch {
-            arrayAdapter.forEachIndexed { index, data ->
-                data.submitData(vpData[index])
+        arrayAdapter.forEachIndexed { index, data ->
+            scope.launch {
+                data.submitData(vpData[index].pagingData)
             }
         }
 
-        */
-
-         carousels.clear()
-         carousels.addAll(vpData)
+        carousels.clear()
+        carousels.addAll(vpData)
 
         /*   arrayAdapter = Array(vpList.size) {
                MovieAdapter() {
@@ -58,6 +55,10 @@ class NestedMovieAdapter(
          */
 
         notifyDataSetChanged()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return 1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -100,11 +101,13 @@ class NestedMovieAdapter(
 
                 rcv.adapter = adapter
 
-                rcv.setRecycledViewPool(viewPool)
+             //   rcv.setRecycledViewPool(viewPool)
 
-                scope.launch() {
-                    adapter.submitData(carouselMenu.pagingData)
-                }
+                /*  scope.launch() {
+                      adapter.submitData(carouselMenu.pagingData)
+                  }
+
+                 */
 
                 llHeader.setOnClickListener {
                     onClickHeaderCallback.invoke(position)
