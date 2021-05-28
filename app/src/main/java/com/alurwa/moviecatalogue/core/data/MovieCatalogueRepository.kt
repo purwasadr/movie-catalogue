@@ -35,9 +35,8 @@ class MovieCatalogueRepository @Inject constructor(
                 pageSize = 20,
                 enablePlaceholders = false,
                 initialLoadSize = 20,
-                maxSize = 60,
             ),
-            pagingSourceFactory = { MoviePagingSource(apiService, sort = sort) }
+            pagingSourceFactory = { MoviePagingSource(apiService, sort) }
         ).flow
     }
 
@@ -46,10 +45,9 @@ class MovieCatalogueRepository @Inject constructor(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = false,
-
-                maxSize = 60
+                initialLoadSize = 20,
             ),
-            pagingSourceFactory = { MoviePagingSource(apiService, query = query) }
+            pagingSourceFactory = { MoviePagingSource(apiService, query) }
         ).flow
     }
 
@@ -82,8 +80,7 @@ class MovieCatalogueRepository @Inject constructor(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = false,
-
-                maxSize = 60
+                initialLoadSize = 20,
             ),
             pagingSourceFactory = {
                 TvPagingSource(
@@ -118,8 +115,7 @@ class MovieCatalogueRepository @Inject constructor(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = false,
-
-                maxSize = 60
+                initialLoadSize = 20,
             ),
             pagingSourceFactory = { TvPagingSource(apiService, query = query) }
         ).flow

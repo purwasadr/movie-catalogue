@@ -24,26 +24,32 @@
 
 package com.alurwa.moviecatalogue.core.data
 
-import android.util.Log
-import androidx.constraintlayout.solver.state.Dimension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.alurwa.moviecatalogue.core.data.source.remote.response.ListMovieResponse
 import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.utils.DataMapper
 import com.alurwa.moviecatalogue.main.MovieSortEnum
+import com.alurwa.moviecatalogue.utils.DataMapper
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
-import kotlin.IllegalArgumentException
 
-open class MoviePagingSource(
+class MoviePagingSource(
     private val apiService: ApiService,
     private val sort: MovieSortEnum? = null,
     private val query: String? = null
 ) : PagingSource<Int, Movie>() {
+
+    constructor(
+        apiService: ApiService,
+        sort: MovieSortEnum
+    ) : this(apiService, sort, null)
+
+    constructor(
+        apiService: ApiService,
+        query: String,
+    ) : this(apiService, null, query)
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val position = params.key ?: STARTING_PAGING_INDEX
@@ -51,7 +57,7 @@ open class MoviePagingSource(
             val response = when {
                 sort != null -> getMovieApi(sort, position)
                 query != null -> {
-                        apiService.searchMovies(query, position)
+                    apiService.searchMovies(query, position)
 
                 }
                 else -> {
@@ -90,13 +96,13 @@ open class MoviePagingSource(
         }
     }
 
-    open suspend fun getMovieApi(sort: MovieSortEnum, position: Int): ListMovieResponse {
+    private suspend fun getMovieApi(sort: MovieSortEnum, position: Int): ListMovieResponse {
         return if (sort == MovieSortEnum.DISCOVER) {
-                apiService.getDiscoverMovies(sort.code, position)
-            } else {
-                apiService.getMovies(sort.code, position)
-            }
+            apiService.getDiscoverMovies(sort.code, position)
+        } else {
+            apiService.getMovies(sort.code, position)
         }
+    }
 
     companion object {
         const val STARTING_PAGING_INDEX = 1
