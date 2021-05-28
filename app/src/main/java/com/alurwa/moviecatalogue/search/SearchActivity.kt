@@ -17,15 +17,16 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.R
-import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
+import com.alurwa.moviecatalogue.core.adapter.BoxMovieAdapter
 import com.alurwa.moviecatalogue.core.adapter.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
+import com.alurwa.moviecatalogue.core.common.SpacingDecoration
 import com.alurwa.moviecatalogue.databinding.ActivitySearchBinding
 import com.alurwa.moviecatalogue.detail.FilmDetailActivity
 import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
 import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
-import com.alurwa.moviecatalogue.utils.SharedPreferencesUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -44,9 +45,14 @@ class SearchActivity : AppCompatActivity() {
     private val mViewModel by viewModels<SearchViewModel>()
 
     private val mAdapter by lazy {
-        MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(applicationContext)) {
+        BoxMovieAdapter() {
             navigateToDetail(it)
         }
+       /* MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(applicationContext)) {
+            navigateToDetail(it)
+        }
+
+        */
     }
 
     private val filmOrTv: Int by lazy {
@@ -121,7 +127,8 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(savedInstanceState: Bundle?) {
         with(binding) {
-            rcvSearch.layoutManager = GridLayoutManager(applicationContext, 2)
+            rcvSearch.layoutManager = GridLayoutManager(applicationContext, 3)
+            rcvSearch.addItemDecoration(SpacingDecoration(16, RecyclerView.VERTICAL))
             rcvSearch.setHasFixedSize(true)
             rcvSearch.adapter = mAdapter.withLoadStateHeaderAndFooter(
                     header = MovieLoadStateAdapter(),
@@ -131,7 +138,7 @@ class SearchActivity : AppCompatActivity() {
             )
             if (savedInstanceState != null) {
 
-                rcvSearch.layoutManager?.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_STATE))
+               // rcvSearch.layoutManager?.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_STATE))
             }
         }
     }
@@ -222,8 +229,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(QUERY_STRING_STATE, currentQueryString)
-        outState.putParcelable(LIST_STATE, binding.rcvSearch.layoutManager?.onSaveInstanceState())
+     //   outState.putString(QUERY_STRING_STATE, currentQueryString)
+     //   outState.putParcelable(LIST_STATE, binding.rcvSearch.layoutManager?.onSaveInstanceState())
         super.onSaveInstanceState(outState)
     }
 

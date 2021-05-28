@@ -12,7 +12,9 @@ import com.alurwa.moviecatalogue.databinding.ListItemMovieBoxBinding
  * Created by Purwa Shadr Al 'urwa on 26/05/2021
  */
 
-class BoxMovieAdapter : PagingDataAdapter<Movie, BoxMovieAdapter.ViewHolder>(COMPARATOR) {
+class BoxMovieAdapter(
+    private val onItemClickCallback: (id: Int) -> Unit
+) : PagingDataAdapter<Movie, BoxMovieAdapter.ViewHolder>(COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -33,7 +35,14 @@ class BoxMovieAdapter : PagingDataAdapter<Movie, BoxMovieAdapter.ViewHolder>(COM
         private val binding: ListItemMovieBoxBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
-           binding.movie = getItem(position)
+            val itemData = getItem(position)
+
+            binding.movie = itemData
+            binding.root.setOnClickListener { _ ->
+                itemData?.apply {
+                    onItemClickCallback.invoke(id)
+                }
+            }
         }
     }
 

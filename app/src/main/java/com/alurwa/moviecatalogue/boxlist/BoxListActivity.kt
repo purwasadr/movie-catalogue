@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.core.adapter.BoxMovieAdapter
+import com.alurwa.moviecatalogue.core.common.SpacingDecoration
 import com.alurwa.moviecatalogue.databinding.ActivityBoxListBinding
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
@@ -21,7 +23,9 @@ class BoxListActivity : AppCompatActivity() {
     }
 
     private val adapter: BoxMovieAdapter by lazy {
-        BoxMovieAdapter()
+        BoxMovieAdapter() {
+
+        }
     }
 
     private val viewModel: BoxListViewModel by viewModels()
@@ -44,6 +48,7 @@ class BoxListActivity : AppCompatActivity() {
             flexboxLayoutManager.justifyContent = JustifyContent.SPACE_AROUND
 
             list.setHasFixedSize(true)
+            list.addItemDecoration(SpacingDecoration(16, RecyclerView.VERTICAL))
             list.layoutManager = flexboxLayoutManager
             list.adapter = adapter
             list.itemAnimator = null
