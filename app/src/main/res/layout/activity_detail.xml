@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout >
 
     <data>
         <variable
@@ -15,6 +13,9 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".detail.FilmDetailActivity">
@@ -50,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:scaleType="centerCrop"
+                    android:contentDescription="@string/desc_backdrop"
                     imageBackdrop="@{movieDetail.backdropPath}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@color/black" />
@@ -78,7 +80,8 @@
                         android:layout_width="100dp"
                         android:layout_height="150dp"
                         android:elevation="8dp"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/desc_poster_image"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
@@ -120,6 +123,7 @@
                     android:layout_height="16dp"
                     android:layout_marginStart="2dp"
                     android:scaleType="centerInside"
+                    android:contentDescription="@string/desc_runtime_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@id/txt_runtime"
                     app:layout_constraintTop_toTopOf="@+id/txt_runtime"
@@ -173,6 +177,7 @@
                     android:layout_marginStart="2dp"
                     android:scaleType="centerInside"
                     android:visibility="gone"
+                    android:contentDescription="@string/desc_date_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_date_lite"
                     app:layout_constraintStart_toEndOf="@+id/txt_date_lite"
                     app:layout_constraintTop_toTopOf="@+id/txt_date_lite"

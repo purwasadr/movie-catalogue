@@ -3,4 +3,10 @@
     <string name="movie">Film</string>
     <string name="tv">Tv</string>
     <string name="overview_txt">Overview</string>
+    <string name="desc_start_icon">Star Icon</string>
+    <string name="desc_poster_image_in_list">Poster image in list</string>
+    <string name="desc_backdrop">Backdrop image</string>
+    <string name="desc_poster_image">Poster Image</string>
+    <string name="desc_runtime_icon">Runtime icon</string>
+    <string name="desc_date_icon">Date icon</string>
 </resources>
