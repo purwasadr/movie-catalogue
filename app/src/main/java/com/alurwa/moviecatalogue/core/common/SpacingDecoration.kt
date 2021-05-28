@@ -55,11 +55,11 @@ class SpacingDecoration(
                     outRect.top = padding
                 } else {
                     outRect.bottom = padding
-                    outRect.top = padding
                 }
             } else if (position == itemCount - 1) {
                 if (!inverted) {
                     outRect.bottom = padding
+                    outRect.top = padding
                 } else {
                     outRect.bottom = padding
                     outRect.top = padding
