@@ -13,7 +13,6 @@ import com.alurwa.moviecatalogue.core.model.Cast
 import com.alurwa.moviecatalogue.core.model.Genre
 import com.alurwa.moviecatalogue.utils.NumberFormatUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
@@ -25,7 +24,6 @@ object BindingAdapters {
         if (!posterPath.isNullOrEmpty()) {
             Glide.with(imageView.context)
                     .load(Uri.parse("https://image.tmdb.org/t/p/w185$posterPath"))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageView)
         }
     }
