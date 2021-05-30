@@ -196,6 +196,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         with(searchView) {
+            maxWidth = 10000
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             queryHint = "Masukkan teks"
             inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
