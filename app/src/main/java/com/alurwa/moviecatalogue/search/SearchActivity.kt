@@ -24,8 +24,9 @@ import com.alurwa.moviecatalogue.core.adapter.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.core.common.SpacingDecoration
 import com.alurwa.moviecatalogue.databinding.ActivitySearchBinding
-import com.alurwa.moviecatalogue.detail.FilmDetailActivity
+import com.alurwa.moviecatalogue.filmdetail.FilmDetailActivity
 import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
+import com.alurwa.moviecatalogue.utils.CommonUtil
 import com.alurwa.moviecatalogue.utils.Constants.EXTRA_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -34,6 +35,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
@@ -44,15 +46,15 @@ class SearchActivity : AppCompatActivity() {
 
     private val mViewModel by viewModels<SearchViewModel>()
 
-    private val mAdapter by lazy {
+    private val adapter by lazy {
         BoxMovieAdapter() {
             navigateToDetail(it)
         }
-       /* MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(applicationContext)) {
-            navigateToDetail(it)
-        }
+        /* MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(applicationContext)) {
+             navigateToDetail(it)
+         }
 
-        */
+         */
     }
 
     private val filmOrTv: Int by lazy {
@@ -81,16 +83,16 @@ class SearchActivity : AppCompatActivity() {
             } else {
 
                 // FIXME: Cannot save state
-                currentQueryString = savedInstanceState.getString(QUERY_STRING_STATE, "")
-                title = currentQueryString
-              //  searchMovies(currentQueryString)
+              ///  currentQueryString = savedInstanceState.getString(QUERY_STRING_STATE, "")
+               // title = currentQueryString
+                //  searchMovies(currentQueryString)
             }
         }
     }
 
     private fun setupAdapter() {
         lifecycleScope.launchWhenCreated {
-            mAdapter.loadStateFlow.collectLatest { loadStates ->
+            adapter.loadStateFlow.collectLatest { loadStates ->
                 if (loadStates.refresh is LoadState.Loading) {
                     binding.pb.isVisible = true
                     binding.rcvSearch.isVisible = false
@@ -100,45 +102,72 @@ class SearchActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launchWhenCreated {
-            mAdapter.loadStateFlow
-                    // Only emit when REFRESH LoadState for RemoteMediator changes.
-                    .distinctUntilChangedBy { it.refresh }
-                    // Only react to cases where Remote REFRESH completes i.e., NotLoading or Error.
-                    .filter { it.refresh is LoadState.NotLoading || it.refresh is LoadState.Error }
-                    .collect {
-                        val state = it.refresh
-                        if (state is LoadState.NotLoading) {
-                            binding.rcvSearch.scrollToPosition(0)
-                            binding.rcvSearch.isVisible = true
-                            binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() &&
-                                    mAdapter.itemCount == 0)
-                        } else if (state is LoadState.Error) {
-                            Toast.makeText(
-                                    applicationContext,
-                                    "Error bro ${state.error.message}",
-                                    Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        binding.pb.isVisible = false
+            adapter.loadStateFlow
+                // Only emit when REFRESH LoadState for RemoteMediator changes.
+                .distinctUntilChangedBy { it.refresh }
+                // Only react to cases where Remote REFRESH completes i.e., NotLoading or Error.
+                .filter { it.refresh is LoadState.NotLoading || it.refresh is LoadState.Error }
+                .collect {
+                    val state = it.refresh
+                    if (state is LoadState.NotLoading) {
+                        binding.rcvSearch.scrollToPosition(0)
+                        binding.rcvSearch.isVisible = true
+                        binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() &&
+                                adapter.itemCount == 0)
+                    } else if (state is LoadState.Error) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Error bro ${state.error.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
+                    binding.pb.isVisible = false
+                }
         }
     }
 
     private fun setupRecyclerView(savedInstanceState: Bundle?) {
+
+        // set Column width with total view with dp and margin which you want
+        val noOfColumn = CommonUtil.calculateNoOfColumns(
+            applicationContext,
+            132F
+        )
+
+        val gridLayoutManager = GridLayoutManager(
+            applicationContext,
+
+
+            noOfColumn
+        )
+
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                val viewType = adapter.getItemViewType(position)
+                return if (viewType == BoxMovieAdapter.VIEW_TYPE_MOVIE) 1 else noOfColumn
+
+            }
+        }
+
         with(binding) {
-            rcvSearch.layoutManager = GridLayoutManager(applicationContext, 3)
-            rcvSearch.addItemDecoration(SpacingDecoration(16, RecyclerView.VERTICAL))
+            rcvSearch.layoutManager = gridLayoutManager
+            rcvSearch.addItemDecoration(
+                SpacingDecoration(16,
+                    16,
+                    RecyclerView.VERTICAL
+                )
+            )
             rcvSearch.setHasFixedSize(true)
-            rcvSearch.adapter = mAdapter.withLoadStateHeaderAndFooter(
-                    header = MovieLoadStateAdapter(),
-                    footer = MovieLoadStateAdapter() {
-                        mAdapter.retry()
-                    }
+            rcvSearch.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = MovieLoadStateAdapter(),
+                footer = MovieLoadStateAdapter() {
+                    adapter.retry()
+                }
             )
             if (savedInstanceState != null) {
 
-               // rcvSearch.layoutManager?.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_STATE))
+                // rcvSearch.layoutManager?.onRestoreInstanceState(savedInstanceState.getParcelable(LIST_STATE))
             }
         }
     }
@@ -147,7 +176,7 @@ class SearchActivity : AppCompatActivity() {
         Intent().putExtra(EXTRA_ID, extraId)
             .also {
                 if (filmOrTv == FilmOrTv.FILM.code) {
-                    it.setClass(this,  FilmDetailActivity::class.java)
+                    it.setClass(this, FilmDetailActivity::class.java)
 
                 } else {
                     it.setClass(this, TvDetailActivity::class.java)
@@ -214,9 +243,9 @@ class SearchActivity : AppCompatActivity() {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             if (query.isNotEmpty()) {
-                    mViewModel.searchMovie(filmOrTv, query).collectLatest {
-                        mAdapter.submitData(it)
-                    }
+                mViewModel.searchMovie(filmOrTv, query).collectLatest {
+                    adapter.submitData(it)
+                }
             }
         }
     }
@@ -224,13 +253,13 @@ class SearchActivity : AppCompatActivity() {
     private fun hideKeyboard(context: Context, focus: View?) {
         if (focus != null) {
             (context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                    .hideSoftInputFromWindow(focus.windowToken, 0)
+                .hideSoftInputFromWindow(focus.windowToken, 0)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-     //   outState.putString(QUERY_STRING_STATE, currentQueryString)
-     //   outState.putParcelable(LIST_STATE, binding.rcvSearch.layoutManager?.onSaveInstanceState())
+        //   outState.putString(QUERY_STRING_STATE, currentQueryString)
+        //   outState.putParcelable(LIST_STATE, binding.rcvSearch.layoutManager?.onSaveInstanceState())
         super.onSaveInstanceState(outState)
     }
 
