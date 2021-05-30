@@ -1,4 +1,4 @@
-package com.alurwa.moviecatalogue.detail
+package com.alurwa.moviecatalogue.filmdetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle

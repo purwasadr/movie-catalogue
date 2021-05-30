@@ -1,4 +1,4 @@
-package com.alurwa.moviecatalogue.detail
+package com.alurwa.moviecatalogue.filmdetail
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -42,11 +42,14 @@ class FilmDetailActivity : AppCompatActivity() {
                 LinearLayoutManager.HORIZONTAL,
                 false
             )
-            rcvCast.addItemDecoration(SpacingDecoration(8, RecyclerView.HORIZONTAL))
+            rcvCast.addItemDecoration(
+                SpacingDecoration(16,
+                    8,
+                    RecyclerView.HORIZONTAL
+                )
+            )
             rcvCast.setHasFixedSize(true)
-
         }
-
     }
 
     private fun getFilmDetail() {
