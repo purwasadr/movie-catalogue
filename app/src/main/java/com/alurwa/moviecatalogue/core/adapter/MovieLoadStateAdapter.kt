@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.databinding.NetworkStateItemBinding
 
 class MovieLoadStateAdapter(
-        private val retryCallback: (() -> Unit)? = null
+    private val retryCallback: (() -> Unit)? = null
 ) : LoadStateAdapter<MovieLoadStateAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, loadState: LoadState) {
@@ -29,7 +29,7 @@ class MovieLoadStateAdapter(
 
     inner class ViewHolder(
         private val binding: NetworkStateItemBinding
-        ) : RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(loadState: LoadState) {
             with(binding) {
                 pb.isVisible = loadState is LoadState.Loading
