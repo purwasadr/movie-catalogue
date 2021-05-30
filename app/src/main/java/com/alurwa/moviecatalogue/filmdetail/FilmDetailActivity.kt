@@ -9,15 +9,15 @@ import com.alurwa.moviecatalogue.core.adapter.CastAdapter
 import com.alurwa.moviecatalogue.core.common.SpacingDecoration
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.FilmDetail
-import com.alurwa.moviecatalogue.databinding.ActivityDetailBinding
+import com.alurwa.moviecatalogue.databinding.ActivityFilmDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
 class FilmDetailActivity : AppCompatActivity() {
 
-    private val binding: ActivityDetailBinding by lazy {
-        ActivityDetailBinding.inflate(layoutInflater)
+    private val binding: ActivityFilmDetailBinding by lazy {
+        ActivityFilmDetailBinding.inflate(layoutInflater)
     }
 
     private val mViewModel: FilmDetailViewModel by viewModels()
