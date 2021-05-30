@@ -18,7 +18,13 @@ class MovieLoadStateAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): ViewHolder =
-        ViewHolder(NetworkStateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        ViewHolder(
+            NetworkStateItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
 
     inner class ViewHolder(
@@ -27,8 +33,10 @@ class MovieLoadStateAdapter(
         fun bind(loadState: LoadState) {
             with(binding) {
                 pb.isVisible = loadState is LoadState.Loading
-                parentError.visibility = if (loadState is LoadState.Error) View.VISIBLE else View.INVISIBLE
-                txtError.isVisible = !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()
+                parentError.visibility = if (loadState is LoadState.Error)
+                    View.VISIBLE else View.INVISIBLE
+                txtError.isVisible =
+                    !(loadState as? LoadState.Error)?.error?.message.isNullOrBlank()
                 txtError.text = (loadState as? LoadState.Error)?.error?.message
                 btnRetry.setOnClickListener {
                     retryCallback?.invoke()
