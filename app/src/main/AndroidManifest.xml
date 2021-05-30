@@ -19,7 +19,7 @@
             android:name=".tvdetail.TvDetailActivity"
             android:theme="@style/Theme.Moviecatalogue.NoActionBar" />
         <activity
-            android:name=".detail.FilmDetailActivity"
+            android:name=".filmdetail.FilmDetailActivity"
             android:theme="@style/Theme.Moviecatalogue.NoActionBar.Detail" />
         <activity
             android:name=".search.SearchActivity"
