@@ -1,6 +1,6 @@
 package com.alurwa.moviecatalogue.core.common
 
-import android.content.res.Resources
+import android.content.Context
 import android.graphics.Rect
 import android.util.TypedValue
 import android.view.View
@@ -11,18 +11,20 @@ import androidx.recyclerview.widget.RecyclerView
  */
 
 class SpacingDecoration(
-    val paddingg: Int,
+    private val contentPaddingStartEnd: Int,
+    private val itemPadding: Int,
     private val orientation: Int,
     private val inverted: Boolean = false
 ) : RecyclerView.ItemDecoration() {
 
-    private val padding = paddingg.dpToPx
 
     override fun getItemOffsets(
         outRect: Rect, view: View, parent: RecyclerView,
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
+        val itemPadding = dpToPx(parent.context, this.itemPadding)
+        val contentPaddingStartEnd = dpToPx(parent.context, this.contentPaddingStartEnd)
 
         val layoutManager: RecyclerView.LayoutManager = parent.layoutManager!!
         val layoutParams = view.layoutParams as RecyclerView.LayoutParams
@@ -34,44 +36,58 @@ class SpacingDecoration(
         }
 
         if (orientation == RecyclerView.HORIZONTAL) {
-            if (position >= 0 && position < itemCount - 1) {
+            if (position == 0) {
                 if (!inverted) {
-                    outRect.left = padding
+                    outRect.left = contentPaddingStartEnd
                 } else {
-                    outRect.right = padding
+                    outRect.right = contentPaddingStartEnd
+                }
+            } else if (position > 0 && position < itemCount - 1) {
+                if (!inverted) {
+                    outRect.left = itemPadding
+                } else {
+                    outRect.right = itemPadding
                 }
             } else if (position == itemCount - 1) {
                 if (!inverted) {
-                    outRect.left = padding
-                    outRect.right = padding
+                    outRect.left = itemPadding
+                    outRect.right = contentPaddingStartEnd
                 } else {
-                    outRect.left = padding
-                    outRect.right = padding
+                    outRect.left = contentPaddingStartEnd
+                    outRect.right = itemPadding
                 }
             }
         } else {
-            if (position >= 0 && position < itemCount - 1) {
+            if (position == 0) {
                 if (!inverted) {
-                    outRect.top = padding
+                    outRect.top = contentPaddingStartEnd
                 } else {
-                    outRect.bottom = padding
+                    outRect.bottom = contentPaddingStartEnd
+                }
+            } else if (position > 0 && position < itemCount - 1) {
+                if (!inverted) {
+                    outRect.top = itemPadding
+                } else {
+                    outRect.bottom = itemPadding
                 }
             } else if (position == itemCount - 1) {
                 if (!inverted) {
-                    outRect.bottom = padding
-                    outRect.top = padding
+                    outRect.bottom = contentPaddingStartEnd
+                    outRect.top = itemPadding
                 } else {
-                    outRect.bottom = padding
-                    outRect.top = padding
+                    outRect.bottom = itemPadding
+                    outRect.top = contentPaddingStartEnd
                 }
             }
         }
     }
 
-    private val Int.dpToPx: Int
-        get() = TypedValue.applyDimension(
+    private fun dpToPx(context: Context, dp: Int): Int =
+        TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            this.toFloat(),
-            Resources.getSystem().displayMetrics
+            dp.toFloat(),
+
+            // Avoid using system resource
+            context.resources.displayMetrics
         ).toInt()
 }
