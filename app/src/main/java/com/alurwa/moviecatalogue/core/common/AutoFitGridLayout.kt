@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 
 
-class AutoFitGridLayout(private val context: Context,
-                        private var columnWidth: Int
-                        ) : GridLayoutManager(context, 2) {
+class AutoFitGridLayout(
+    private val context: Context,
+    private var columnWidth: Int
+) : GridLayoutManager(context, 2) {
     private var columnWidthChanged = true
 
     init {
@@ -17,7 +18,8 @@ class AutoFitGridLayout(private val context: Context,
     }
 
     fun setColumnWidth(newColumnWidth: Int) {
-        val result = newColumnWidth * context.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT
+        val result =
+            newColumnWidth * context.resources.displayMetrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT
 
         if (result > 0 && result != columnWidth) {
             columnWidth = result

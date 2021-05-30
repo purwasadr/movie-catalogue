@@ -23,7 +23,7 @@ class NestedMovieAdapter(
     private val onClickHeaderCallback: (which: Int) -> Unit
 ) : RecyclerView.Adapter<NestedMovieAdapter.ViewHolder>() {
 
-    private val viewPool = RecyclerView.RecycledViewPool()
+  //  private val viewPool = RecyclerView.RecycledViewPool()
 
     private lateinit var arrayAdapter: Array<MovieAdapter>
 
@@ -58,7 +58,7 @@ class NestedMovieAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return 1
+        return 0
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -101,7 +101,7 @@ class NestedMovieAdapter(
 
                 rcv.adapter = adapter
 
-             //   rcv.setRecycledViewPool(viewPool)
+              //  rcv.setRecycledViewPool(viewPool)
 
                 /*  scope.launch() {
                       adapter.submitData(carouselMenu.pagingData)

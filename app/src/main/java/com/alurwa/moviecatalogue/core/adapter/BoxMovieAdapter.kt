@@ -31,6 +31,14 @@ class BoxMovieAdapter(
         holder.bind(position)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (position == itemCount) {
+            VIEW_TYPE_NETWORK
+        } else {
+            VIEW_TYPE_MOVIE
+        }
+    }
+
     inner class ViewHolder(
         private val binding: ListItemMovieBoxBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -54,5 +62,9 @@ class BoxMovieAdapter(
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
                 oldItem.id == newItem.id
         }
+
+        const val VIEW_TYPE_MOVIE = 1
+
+        const val VIEW_TYPE_NETWORK = 2
     }
 }
