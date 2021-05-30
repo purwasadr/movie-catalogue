@@ -27,7 +27,8 @@ package com.alurwa.moviecatalogue.main
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import com.alurwa.moviecatalogue.boxlist.BoxListActivity
-import com.alurwa.moviecatalogue.detail.FilmDetailActivity
+import com.alurwa.moviecatalogue.core.common.FilmOrTv
+import com.alurwa.moviecatalogue.filmdetail.FilmDetailActivity
 import com.alurwa.moviecatalogue.utils.Constants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,10 +41,18 @@ class FilmFragment : MovieFragmentAbstract() {
     }
 
     override fun navigateToList(which: Int) {
-        if (which == 0) {
-            Intent(requireContext(), BoxListActivity::class.java)
-                .also { requireContext().startActivity(it) }
+        val movieSortEnum = when (which) {
+            0 -> MovieSortEnum.DISCOVER.name
+            1 -> MovieSortEnum.POPULAR.name
+            2 -> MovieSortEnum.UPCOMING.name
+            3 -> MovieSortEnum.TOP_RATING.name
+            else -> throw IllegalArgumentException("no found in moviesortenum")
         }
+
+        Intent(requireContext(), BoxListActivity::class.java)
+            .putExtra(BoxListActivity.EXTRA_FILM_OR_MOVIE, FilmOrTv.FILM.code)
+            .putExtra(BoxListActivity.EXTRA_MOVIE_SORT, movieSortEnum)
+            .also { requireContext().startActivity(it) }
     }
 
     override fun getCarousels() {
