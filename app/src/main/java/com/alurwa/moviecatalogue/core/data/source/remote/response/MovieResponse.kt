@@ -7,14 +7,14 @@ data class MovieResponse(
         val id: Int,
 
         @field:SerializedName("title")
-        val title: String,
+        val title: String?,
 
         @field:SerializedName("release_date")
-        val releaseDate: String,
+        val releaseDate: String?,
 
         @field:SerializedName("poster_path")
-        val posterPath: String,
+        val posterPath: String?,
 
         @field:SerializedName("vote_average")
-        val voteAverage: Number
+        val voteAverage: Number?
 )

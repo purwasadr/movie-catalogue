@@ -7,7 +7,7 @@ data class CastResponse(
         val name: String,
 
         @field:SerializedName("profile_path")
-        val profilePath: String,
+        val profilePath: String?,
 
         @field:SerializedName("character")
         val character: String
