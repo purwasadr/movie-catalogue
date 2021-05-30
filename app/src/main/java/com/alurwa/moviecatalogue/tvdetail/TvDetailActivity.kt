@@ -3,6 +3,10 @@ package com.alurwa.moviecatalogue.tvdetail
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.alurwa.moviecatalogue.core.adapter.CastAdapter
+import com.alurwa.moviecatalogue.core.common.SpacingDecoration
 import com.alurwa.moviecatalogue.core.data.Resource
 import com.alurwa.moviecatalogue.core.model.TvDetail
 import com.alurwa.moviecatalogue.databinding.ActivityTvDetailBinding
@@ -24,6 +28,8 @@ class TvDetailActivity : AppCompatActivity() {
 
         setupToolbar()
 
+        setupRecyclerView()
+
         observeTv()
     }
 
@@ -33,6 +39,22 @@ class TvDetailActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = ""
 
+        }
+    }
+    private fun setupRecyclerView() {
+        with(binding) {
+            rcvCast.layoutManager = LinearLayoutManager(
+                applicationContext,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            rcvCast.addItemDecoration(
+                SpacingDecoration(16,
+                    8,
+                    RecyclerView.HORIZONTAL
+                )
+            )
+            rcvCast.setHasFixedSize(true)
         }
     }
 
@@ -60,6 +82,8 @@ class TvDetailActivity : AppCompatActivity() {
     private fun setupTvView(data: TvDetail) {
         supportActionBar?.title = data.name
         binding.tvDetail = data
+
+        binding.rcvCast.adapter = CastAdapter(data.cast)
     }
 
     override fun onSupportNavigateUp(): Boolean {
