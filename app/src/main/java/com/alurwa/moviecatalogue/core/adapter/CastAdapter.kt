@@ -1,6 +1,5 @@
 package com.alurwa.moviecatalogue.core.adapter
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,9 +9,6 @@ import com.alurwa.moviecatalogue.databinding.RcvItemCastBinding
 class CastAdapter(
     private val castList: List<Cast>?
 ) : RecyclerView.Adapter<CastAdapter.ViewHolder>() {
-
-    val Int.px: Int
-        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
