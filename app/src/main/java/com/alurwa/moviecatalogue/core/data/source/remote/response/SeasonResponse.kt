@@ -27,24 +27,24 @@ package com.alurwa.moviecatalogue.core.data.source.remote.response
 import com.google.gson.annotations.SerializedName
 
 data class SeasonResponse(
-        @field:SerializedName("id")
-        val id: Int,
+    @field:SerializedName("id")
+    val id: Int,
 
-        @field:SerializedName("name")
-        val name: String,
+    @field:SerializedName("name")
+    val name: String,
 
-        @field:SerializedName("overview")
-        val overview: String,
+    @field:SerializedName("overview")
+    val overview: String,
 
-        @field:SerializedName("poster_path")
-        val posterPath: String,
+    @field:SerializedName("poster_path")
+    val posterPath: String,
 
-        @field:SerializedName("air_date")
-        val airDate: String,
+    @field:SerializedName("air_date")
+    val airDate: String,
 
-        @field:SerializedName("episode_count")
-        val episodeCount: Int,
+    @field:SerializedName("episode_count")
+    val episodeCount: Int,
 
-        @field:SerializedName("season_number")
-        val seasonNumber: Int
+    @field:SerializedName("season_number")
+    val seasonNumber: Int
 )

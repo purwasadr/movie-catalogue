@@ -24,19 +24,6 @@
 
 package com.alurwa.moviecatalogue.core.data
 
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
-import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
-import com.alurwa.moviecatalogue.core.data.source.remote.response.ListMovieResponse
-import com.alurwa.moviecatalogue.core.data.source.remote.response.ListResponse
-import com.alurwa.moviecatalogue.core.model.Movie
-import com.alurwa.moviecatalogue.core.model.Tv
-import com.alurwa.moviecatalogue.utils.DataMapper
-import retrofit2.HttpException
-import timber.log.Timber
-import java.io.IOException
-
-
 /* abstract class AppPagingSource<Response, DataList : Any> : PagingSource<Int, DataList>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DataList> {

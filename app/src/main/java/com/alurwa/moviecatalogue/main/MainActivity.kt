@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupBottomNavigation(savedInstanceState)
-
     }
 
     private fun setupBottomNavigation(savedInstanceState: Bundle?) {
@@ -118,7 +117,6 @@ class MainActivity : AppCompatActivity() {
                     pref.edit {
                         putBoolean(Constants.SharedPreference.IS_SHOW_POSTER, true)
                     }
-
                 } else {
                     pref.edit {
                         putBoolean(Constants.SharedPreference.IS_SHOW_POSTER, false)

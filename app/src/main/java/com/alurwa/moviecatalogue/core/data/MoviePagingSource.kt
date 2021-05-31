@@ -58,7 +58,6 @@ class MoviePagingSource(
                 sort != null -> getMovieApi(sort, position)
                 query != null -> {
                     apiService.searchMovies(query, position)
-
                 }
                 else -> {
                     throw IllegalArgumentException()
@@ -78,11 +77,9 @@ class MoviePagingSource(
                 prevKey = if (position == 1) null else position - 1,
                 nextKey = nextKey
             )
-
         } catch (ex: IOException) {
             Timber.d(ex)
             return LoadResult.Error(ex)
-
         } catch (ex: HttpException) {
             Timber.d(ex)
             return LoadResult.Error(ex)

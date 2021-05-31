@@ -33,8 +33,8 @@ import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.databinding.RcvItemMovieBinding
 
 class MovieAdapter(
-        private val isShowPoster: Boolean = true,
-        private val onClickCallback: ((id: Int) -> Unit)?
+    private val isShowPoster: Boolean = true,
+    private val onClickCallback: ((id: Int) -> Unit)?
 ) : PagingDataAdapter<Movie, MovieAdapter.ViewHolder>(COMPARATOR) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -51,18 +51,18 @@ class MovieAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-                RcvItemMovieBinding.inflate(
-                        LayoutInflater.from(
-                                parent.context
-                        ),
-                        parent,
-                        false
-                )
+            RcvItemMovieBinding.inflate(
+                LayoutInflater.from(
+                    parent.context
+                ),
+                parent,
+                false
+            )
         )
     }
 
     inner class ViewHolder(
-            private val binding: RcvItemMovieBinding
+        private val binding: RcvItemMovieBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = getItem(position)
@@ -76,20 +76,17 @@ class MovieAdapter(
                         onClickCallback?.invoke(item.id)
                     }
                 }
-
             }
-
         }
     }
-
 
     companion object {
         val COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
             override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                    oldItem == newItem
+                oldItem == newItem
 
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                    oldItem.id == newItem.id
+                oldItem.id == newItem.id
         }
 
         const val VIEW_TYPE_MOVIE = 100

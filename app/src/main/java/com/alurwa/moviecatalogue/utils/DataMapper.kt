@@ -1,3 +1,27 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2021 Purwa Shadr Al 'urwa
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.alurwa.moviecatalogue.utils
 
 import com.alurwa.moviecatalogue.core.data.source.local.entity.FilmDetailEntity
@@ -6,7 +30,12 @@ import com.alurwa.moviecatalogue.core.data.source.remote.response.FilmDetailResp
 import com.alurwa.moviecatalogue.core.data.source.remote.response.MovieResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvResponse
-import com.alurwa.moviecatalogue.core.model.*
+import com.alurwa.moviecatalogue.core.model.Cast
+import com.alurwa.moviecatalogue.core.model.FilmDetail
+import com.alurwa.moviecatalogue.core.model.Genre
+import com.alurwa.moviecatalogue.core.model.Movie
+import com.alurwa.moviecatalogue.core.model.Season
+import com.alurwa.moviecatalogue.core.model.TvDetail
 
 object DataMapper {
     fun movieResponseToDomain(input: List<MovieResponse>): List<Movie> {
@@ -34,28 +63,27 @@ object DataMapper {
     }
 
     fun filmDetailEntityToDomain(input: FilmDetailEntity?): FilmDetail? {
-       return if (input == null) {
-           null
-       } else {
-           FilmDetail(
-               id = input.id,
-               title = input.title,
-               overview = input.overview,
-               posterPath = input.posterPath,
-               backdropPath = input.backdropPath,
-               releaseDate = input.releaseDate,
-               revenue = input.revenue,
-               budget = input.budget,
-               originalLanguage = input.originalLanguage,
-               runtime = input.runtime,
-               status = input.status,
-               voteAverage = input.voteAverage,
-               genres = input.genres,
-               cast = input.cast
-           )
-       }
+        return if (input == null) {
+            null
+        } else {
+            FilmDetail(
+                id = input.id,
+                title = input.title,
+                overview = input.overview,
+                posterPath = input.posterPath,
+                backdropPath = input.backdropPath,
+                releaseDate = input.releaseDate,
+                revenue = input.revenue,
+                budget = input.budget,
+                originalLanguage = input.originalLanguage,
+                runtime = input.runtime,
+                status = input.status,
+                voteAverage = input.voteAverage,
+                genres = input.genres,
+                cast = input.cast
+            )
+        }
     }
-
 
     fun filmDetailResponseToEntity(input: FilmDetailResponse): FilmDetailEntity =
         FilmDetailEntity(
@@ -79,7 +107,6 @@ object DataMapper {
             }
         )
 
-
     fun movieDetailResponseToDomain(input: FilmDetailResponse) =
         FilmDetail(
             id = input.id,
@@ -102,7 +129,7 @@ object DataMapper {
             }
         )
 
-    //FIXME: this mapper not good cause use different name properties
+    // FIXME: this mapper not good cause use different name properties
     fun tvListResponseToDomain(input: List<TvResponse>): List<Movie> {
         return input.map {
             Movie(
@@ -138,8 +165,6 @@ object DataMapper {
                     it.airDate, it.episodeCount,
                     it.seasonNumber
                 )
-
-
             },
             cast = input.credits.cast.map {
                 Cast(it.name, it.profilePath, it.character)
@@ -169,8 +194,6 @@ object DataMapper {
                     it.airDate, it.episodeCount,
                     it.seasonNumber
                 )
-
-
             },
             cast = input.credits.cast.map {
                 Cast(it.name, it.profilePath, it.character)
@@ -196,5 +219,4 @@ object DataMapper {
                 cast = cast,
             )
         }
-
 }

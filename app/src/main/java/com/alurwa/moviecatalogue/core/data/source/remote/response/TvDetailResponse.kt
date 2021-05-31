@@ -27,45 +27,45 @@ package com.alurwa.moviecatalogue.core.data.source.remote.response
 import com.google.gson.annotations.SerializedName
 
 data class TvDetailResponse(
-        @field:SerializedName("id")
-        val id: Int,
+    @field:SerializedName("id")
+    val id: Int,
 
-        @field:SerializedName("name")
-        val name: String,
+    @field:SerializedName("name")
+    val name: String,
 
-        @field:SerializedName("overview")
-        val overview: String,
+    @field:SerializedName("overview")
+    val overview: String,
 
-        @field:SerializedName("poster_path")
-        val posterPath: String,
+    @field:SerializedName("poster_path")
+    val posterPath: String,
 
-        @field:SerializedName("backdrop_path")
-        val backdropPath: String,
+    @field:SerializedName("backdrop_path")
+    val backdropPath: String,
 
-        @field:SerializedName("first_air_date")
-        val firstAirDate: String,
+    @field:SerializedName("first_air_date")
+    val firstAirDate: String,
 
-        @field:SerializedName("original_language")
-        val originalLanguage: String,
+    @field:SerializedName("original_language")
+    val originalLanguage: String,
 
-        @field:SerializedName("original_name")
-        val originalName: String,
+    @field:SerializedName("original_name")
+    val originalName: String,
 
-        @field:SerializedName("status")
-        val status: String,
+    @field:SerializedName("status")
+    val status: String,
 
-        @field:SerializedName("vote_average")
-        val voteAverage: Number,
+    @field:SerializedName("vote_average")
+    val voteAverage: Number,
 
-        @field:SerializedName("type")
-        val type: String,
+    @field:SerializedName("type")
+    val type: String,
 
-        @field:SerializedName("genres")
-        val genres: List<GenreResponse>,
+    @field:SerializedName("genres")
+    val genres: List<GenreResponse>,
 
-        @field:SerializedName("seasons")
-        val seasons: List<SeasonResponse>,
+    @field:SerializedName("seasons")
+    val seasons: List<SeasonResponse>,
 
-        @field:SerializedName("credits")
-        val credits: CreditResponse
+    @field:SerializedName("credits")
+    val credits: CreditResponse
 )

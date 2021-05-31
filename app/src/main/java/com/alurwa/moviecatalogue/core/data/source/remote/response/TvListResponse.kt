@@ -24,16 +24,15 @@
 
 package com.alurwa.moviecatalogue.core.data.source.remote.response
 
-import com.alurwa.moviecatalogue.core.model.Tv
 import com.google.gson.annotations.SerializedName
 
 data class TvListResponse(
-        @field:SerializedName("results")
-        val results: List<TvResponse>,
+    @field:SerializedName("results")
+    val results: List<TvResponse>,
 
-        @field:SerializedName("errors")
-        val errors: List<String>,
+    @field:SerializedName("errors")
+    val errors: List<String>,
 
-        @field:SerializedName("total_pages")
-        val totalPages: Int
+    @field:SerializedName("total_pages")
+    val totalPages: Int
 )

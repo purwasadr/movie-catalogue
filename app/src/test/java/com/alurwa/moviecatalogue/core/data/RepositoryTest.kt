@@ -37,7 +37,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 
-
 class RepositoryTest {
     private lateinit var tasksRemoteDataSource: IRemoteDataSource
     private lateinit var tasksLocalDataSource: ILocalDataSource
@@ -65,9 +64,7 @@ class RepositoryTest {
         val data = result.get(1) as Resource.Success
         println(data.data.toString())
 
-        assertThat(data.data , `is`(DataDummy.getFilmDetail()))
+        assertThat(data.data, `is`(DataDummy.getFilmDetail()))
         println("swwweq")
     }
-
-
 }

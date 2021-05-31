@@ -24,7 +24,7 @@
 
 package com.alurwa.moviecatalogue.core.data.source.remote.response
 
-abstract  class ListResponse<ResultType> {
+abstract class ListResponse<ResultType> {
     abstract var error: List<String>
     abstract var totalPages: Int
     abstract var results: ResultType

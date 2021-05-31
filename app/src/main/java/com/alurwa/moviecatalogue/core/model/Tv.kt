@@ -25,9 +25,9 @@
 package com.alurwa.moviecatalogue.core.model
 
 data class Tv(
-        val id: Int,
-        val name: String?,
-        val firstAirDate: String,
-        val posterPath: String?,
-        val voteAverage: Number
+    val id: Int,
+    val name: String?,
+    val firstAirDate: String,
+    val posterPath: String?,
+    val voteAverage: Number
 )

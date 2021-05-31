@@ -36,9 +36,9 @@ import timber.log.Timber
 import java.io.IOException
 
 class TvPagingSource(
-        private val apiService: ApiService,
-        private val sort: MovieSortEnum? = null,
-        private val query: String? = null
+    private val apiService: ApiService,
+    private val sort: MovieSortEnum? = null,
+    private val query: String? = null
 ) : PagingSource<Int, Movie>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
@@ -47,7 +47,7 @@ class TvPagingSource(
             val response = when {
                 sort != null -> getTvApi(sort, position)
                 query != null -> {
-                        apiService.searchTv(query, position)
+                    apiService.searchTv(query, position)
                 }
                 else -> {
                     throw IllegalArgumentException()
@@ -63,15 +63,13 @@ class TvPagingSource(
             }
 
             LoadResult.Page(
-                    data = tvData,
-                    prevKey = if (position == 1) null else position - 1,
-                    nextKey = nextKey
+                data = tvData,
+                prevKey = if (position == 1) null else position - 1,
+                nextKey = nextKey
             )
-
         } catch (ex: IOException) {
             Timber.d(ex)
             LoadResult.Error(ex)
-
         } catch (ex: HttpException) {
             Timber.d(ex)
             LoadResult.Error(ex)
@@ -81,17 +79,17 @@ class TvPagingSource(
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return state.anchorPosition?.let { pos ->
             state.closestPageToPosition(pos)?.prevKey?.plus(1)
-                    ?: state.closestPageToPosition(pos)?.nextKey?.minus(1)
+                ?: state.closestPageToPosition(pos)?.nextKey?.minus(1)
         }
     }
 
     private suspend fun getTvApi(sort: MovieSortEnum, position: Int): TvListResponse {
         return if (sort == MovieSortEnum.DISCOVER) {
-                apiService.getDiscoverTv(sort.code, position)
-            } else {
-                apiService.getTv(sort.code, position)
-            }
+            apiService.getDiscoverTv(sort.code, position)
+        } else {
+            apiService.getTv(sort.code, position)
         }
+    }
 
     companion object {
         const val STARTING_PAGING_INDEX = 1

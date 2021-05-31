@@ -1,3 +1,27 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2021 Purwa Shadr Al 'urwa
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.alurwa.moviecatalogue.search
 
 import android.app.SearchManager
@@ -35,7 +59,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
@@ -83,8 +106,8 @@ class SearchActivity : AppCompatActivity() {
             } else {
 
                 // FIXME: Cannot save state
-              ///  currentQueryString = savedInstanceState.getString(QUERY_STRING_STATE, "")
-               // title = currentQueryString
+                // /  currentQueryString = savedInstanceState.getString(QUERY_STRING_STATE, "")
+                // title = currentQueryString
                 //  searchMovies(currentQueryString)
             }
         }
@@ -112,8 +135,10 @@ class SearchActivity : AppCompatActivity() {
                     if (state is LoadState.NotLoading) {
                         binding.rcvSearch.scrollToPosition(0)
                         binding.rcvSearch.isVisible = true
-                        binding.txtEmpty.isVisible = (currentQueryString.isNotEmpty() &&
-                                adapter.itemCount == 0)
+                        binding.txtEmpty.isVisible = (
+                            currentQueryString.isNotEmpty() &&
+                                adapter.itemCount == 0
+                            )
                     } else if (state is LoadState.Error) {
                         Toast.makeText(
                             applicationContext,
@@ -138,7 +163,6 @@ class SearchActivity : AppCompatActivity() {
         val gridLayoutManager = GridLayoutManager(
             applicationContext,
 
-
             noOfColumn
         )
 
@@ -146,14 +170,14 @@ class SearchActivity : AppCompatActivity() {
             override fun getSpanSize(position: Int): Int {
                 val viewType = adapter.getItemViewType(position)
                 return if (viewType == BoxMovieAdapter.VIEW_TYPE_MOVIE) 1 else noOfColumn
-
             }
         }
 
         with(binding) {
             rcvSearch.layoutManager = gridLayoutManager
             rcvSearch.addItemDecoration(
-                SpacingDecoration(16,
+                SpacingDecoration(
+                    16,
                     16,
                     RecyclerView.VERTICAL
                 )
@@ -177,13 +201,11 @@ class SearchActivity : AppCompatActivity() {
             .also {
                 if (filmOrTv == FilmOrTv.FILM.code) {
                     it.setClass(this, FilmDetailActivity::class.java)
-
                 } else {
                     it.setClass(this, TvDetailActivity::class.java)
                 }
                 startActivity(it)
             }
-
     }
 
     private fun setupSearchInput(menu: Menu) {
@@ -217,7 +239,6 @@ class SearchActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return true
             }
-
         })
 
         searchView.setOnSearchClickListener {

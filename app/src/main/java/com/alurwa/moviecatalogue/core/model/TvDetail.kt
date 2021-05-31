@@ -25,18 +25,18 @@
 package com.alurwa.moviecatalogue.core.model
 
 data class TvDetail(
-        val id: Int,
-        val name: String,
-        val overview: String?,
-        val posterPath: String?,
-        val backdropPath: String?,
-        val firstAirDate: String?,
-        val originalLanguage: String,
-        val originalName: String,
-        val status: String,
-        val voteAverage: Number,
-        val type: String,
-        val genres: List<Genre>,
-        val seasons: List<Season>,
-        val cast: List<Cast>
+    val id: Int,
+    val name: String,
+    val overview: String?,
+    val posterPath: String?,
+    val backdropPath: String?,
+    val firstAirDate: String?,
+    val originalLanguage: String,
+    val originalName: String,
+    val status: String,
+    val voteAverage: Number,
+    val type: String,
+    val genres: List<Genre>,
+    val seasons: List<Season>,
+    val cast: List<Cast>
 )
