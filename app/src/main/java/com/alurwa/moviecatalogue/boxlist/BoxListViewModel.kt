@@ -34,10 +34,6 @@ import com.alurwa.moviecatalogue.main.MovieSortEnum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-/**
- * Created by Purwa Shadr Al 'urwa on 27/05/2021
- */
-
 @HiltViewModel
 class BoxListViewModel @Inject constructor(
     private val stateHandle: SavedStateHandle,
