@@ -23,8 +23,8 @@ object BindingAdapters {
     fun imagePoster(imageView: ImageView, posterPath: String?) {
         if (!posterPath.isNullOrEmpty()) {
             Glide.with(imageView.context)
-                    .load(Uri.parse("https://image.tmdb.org/t/p/w185$posterPath"))
-                    .into(imageView)
+                .load(Uri.parse("https://image.tmdb.org/t/p/w185$posterPath"))
+                .into(imageView)
         }
     }
 
@@ -33,8 +33,8 @@ object BindingAdapters {
     fun imageBackdrop(imageView: ImageView, backdropPath: String?) {
         if (!backdropPath.isNullOrEmpty()) {
             Glide.with(imageView.context)
-                    .load(Uri.parse("https://image.tmdb.org/t/p/w500$backdropPath"))
-                    .into(imageView)
+                .load(Uri.parse("https://image.tmdb.org/t/p/w500$backdropPath"))
+                .into(imageView)
         }
     }
 
@@ -95,9 +95,8 @@ object BindingAdapters {
             val result = if (price == 0) {
                 "-"
             } else {
-               "$" + NumberFormatUtil.withComma(price)
+                "$" + NumberFormatUtil.withComma(price)
             }
-
             txt.text = result
         }
     }
@@ -107,8 +106,8 @@ object BindingAdapters {
     fun loadProfileImage(imageView: ImageView, profilePath: String?) {
         if (!profilePath.isNullOrEmpty()) {
             Glide.with(imageView.context)
-                    .load(Uri.parse("https://image.tmdb.org/t/p/w185$profilePath"))
-                    .into(imageView)
+                .load(Uri.parse("https://image.tmdb.org/t/p/w185$profilePath"))
+                .into(imageView)
         }
     }
 
@@ -134,6 +133,4 @@ object BindingAdapters {
         val viewParams = view.layoutParams as ViewGroup.MarginLayoutParams
         viewParams.marginEnd = (end * Resources.getSystem().displayMetrics.density).toInt()
     }
-
-    //TODO: Margin setting for MovieAdapter
 }
