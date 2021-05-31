@@ -10,6 +10,7 @@ buildscript {
         constraintLayoutVersion = '2.0.4'
         legacySupportVersion = '1.0.0'
         coroutinesVersion = '1.5.0'
+        gradleVersion = '4.2.1'
 
         navigationVersion = '2.3.5'
         activity_ktx_version = '1.2.3'
@@ -45,13 +46,24 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+    }
+}
+
+plugins {
+    id "com.diffplug.spotless" version "5.12.5"
+}
+
+spotless {
+    kotlin {
+        target "**/*.kt"
+        ktlint("0.41.0")
     }
 }
 
@@ -61,8 +73,4 @@ allprojects {
        // jcenter()
         mavenCentral()
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }
