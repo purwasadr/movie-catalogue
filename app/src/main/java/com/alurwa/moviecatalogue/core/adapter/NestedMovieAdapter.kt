@@ -37,10 +37,6 @@ import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-/**
- * Created by Purwa Shadr Al 'urwa on 23/05/2021
- */
-
 class NestedMovieAdapter(
     private val scope: CoroutineScope,
     private val onClickCallback: (position: Int) -> Unit,

@@ -32,10 +32,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.databinding.ListItemMovieBoxBinding
 
-/**
- * Created by Purwa Shadr Al 'urwa on 26/05/2021
- */
-
 class BoxMovieAdapter(
     private val onItemClickCallback: (id: Int) -> Unit
 ) : PagingDataAdapter<Movie, BoxMovieAdapter.ViewHolder>(COMPARATOR) {

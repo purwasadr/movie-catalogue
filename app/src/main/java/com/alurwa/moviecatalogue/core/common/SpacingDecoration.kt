@@ -30,10 +30,6 @@ import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-/**
- * Created by Purwa Shadr Al 'urwa on 26/05/2021
- */
-
 class SpacingDecoration(
     private val contentPaddingStartEnd: Int,
     private val itemPadding: Int,
