@@ -80,7 +80,8 @@
                         android:layout_width="100dp"
                         android:layout_height="150dp"
                         android:elevation="8dp"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/desc_poster_image"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
@@ -121,6 +122,7 @@
                     android:layout_height="16dp"
                     android:layout_marginStart="2dp"
                     android:scaleType="centerInside"
+                    android:contentDescription="@string/desc_runtime_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@id/txt_runtime"
                     app:layout_constraintTop_toTopOf="@+id/txt_runtime"
@@ -245,8 +247,7 @@
                     android:scrollbars="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_cast_info"
-                    tools:listitem="@layout/rcv_item_cast" />
+                    app:layout_constraintTop_toBottomOf="@id/txt_cast_info" />
 
                 <TextView
                     android:id="@+id/txt_original_name_info"
@@ -371,6 +372,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/revenue"
                     android:textColor="?android:attr/textColorPrimary"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_type_val" />
 
@@ -380,9 +382,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:textColor="?android:attr/textColorPrimary"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_revenue_info"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/txt_revenue_info" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
