@@ -28,10 +28,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 
-/**
- * Created by Purwa Shadr Al 'urwa on 14/05/2021
- */
-
 object NetworkState {
 
     fun isNetworkAvailable(context: Context): Boolean {
