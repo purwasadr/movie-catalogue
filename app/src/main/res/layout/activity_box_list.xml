@@ -6,6 +6,7 @@
     tools:context=".boxlist.BoxListActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -13,9 +14,9 @@
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="16dp"
             android:clipToPadding="false"
-            android:paddingEnd="16dp"/>
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

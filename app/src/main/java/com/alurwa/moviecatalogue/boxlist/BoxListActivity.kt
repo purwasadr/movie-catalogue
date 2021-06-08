@@ -29,6 +29,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.core.adapter.BoxMovieAdapter
@@ -42,6 +43,9 @@ import com.alurwa.moviecatalogue.utils.CommonUtil
 import com.alurwa.moviecatalogue.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -66,6 +70,8 @@ class BoxListActivity : AppCompatActivity() {
         setupToolbar()
 
         setupRecyclerView()
+
+        setupAdapter()
 
         getMovies()
     }
@@ -105,6 +111,23 @@ class BoxListActivity : AppCompatActivity() {
                     adapter.retry()
                 }
             )
+        }
+    }
+
+    private fun setupAdapter() {
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest { loadStates ->
+                binding.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
+            }
+        }
+
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow
+                // Only emit when REFRESH LoadState for RemoteMediator changes.
+                .distinctUntilChangedBy { it.refresh }
+                // Only react to cases where Remote REFRESH completes i.e., NotLoading.
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect { binding.list.scrollToPosition(0) }
         }
     }
 
