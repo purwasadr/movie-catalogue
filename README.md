@@ -2,7 +2,7 @@
 
 Movie catalogue is app for show movie information
 
-is currently under development
+this project is currently under development
 
 ## TMDB API
 
