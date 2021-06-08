@@ -47,12 +47,8 @@ abstract class MovieFragmentAbstract : Fragment() {
     val adapter by lazy {
         NestedMovieAdapter(
             lifecycleScope,
-            { id ->
-                navigateToDetail(id)
-            }
-        ) { which ->
-            navigateToList(which)
-        }
+            { id -> navigateToDetail(id) }
+        ) { which -> navigateToList(which) }
     }
 
     override fun onCreateView(
