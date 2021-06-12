@@ -93,6 +93,7 @@ abstract class MovieFragmentAbstract : Fragment() {
     private fun setupRecyclerView() {
 
         with(binding) {
+            rcvMovie.recycledViewPool.setMaxRecycledViews(0, 0)
             rcvMovie.layoutManager = LinearLayoutManager(context)
             rcvMovie.setHasFixedSize(true)
             rcvMovie.addItemDecoration(
@@ -104,8 +105,6 @@ abstract class MovieFragmentAbstract : Fragment() {
             )
 
             rcvMovie.adapter = adapter
-
-            rcvMovie.recycledViewPool.setMaxRecycledViews(0, 0)
         }
     }
 

@@ -35,6 +35,7 @@ import com.alurwa.moviecatalogue.core.model.CarouselMenu
 import com.alurwa.moviecatalogue.databinding.ListNestedCarouselItemBinding
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class NestedMovieAdapter(
@@ -43,7 +44,7 @@ class NestedMovieAdapter(
     private val onClickHeaderCallback: (which: Int) -> Unit
 ) : RecyclerView.Adapter<NestedMovieAdapter.ViewHolder>() {
 
-    //  private val viewPool = RecyclerView.RecycledViewPool()
+  //  private val viewPool = RecyclerView.RecycledViewPool()
 
     private lateinit var arrayAdapter: Array<MovieAdapter>
 
@@ -77,10 +78,6 @@ class NestedMovieAdapter(
         notifyDataSetChanged()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return 0
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
             ListNestedCarouselItemBinding.inflate(
@@ -90,11 +87,12 @@ class NestedMovieAdapter(
             )
         )
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
     }
 
-    override fun getItemCount(): Int = arrayAdapter.size
+    override fun getItemCount(): Int = carousels.size
 
     inner class ViewHolder(
         private val binding: ListNestedCarouselItemBinding
@@ -121,7 +119,7 @@ class NestedMovieAdapter(
 
                 rcv.adapter = adapter
 
-                //  rcv.setRecycledViewPool(viewPool)
+              //   rcv.setRecycledViewPool(viewPool)
 
                 /*  scope.launch() {
                       adapter.submitData(carouselMenu.pagingData)

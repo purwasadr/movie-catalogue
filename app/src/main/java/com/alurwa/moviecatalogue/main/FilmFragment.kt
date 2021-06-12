@@ -30,6 +30,7 @@ import com.alurwa.moviecatalogue.boxlist.BoxListActivity
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.filmdetail.FilmDetailActivity
 import com.alurwa.moviecatalogue.utils.Constants
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
