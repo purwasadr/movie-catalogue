@@ -25,6 +25,7 @@
 package com.alurwa.moviecatalogue.main
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,10 +33,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.alurwa.moviecatalogue.core.adapter.NestedMovieAdapter
-import com.alurwa.moviecatalogue.core.common.SpacingDecoration
+import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
+import com.alurwa.moviecatalogue.core.model.CarouselMenu
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
+import com.alurwa.moviecatalogue.databinding.ListNestedCarouselItemBinding
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 abstract class MovieFragmentAbstract : Fragment() {
     private var _binding: FragmentMovieBinding? = null
@@ -44,12 +48,7 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     val viewModel by activityViewModels<MainViewModel>()
 
-    val adapter by lazy {
-        NestedMovieAdapter(
-            lifecycleScope,
-            { id -> navigateToDetail(id) }
-        ) { which -> navigateToList(which) }
-    }
+    var arrayAdapter: Array<MovieAdapter>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,8 +70,6 @@ abstract class MovieFragmentAbstract : Fragment() {
 
         setupAdapter()
 
-        setupRecyclerView()
-
         setupSwipeToRefresh()
     }
 
@@ -81,30 +78,46 @@ abstract class MovieFragmentAbstract : Fragment() {
     abstract fun navigateToList(which: Int)
 
     private fun setupAdapter() {
-        /* lifecycleScope.launchWhenCreated {
-             adapter.submitData(viewModel.getFilmNestedVp())
-         }
-
-         */
-
         getCarousels()
     }
 
-    private fun setupRecyclerView() {
+    fun submitList(list: List<CarouselMenu>) {
+        arrayAdapter = Array(list.size) { pos ->
+            MovieAdapter(true) { id ->
+                navigateToDetail(id)
+            }.also { movieAdapter ->
+                lifecycleScope.launch {
+                    delay(200)
+                    movieAdapter.submitData(list[pos].pagingData)
+                }
+            }
+        }
 
-        with(binding) {
-            rcvMovie.recycledViewPool.setMaxRecycledViews(0, 0)
-            rcvMovie.layoutManager = LinearLayoutManager(context)
-            rcvMovie.setHasFixedSize(true)
-            rcvMovie.addItemDecoration(
-                SpacingDecoration(
-                    12,
-                    12,
-                    RecyclerView.VERTICAL
-                )
+        setupList(list)
+    }
+
+    private fun setupList(list: List<CarouselMenu>) {
+        arrayAdapter?.forEachIndexed { index, movieAdapter ->
+            val view = ListNestedCarouselItemBinding.inflate(layoutInflater)
+
+            view.txtTitle.text = list.get(index).title
+
+            view.rcv.layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
             )
+            view.rcv.setHasFixedSize(true)
 
-            rcvMovie.adapter = adapter
+            GravitySnapHelper(Gravity.START).also { snapHelper ->
+                snapHelper.snapToPadding = true
+            }.attachToRecyclerView(view.rcv)
+
+            view.rcv.adapter = movieAdapter
+
+            view.llHeader.setOnClickListener {
+                navigateToList(index)
+            }
+
+            binding.llList.addView(view.root)
         }
     }
 
@@ -112,19 +125,9 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     private fun setupSwipeToRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
-            /*   for (i in 0 until (adapter.itemCount - 1)) {
-                   val viewHolder = binding.rcvMovie.layoutManager?.findViewByPosition(i)
-
-                   viewHolder?.findViewById<TextView>(
-                       R.id.txt_title
-                   )?.text = "www"
-                   (viewHolder?.findViewById<RecyclerView>(
-                       R.id.rcv
-                   )?.adapter as? MovieAdapter)?.retry()
-               }
-
-             */
-            adapter.refreshMovie()
+            arrayAdapter?.forEach {
+                it.retry()
+            }
         }
     }
 

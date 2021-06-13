@@ -27,6 +27,7 @@ package com.alurwa.moviecatalogue.main
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import com.alurwa.moviecatalogue.boxlist.BoxListActivity
+import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.filmdetail.FilmDetailActivity
 import com.alurwa.moviecatalogue.utils.Constants
@@ -59,7 +60,7 @@ class FilmFragment : MovieFragmentAbstract() {
     override fun getCarousels() {
         lifecycleScope.launch {
             viewModel.filmMenu.collectLatest {
-                adapter.submitData(it)
+                submitList(it)
             }
         }
     }

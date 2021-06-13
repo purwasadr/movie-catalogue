@@ -59,7 +59,7 @@ class TvFragment : MovieFragmentAbstract() {
     override fun getCarousels() {
         lifecycleScope.launch {
             viewModel.tvMenu.collectLatest {
-                adapter.submitData(it)
+                submitList(it)
             }
         }
     }
