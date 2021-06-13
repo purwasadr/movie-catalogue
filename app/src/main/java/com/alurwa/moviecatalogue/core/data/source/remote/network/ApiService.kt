@@ -29,9 +29,14 @@ import com.alurwa.moviecatalogue.core.data.source.remote.response.FilmDetailResp
 import com.alurwa.moviecatalogue.core.data.source.remote.response.ListMovieResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvDetailResponse
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvListResponse
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.concurrent.TimeUnit
 
 interface ApiService {
     @GET("3/discover/movie?$API_SET")
@@ -86,5 +91,27 @@ interface ApiService {
 
     companion object {
         const val API_SET = "api_key=" + BuildConfig.API_KEY
+
+        fun create(): ApiService {
+            val client = OkHttpClient.Builder()
+                .also {
+                    if (BuildConfig.DEBUG) {
+                        it.addInterceptor(
+                            HttpLoggingInterceptor()
+                                .setLevel(HttpLoggingInterceptor.Level.BODY)
+                        )
+                    }
+                }
+                .connectTimeout(120, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
+                .build()
+
+            return Retrofit.Builder()
+                .baseUrl("https://api.themoviedb.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+                .create(ApiService::class.java)
+        }
     }
 }

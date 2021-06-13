@@ -24,18 +24,12 @@
 
 package com.alurwa.moviecatalogue.core.di
 
-import com.alurwa.moviecatalogue.BuildConfig
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -44,31 +38,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .also {
-                if (BuildConfig.DEBUG) {
-                    it.addInterceptor(
-                        HttpLoggingInterceptor()
-                            .setLevel(HttpLoggingInterceptor.Level.BODY)
-                    )
-                }
-            }
-            .connectTimeout(120, TimeUnit.SECONDS)
-            .readTimeout(120, TimeUnit.SECONDS)
-            .build()
-    }
+    fun provideApiService(): ApiService = ApiService.create()
 
-    @Singleton
-    @Provides
-    fun provideApiService(client: OkHttpClient): ApiService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
-            .build()
-        return retrofit.create(ApiService::class.java)
-    }
 
     @Singleton
     @Provides
