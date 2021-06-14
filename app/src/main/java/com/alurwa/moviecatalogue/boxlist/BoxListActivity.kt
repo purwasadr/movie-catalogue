@@ -42,10 +42,10 @@ import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
 import com.alurwa.moviecatalogue.utils.CommonUtil
 import com.alurwa.moviecatalogue.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -133,6 +133,8 @@ class BoxListActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         supportActionBar?.apply {
+
+            // Use
             title = viewModel.movieSort
                 .lowercase()
                 .replace('_', ' ', true)
