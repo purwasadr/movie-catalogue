@@ -29,17 +29,21 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
 import com.alurwa.moviecatalogue.core.model.CarouselMenu
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.databinding.ListNestedCarouselItemBinding
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 abstract class MovieFragmentAbstract : Fragment() {
     private var _binding: FragmentMovieBinding? = null
@@ -49,6 +53,8 @@ abstract class MovieFragmentAbstract : Fragment() {
     val viewModel by activityViewModels<MainViewModel>()
 
     var arrayAdapter: Array<MovieAdapter>? = null
+
+    var arrayLoadState: Array<LoadState?> = arrayOf(null, null, null, null)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,18 +74,14 @@ abstract class MovieFragmentAbstract : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupAdapter()
-
+        setupRetryBtn()
         setupSwipeToRefresh()
+        getCarousels()
     }
 
     abstract fun navigateToDetail(extraId: Int)
 
     abstract fun navigateToList(which: Int)
-
-    private fun setupAdapter() {
-        getCarousels()
-    }
 
     fun submitList(list: List<CarouselMenu>) {
         arrayAdapter = Array(list.size) { pos ->
@@ -87,7 +89,6 @@ abstract class MovieFragmentAbstract : Fragment() {
                 navigateToDetail(id)
             }.also { movieAdapter ->
                 lifecycleScope.launch {
-                    delay(200)
                     movieAdapter.submitData(list[pos].pagingData)
                 }
             }
@@ -117,14 +118,58 @@ abstract class MovieFragmentAbstract : Fragment() {
                 navigateToList(index)
             }
 
+            setupLoadingState(movieAdapter, index)
+
             binding.llList.addView(view.root)
         }
     }
 
     abstract fun getCarousels()
 
+    private fun setupLoadingState(movieAdapter: MovieAdapter, index: Int) {
+        lifecycleScope.launchWhenCreated {
+            movieAdapter.loadStateFlow
+                .distinctUntilChangedBy { it.refresh }
+                .collect {
+                    arrayLoadState[index] = it.refresh
+
+                    val isNotLoading = arrayLoadState.all { loadState ->
+                        Timber.d((loadState is LoadState.NotLoading).toString())
+                        loadState is LoadState.NotLoading
+                    }
+
+                    val isError = arrayLoadState.any { loadState ->
+                        loadState is LoadState.Error
+                    }
+
+                    if (isError) {
+                        binding.btnRetry.isVisible = true
+                        binding.pb.isVisible = false
+                        binding.nsvMovie.isVisible = false
+                    } else if (isNotLoading) {
+                        Timber.d("Boos balue")
+                        binding.btnRetry.isVisible = false
+                        binding.pb.isVisible = false
+                        binding.nsvMovie.isVisible = true
+                    } else {
+                        binding.btnRetry.isVisible = false
+                        binding.pb.isVisible = true
+                        binding.nsvMovie.isVisible = false
+                    }
+                }
+        }
+    }
+
     private fun setupSwipeToRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
+            arrayAdapter?.forEach {
+                it.refresh()
+            }
+        }
+    }
+
+    private fun setupRetryBtn() {
+        binding.btnRetry.setOnClickListener {
             arrayAdapter?.forEach {
                 it.retry()
             }
