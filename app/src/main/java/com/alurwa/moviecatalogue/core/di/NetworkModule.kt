@@ -40,7 +40,6 @@ object NetworkModule {
     @Provides
     fun provideApiService(): ApiService = ApiService.create()
 
-
     @Singleton
     @Provides
     fun provideDispatchersIO() = Dispatchers.IO
