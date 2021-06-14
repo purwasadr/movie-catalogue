@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setupToolbar()
 
         setupBottomNavigation(savedInstanceState)
     }
@@ -78,6 +79,14 @@ class MainActivity : AppCompatActivity() {
     private fun getIsShowPosterPref(): Boolean {
         return SharedPreferencesUtil.getIsShowPosterPreferences(applicationContext)
     }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            title = "Movie Catalogue"
+        }
+    }
+
 
     private fun navigateToSearch() {
         val code = if (binding.bottomNavMain.selectedItemId == R.id.filmFragment) {
