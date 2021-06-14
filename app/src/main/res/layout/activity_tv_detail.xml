@@ -119,13 +119,13 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="2dp"
-                    android:scaleType="centerInside"
                     android:contentDescription="@string/desc_runtime_icon"
+                    android:scaleType="centerInside"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@id/txt_runtime"
                     app:layout_constraintTop_toTopOf="@+id/txt_runtime"
                     app:srcCompat="@drawable/ic_round_timelapse_24"
-                    app:tint="?android:attr/textColorPrimary" />
+                    app:tint="@android:color/holo_red_dark" />
                 <TextView
                     android:id="@+id/txt_vote_avg"
                     android:layout_width="wrap_content"
@@ -145,13 +145,13 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="2dp"
+                    android:contentDescription="@string/vote_avg_desc"
                     android:scaleType="centerInside"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@+id/txt_vote_avg"
                     app:layout_constraintTop_toTopOf="@+id/txt_runtime"
                     app:srcCompat="@drawable/ic_round_star_24"
-                    app:tint="?android:attr/textColorPrimary"
-                    android:contentDescription="@string/vote_avg_desc" />
+                    app:tint="@color/yellow_700" />
 
                 <TextView
                     android:id="@+id/txt_date_lite"
@@ -243,6 +243,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:scrollbars="horizontal"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_cast_info" />

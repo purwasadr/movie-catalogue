@@ -246,6 +246,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_cast_info"
+                    android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/rcv_item_cast" />
 
                 <TextView
