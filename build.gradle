@@ -1,44 +1,36 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.5.10'
-        room_version = '2.3.0'
-
-        appCompatVersion = '1.3.0'
-        ktxVersion = '1.5.0'
-        materialVersion = '1.3.0'
-        constraintLayoutVersion = '2.0.4'
-        legacySupportVersion = '1.0.0'
-        coroutinesVersion = '1.5.0'
-        gradleVersion = '4.2.1'
-
-        navigationVersion = '2.3.5'
         activity_ktx_version = '1.2.3'
+        androidXTestVersion = '1.3.0'
+        appCompatVersion = '1.3.0'
+        archLifecycleVersion = '2.1.0'
+        constraintLayoutVersion = '2.0.4'
+        coreTestingVersion = '2.1.0'
+        coroutinesVersion = '1.5.0'
+        espressoVersion = '3.3.0'
         fragment_ktx_version = '1.3.4'
-
+        glide_version = '4.12.0'
+        gradleVersion = '4.2.1'
+        gravitySnapHelperVersion = '2.2.1'
+        hamcrestVersion = '1.3'
         hilt_version = '2.35'
-
-        lifecycle_version = "2.3.1"
-
-        retrofit_version = '2.9.0'
-        logging_interceptor_version = '4.9.1'
-        paging_version = '3.0.0'
-
         junitVersion = '4.13.2'
+        kotlin_version = '1.5.10'
+        ktxVersion = '1.5.0'
+        legacySupportVersion = '1.0.0'
+        lifecycle_version = "2.3.1"
+        logging_interceptor_version = '4.9.1'
+        materialVersion = '1.3.0'
+        mockitoVersion = '2.23.4'
+        navigationVersion = '2.3.5'
+        paging_version = '3.0.0'
+        retrofit_version = '2.9.0'
+        room_version = '2.3.0'
+        shimmerVersion = '0.5.0'
         testExtJunitVersion = '1.1.2'
         testRulesVersion = '1.3.0'
-        coreTestingVersion = '2.1.0'
-        hamcrestVersion = '1.3'
-        mockitoVersion = '2.23.4'
-        espressoVersion = '3.3.0'
-        androidXTestVersion = '1.3.0'
-        archLifecycleVersion = '2.1.0'
-
-        glide_version = '4.12.0'
-
         timberVersion = '4.7.1'
-
-        gravitySnapHelperVersion = '2.2.1'
     }
     repositories {
         google()

@@ -104,4 +104,5 @@ dependencies {
 
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation "com.github.rubensousa:gravitysnaphelper:$gravitySnapHelperVersion"
+    implementation "com.facebook.shimmer:shimmer:$shimmerVersion"
 }
