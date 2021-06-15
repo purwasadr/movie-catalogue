@@ -24,10 +24,7 @@
 
 package com.alurwa.moviecatalogue.core.adapter
 
-import android.content.res.Resources
 import android.net.Uri
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -115,7 +112,7 @@ object BindingAdapters {
     fun txtPrice(txt: TextView, price: Int?) {
         if (price != null) {
             val result = if (price == 0) {
-                "-"
+                "N/A"
             } else {
                 "$" + NumberFormatUtil.withComma(price)
             }
@@ -150,9 +147,21 @@ object BindingAdapters {
     }
 
     @JvmStatic
-    @BindingAdapter("layoutMarginEnd")
-    fun layoutMarginEnd(view: View, end: Int) {
-        val viewParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        viewParams.marginEnd = (end * Resources.getSystem().displayMetrics.density).toInt()
+    @BindingAdapter("txtRuntime")
+    fun txtRuntime(txt: TextView, runtime: Int?) {
+        if (runtime != null && runtime != 0) {
+            val ba = (runtime / 60)
+            val result = if (runtime % 60 == 0 && runtime >= 60) {
+                "$ba j "
+            } else if (runtime < 60) {
+                "$runtime m"
+            } else {
+                "$ba j " + (runtime % 60) + " m"
+            }
+
+            txt.text = result
+        } else {
+            txt.text = "N/A"
+        }
     }
 }
