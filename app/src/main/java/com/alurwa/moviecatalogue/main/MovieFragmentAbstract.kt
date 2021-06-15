@@ -39,6 +39,7 @@ import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
 import com.alurwa.moviecatalogue.core.model.CarouselMenu
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.databinding.ListNestedCarouselItemBinding
+import com.alurwa.moviecatalogue.utils.CommonUtil
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -75,7 +76,6 @@ abstract class MovieFragmentAbstract : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRetryBtn()
-        setupSwipeToRefresh()
         getCarousels()
     }
 
@@ -97,6 +97,8 @@ abstract class MovieFragmentAbstract : Fragment() {
         setupList(list)
     }
 
+    // Fill the list of carousels with LinearLayout instead of using RecyclerView
+    // because LinearLayout never recycling item view
     private fun setupList(list: List<CarouselMenu>) {
         arrayAdapter?.forEachIndexed { index, movieAdapter ->
             val view = ListNestedCarouselItemBinding.inflate(layoutInflater)
@@ -110,6 +112,7 @@ abstract class MovieFragmentAbstract : Fragment() {
 
             GravitySnapHelper(Gravity.START).also { snapHelper ->
                 snapHelper.snapToPadding = true
+                snapHelper.maxFlingDistance = CommonUtil.dpToPx(requireContext(), 200)
             }.attachToRecyclerView(view.rcv)
 
             view.rcv.adapter = movieAdapter
@@ -126,6 +129,7 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     abstract fun getCarousels()
 
+    // Handle Progress Bar
     private fun setupLoadingState(movieAdapter: MovieAdapter, index: Int) {
         lifecycleScope.launchWhenCreated {
             movieAdapter.loadStateFlow
@@ -160,14 +164,6 @@ abstract class MovieFragmentAbstract : Fragment() {
         }
     }
 
-    private fun setupSwipeToRefresh() {
-        binding.swipeRefresh.setOnRefreshListener {
-            arrayAdapter?.forEach {
-                it.refresh()
-            }
-        }
-    }
-
     private fun setupRetryBtn() {
         binding.btnRetry.setOnClickListener {
             arrayAdapter?.forEach {
@@ -178,8 +174,6 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // mViewModel.listState = binding.rcvMovie.layoutManager?.onSaveInstanceState()
-        // mViewModel.chipState = binding.chipGroupMovie.checkedChipId
         _binding = null
     }
 }
