@@ -98,7 +98,6 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginEnd="4dp"
                     android:text="@{movie.voteAverage.toString()}"
-                    android:textAlignment="textEnd"
                     android:textColor="@color/yellow_700"
                     android:textSize="12sp"
                     tools:text="8.1" />

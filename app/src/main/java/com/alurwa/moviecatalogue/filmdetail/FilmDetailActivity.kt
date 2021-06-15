@@ -80,9 +80,11 @@ class FilmDetailActivity : AppCompatActivity() {
         mViewModel.filmDetail.observe(this) {
             when (it) {
                 is Resource.Loading -> {
+                    Timber.d("Observe Loading")
                 }
 
                 is Resource.Success -> {
+                    Timber.d("Observe Success")
                     val data = it.data
                     if (data != null) {
                         setupMovieView(data)
