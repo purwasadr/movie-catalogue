@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="movieDetail"
             type="com.alurwa.moviecatalogue.core.model.FilmDetail" />
 
-        <import type="com.alurwa.moviecatalogue.utils.NumberFormatUtil"/>
+        <import type="com.alurwa.moviecatalogue.utils.NumberFormatUtil" />
 
-        <import type="com.alurwa.moviecatalogue.utils.CommonUtil"/>
+        <import type="com.alurwa.moviecatalogue.utils.CommonUtil" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".filmdetail.FilmDetailActivity">
@@ -28,7 +28,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:elevation="0dp"
                 app:layout_scrollFlags="scroll|enterAlways" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -46,11 +45,11 @@
 
                 <ImageView
                     android:id="@+id/img_backdrop"
+                    imageBackdrop="@{movieDetail.backdropPath}"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
-                    android:scaleType="centerCrop"
                     android:contentDescription="@string/desc_backdrop"
-                    imageBackdrop="@{movieDetail.backdropPath}"
+                    android:scaleType="centerCrop"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@color/black" />
 
@@ -77,13 +76,15 @@
                         imagePoster="@{movieDetail.posterPath}"
                         android:layout_width="100dp"
                         android:layout_height="150dp"
+                        android:contentDescription="@string/desc_poster_image"
                         android:elevation="8dp"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="@string/desc_poster_image"/>
+                        android:scaleType="centerCrop" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/txt_title"
+                    title="@{movieDetail.title}"
+                    year="@{movieDetail.releaseDate}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -96,12 +97,11 @@
                     app:layout_constraintStart_toEndOf="@id/card_poster"
                     app:layout_constraintTop_toTopOf="@id/card_poster"
                     app:layout_constraintVertical_chainStyle="packed"
-                    title="@{movieDetail.title}"
-                    year="@{movieDetail.releaseDate}"
                     tools:text="Your Name (2017)" />
 
                 <TextView
                     android:id="@+id/txt_runtime"
+                    txtRuntime="@{movieDetail.runtime}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -109,7 +109,6 @@
                     android:fontFamily="sans-serif"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="14sp"
-                    android:text="@{NumberFormatUtil.INSTANCE.timeHoursAndMinute(movieDetail.runtime)}"
                     app:layout_constraintBottom_toBottomOf="@id/card_poster"
                     app:layout_constraintStart_toEndOf="@id/card_poster"
                     app:layout_constraintTop_toBottomOf="@id/txt_title"
@@ -119,40 +118,41 @@
                     android:id="@+id/img_runtime"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:layout_marginStart="2dp"
-                    android:scaleType="centerInside"
+                    android:layout_marginStart="4dp"
                     android:contentDescription="@string/desc_runtime_icon"
+                    android:scaleType="centerInside"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@id/txt_runtime"
                     app:layout_constraintTop_toTopOf="@+id/txt_runtime"
                     app:srcCompat="@drawable/ic_round_timelapse_24"
-                    app:tint="?android:attr/textColorPrimary" />
+                    app:tint="@color/red_700" />
+
                 <TextView
                     android:id="@+id/txt_vote_avg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif"
+                    android:text="@{movieDetail.voteAverage.toString()}"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@id/img_runtime"
                     app:layout_constraintTop_toTopOf="@id/txt_runtime"
-                    android:text="@{movieDetail.voteAverage.toString()}"
                     tools:text="8.7" />
 
                 <ImageView
                     android:id="@+id/img_vote_avg"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:layout_marginStart="2dp"
-                    android:scaleType="centerInside"
+                    android:layout_marginStart="4dp"
+                    android:contentDescription="@string/vote_avg_desc"
+                    android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@+id/txt_vote_avg"
                     app:layout_constraintTop_toTopOf="@+id/txt_runtime"
                     app:srcCompat="@drawable/ic_round_star_24"
-                    app:tint="?android:attr/textColorPrimary"
-                    android:contentDescription="@string/vote_avg_desc" />
+                    app:tint="@color/yellow_700" />
 
                 <TextView
                     android:id="@+id/txt_date_lite"
@@ -173,9 +173,9 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="2dp"
+                    android:contentDescription="@string/desc_date_icon"
                     android:scaleType="centerInside"
                     android:visibility="gone"
-                    android:contentDescription="@string/desc_date_icon"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_date_lite"
                     app:layout_constraintStart_toEndOf="@+id/txt_date_lite"
                     app:layout_constraintTop_toTopOf="@+id/txt_date_lite"
@@ -202,23 +202,23 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:text="@{movieDetail.overview}"
                     android:textAlignment="textStart"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_overview_info"
-                    android:text="@{movieDetail.overview}"
                     tools:text="Overview value" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group"
+                    chipGenres="@{movieDetail.genres}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    chipGenres="@{movieDetail.genres}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_overview_val">
@@ -242,11 +242,11 @@
                     android:id="@+id/rcv_cast"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:scrollbars="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_cast_info"
-                    android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/rcv_item_cast" />
 
                 <TextView
@@ -286,10 +286,10 @@
 
                 <TextView
                     android:id="@+id/txt_release_date_val"
+                    txtDate="@{movieDetail.releaseDate}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    txtDate="@{movieDetail.releaseDate}"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_release_date_info" />
@@ -311,10 +311,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:text="@{CommonUtil.INSTANCE.getLanguageName(movieDetail.originalLanguage) ?? `-`}"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_original_language_info"
-                    android:text="@{CommonUtil.INSTANCE.getLanguageName(movieDetail.originalLanguage) ?? `-`}"
                     tools:text="Indonesia" />
 
                 <TextView
@@ -331,13 +331,13 @@
 
                 <TextView
                     android:id="@+id/txt_budget_val"
+                    txtPrice="@{movieDetail.budget}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_budget_info"
-                    txtPrice="@{movieDetail.budget}" />
+                    app:layout_constraintTop_toBottomOf="@id/txt_budget_info" />
 
                 <TextView
                     android:id="@+id/txt_revenue_info"
@@ -353,13 +353,13 @@
 
                 <TextView
                     android:id="@+id/txt_revenue_val"
+                    txtPrice="@{movieDetail.revenue}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_revenue_info"
-                   txtPrice="@{movieDetail.revenue}"/>
+                    app:layout_constraintTop_toBottomOf="@id/txt_revenue_info" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
