@@ -106,8 +106,8 @@ class MainViewModel @Inject constructor(
                     .cachedIn(viewModelScope).first()
             ),
             CarouselMenu(
-                "Upcoming",
-                repository.getTvList(MovieSortEnum.UPCOMING)
+                "Top Rating",
+                repository.getTvList(MovieSortEnum.TOP_RATING)
                     .cachedIn(viewModelScope).first()
             ),
             CarouselMenu(
