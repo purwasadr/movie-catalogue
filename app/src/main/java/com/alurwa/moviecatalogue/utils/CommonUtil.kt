@@ -25,6 +25,7 @@
 package com.alurwa.moviecatalogue.utils
 
 import android.content.Context
+import android.util.TypedValue
 import java.util.Locale
 
 object CommonUtil {
@@ -40,6 +41,9 @@ object CommonUtil {
         }
     }
 
+    /**
+     * Count the number of columns that can be filled in a certain distance
+     */
     fun calculateNoOfColumns(
         context: Context,
         columnWidthDp: Float
@@ -48,4 +52,16 @@ object CommonUtil {
         val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
         return (screenWidthDp / columnWidthDp + 0.5).toInt() // +0.5 for correct rounding to int.
     }
+
+    /**
+     * Convert dp to px
+     **/
+    fun dpToPx(context: Context, dp: Int): Int =
+        TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+
+            // Avoid using system resource
+            context.resources.displayMetrics
+        ).toInt()
 }
