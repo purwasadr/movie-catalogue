@@ -1,13 +1,13 @@
 # movie-catalogue
 
-Movie catalogue is app for show movie information
+Movie catalogue is an application that serve to find and display information about movies
 
-this project is currently under development
+This project is currently under development
 
 ## TMDB API
 
-Movie Catalogue uses [TheMovieDB API](https://developers.themoviedb.org) to load data about
-movie information
+Movie Catalogue use [TheMovieDB API](https://developers.themoviedb.org) to get information
+about movie
 
 ## License
 
