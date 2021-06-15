@@ -13,8 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moviecatalogue">
-        <activity android:name=".boxlist.BoxListActivity"
-            android:hardwareAccelerated="true"></activity>
+        <activity android:name=".boxlist.BoxListActivity" />
         <activity
             android:name=".tvdetail.TvDetailActivity"
             android:theme="@style/Theme.Moviecatalogue.NoActionBar" />
@@ -24,7 +23,8 @@
         <activity
             android:name=".search.SearchActivity"
             android:theme="@style/Theme.Moviecatalogue.NoActionBar.Search" />
-        <activity android:name=".main.MainActivity">
+        <activity android:name=".main.MainActivity"
+            android:theme="@style/Theme.Moviecatalogue.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
