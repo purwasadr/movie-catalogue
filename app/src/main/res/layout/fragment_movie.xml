@@ -21,25 +21,19 @@
         android:layout_gravity="center"
         android:text="Retry" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_movie"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:fillViewport="true">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nsv_movie"
+        <LinearLayout
+            android:id="@+id/ll_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp" />
+    </androidx.core.widget.NestedScrollView>
 
-            <LinearLayout
-                android:id="@+id/ll_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp" />
-        </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
