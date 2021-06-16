@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun navigateToSearch() {
         val code = if (binding.bottomNavMain.selectedItemId == R.id.filmFragment) {
             FilmOrTv.FILM.code
