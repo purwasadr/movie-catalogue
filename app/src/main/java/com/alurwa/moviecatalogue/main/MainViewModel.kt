@@ -24,18 +24,12 @@
 
 package com.alurwa.moviecatalogue.main
 
-import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
 import com.alurwa.moviecatalogue.core.model.CarouselMenu
-import com.alurwa.moviecatalogue.core.model.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
