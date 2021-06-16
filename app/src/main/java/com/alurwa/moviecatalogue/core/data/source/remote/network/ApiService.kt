@@ -40,9 +40,6 @@ import java.util.concurrent.TimeUnit
 
 interface ApiService {
     @GET("3/discover/movie?$API_SET")
-    suspend fun getAllMovies(): ListMovieResponse
-
-    @GET("3/discover/movie?$API_SET")
     suspend fun getDiscoverMovies(
         @Query("sort_by") sortBy: String,
         @Query("page") pagePos: Int
