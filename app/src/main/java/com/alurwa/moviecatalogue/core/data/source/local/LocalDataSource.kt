@@ -37,14 +37,6 @@ class LocalDataSource @Inject constructor(
 
     private val tvDetailDao = database.tvDetailDao()
 
-    /*  fun getMovies() = movieCatalogueDao.getAllMovies()
-
-     suspend fun deleteAllMovies() {
-         movieCatalogueDao.deleteAllMovies()
-     }
-
-    */
-
     override fun getFilmDetail(id: Int) = movieCatalogueDao.getFilmDetail(id)
 
     override suspend fun insertFilmDetail(filmDetailEntity: FilmDetailEntity) {
