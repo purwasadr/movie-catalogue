@@ -26,7 +26,7 @@ package com.alurwa.moviecatalogue.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.alurwa.moviecatalogue.core.data.source.local.room.MovieCatalogueDao
+import com.alurwa.moviecatalogue.core.data.source.local.room.FilmDetailDao
 import com.alurwa.moviecatalogue.core.data.source.local.room.MovieCatalogueDatabase
 import dagger.Module
 import dagger.Provides
@@ -48,6 +48,6 @@ object DatabaseModule {
         ).fallbackToDestructiveMigration().build()
 
     @Provides
-    fun provideTourismDao(database: MovieCatalogueDatabase): MovieCatalogueDao =
-        database.movieCatalogueDao()
+    fun provideTourismDao(database: MovieCatalogueDatabase): FilmDetailDao =
+        database.filmDetailDao()
 }

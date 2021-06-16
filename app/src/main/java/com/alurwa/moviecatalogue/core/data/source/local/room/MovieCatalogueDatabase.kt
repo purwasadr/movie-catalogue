@@ -37,6 +37,6 @@ import com.alurwa.moviecatalogue.core.data.source.local.entity.TvDetailEntity
 )
 @TypeConverters(Converters::class)
 abstract class MovieCatalogueDatabase : RoomDatabase() {
-    abstract fun movieCatalogueDao(): MovieCatalogueDao
+    abstract fun filmDetailDao(): FilmDetailDao
     abstract fun tvDetailDao(): TvDetailDao
 }

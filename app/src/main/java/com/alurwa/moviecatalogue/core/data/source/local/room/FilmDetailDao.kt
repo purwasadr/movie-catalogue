@@ -32,10 +32,7 @@ import com.alurwa.moviecatalogue.core.data.source.local.entity.FilmDetailEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MovieCatalogueDao {
-
-    @Query("SELECT * FROM film_detail")
-    fun getAllMovies(): Flow<List<FilmDetailEntity>>
+interface FilmDetailDao {
 
     @Query("SELECT * FROM film_detail WHERE id = :filmId")
     fun getFilmDetail(filmId: Int): Flow<FilmDetailEntity?>
@@ -44,5 +41,5 @@ interface MovieCatalogueDao {
     suspend fun insertFilmDetail(filmDetail: FilmDetailEntity)
 
     @Query("DELETE FROM film_detail")
-    suspend fun deleteAllMovies()
+    suspend fun deleteAllFilmDetail()
 }

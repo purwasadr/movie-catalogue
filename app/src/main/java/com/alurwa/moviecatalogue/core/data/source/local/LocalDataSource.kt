@@ -26,21 +26,21 @@ package com.alurwa.moviecatalogue.core.data.source.local
 
 import com.alurwa.moviecatalogue.core.data.source.local.entity.FilmDetailEntity
 import com.alurwa.moviecatalogue.core.data.source.local.entity.TvDetailEntity
-import com.alurwa.moviecatalogue.core.data.source.local.room.MovieCatalogueDao
+import com.alurwa.moviecatalogue.core.data.source.local.room.FilmDetailDao
 import com.alurwa.moviecatalogue.core.data.source.local.room.MovieCatalogueDatabase
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
-    private val movieCatalogueDao: MovieCatalogueDao,
+    private val filmDetailDao: FilmDetailDao,
     private val database: MovieCatalogueDatabase
 ) : ILocalDataSource {
 
     private val tvDetailDao = database.tvDetailDao()
 
-    override fun getFilmDetail(id: Int) = movieCatalogueDao.getFilmDetail(id)
+    override fun getFilmDetail(id: Int) = filmDetailDao.getFilmDetail(id)
 
     override suspend fun insertFilmDetail(filmDetailEntity: FilmDetailEntity) {
-        movieCatalogueDao.insertFilmDetail(filmDetailEntity)
+        filmDetailDao.insertFilmDetail(filmDetailEntity)
     }
 
     override fun getTvDetail(id: Int) = tvDetailDao.getTvDetail(id)
