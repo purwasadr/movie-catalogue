@@ -29,6 +29,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
@@ -49,6 +50,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -128,14 +130,17 @@ class BoxListActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+          //  lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 adapter.loadStateFlow
+                    .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
                     // Only emit when REFRESH LoadState for RemoteMediator changes.
                     .distinctUntilChangedBy { it.refresh }
                     // Only react to cases where Remote REFRESH completes i.e., NotLoading.
                     .filter { it.refresh is LoadState.NotLoading }
-                    .collect { binding.list.scrollToPosition(0) }
-            }
+                    .collect {
+                        binding.list.scrollToPosition(0)
+                        Timber.d("binding.list.scrollToPosition(0)")
+                    }
         }
     }
 
