@@ -33,8 +33,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
@@ -133,43 +133,41 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     // Handle Progress Bar
     private fun setupLoadingState(movieAdapter: MovieAdapter, index: Int) {
-        lifecycleScope.launch {
-            // repeatOnLifecycle launches the block in a new coroutine every time the
-            // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Trigger the flow and start listening for values.
-                // This happens when lifecycle is STARTED and stops
-                // collecting when the lifecycle is STOPPED
-                movieAdapter.loadStateFlow
-                    .distinctUntilChangedBy { it.refresh }
-                    .collect {
-                        arrayLoadState[index] = it.refresh
+        viewLifecycleOwner.lifecycleScope.launch {
+            // Launches a coroutine that collects items from a flow when the Activity
+            // is at least started. It will automatically cancel when the activity is stopped and
+            // start collecting again whenever it's started again.
+            movieAdapter.loadStateFlow
+                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                .distinctUntilChangedBy { it.refresh }
+                .collect {
+                    arrayLoadState[index] = it.refresh
 
-                        val isNotLoading = arrayLoadState.all { loadState ->
-                            Timber.d((loadState is LoadState.NotLoading).toString())
-                            loadState is LoadState.NotLoading
-                        }
-
-                        val isError = arrayLoadState.any { loadState ->
-                            loadState is LoadState.Error
-                        }
-
-                        if (isError) {
-                            binding.btnRetry.isVisible = true
-                            binding.pb.isVisible = false
-                            binding.nsvMovie.isVisible = false
-                        } else if (isNotLoading) {
-                            Timber.d("Boos balue")
-                            binding.btnRetry.isVisible = false
-                            binding.pb.isVisible = false
-                            binding.nsvMovie.isVisible = true
-                        } else {
-                            binding.btnRetry.isVisible = false
-                            binding.pb.isVisible = true
-                            binding.nsvMovie.isVisible = false
-                        }
+                    val isNotLoading = arrayLoadState.all { loadState ->
+                        Timber.d((loadState is LoadState.NotLoading).toString())
+                        loadState is LoadState.NotLoading
                     }
-            }
+
+                    val isError = arrayLoadState.any { loadState ->
+                        loadState is LoadState.Error
+                    }
+
+                    if (isError) {
+                        binding.btnRetry.isVisible = true
+                        binding.pb.isVisible = false
+                        binding.nsvMovie.isVisible = false
+                    } else if (isNotLoading) {
+                        Timber.d("Boos balue")
+                        binding.btnRetry.isVisible = false
+                        binding.pb.isVisible = false
+                        binding.nsvMovie.isVisible = true
+                    } else {
+                        binding.btnRetry.isVisible = false
+                        binding.pb.isVisible = true
+                        binding.nsvMovie.isVisible = false
+                    }
+                }
+            //  }
         }
     }
 
