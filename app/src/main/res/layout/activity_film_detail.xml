@@ -45,7 +45,7 @@
 
                 <ImageView
                     android:id="@+id/img_backdrop"
-                    imageBackdrop="@{movieDetail.backdropPath}"
+                    imageLoader="@{movieDetail.fullBackdropPath}"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:contentDescription="@string/desc_backdrop"
@@ -73,7 +73,7 @@
 
                     <ImageView
                         android:id="@+id/img_poster"
-                        imagePoster="@{movieDetail.posterPath}"
+                        imageLoader="@{movieDetail.fullPosterPath}"
                         android:layout_width="100dp"
                         android:layout_height="150dp"
                         android:contentDescription="@string/desc_poster_image"
