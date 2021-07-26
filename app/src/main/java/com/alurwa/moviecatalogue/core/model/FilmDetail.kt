@@ -24,10 +24,6 @@
 
 package com.alurwa.moviecatalogue.core.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class FilmDetail(
     val id: Int,
 
@@ -56,4 +52,15 @@ data class FilmDetail(
     val genres: List<Genre>,
 
     val cast: List<Cast>
-) : Parcelable
+) {
+
+    val fullPosterPath: String?
+        get() = posterPath?.let {
+            "https://image.tmdb.org/t/p/w185$it"
+        }
+
+    val fullBackdropPath: String?
+        get() = posterPath?.let {
+            "https://image.tmdb.org/t/p/w500$it"
+        }
+}
