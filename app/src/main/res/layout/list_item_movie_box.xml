@@ -25,7 +25,7 @@
 
             <ImageView
                 android:id="@+id/img_poster"
-                imagePoster="@{movie.posterPath}"
+                imageLoader="@{movie.fullPosterPath}"
                 android:layout_width="100dp"
                 android:layout_height="150dp"
                 android:contentDescription="@string/desc_poster_image_in_list"
