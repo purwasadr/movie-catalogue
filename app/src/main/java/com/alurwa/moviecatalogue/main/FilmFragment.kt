@@ -25,13 +25,20 @@
 package com.alurwa.moviecatalogue.main
 
 import android.content.Intent
+import android.os.Bundle
+import android.os.Parcelable
+import android.view.View
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alurwa.moviecatalogue.boxlist.BoxListActivity
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
+import com.alurwa.moviecatalogue.core.model.CarouselMenu
+import com.alurwa.moviecatalogue.databinding.ListNestedCarouselItemBinding
 import com.alurwa.moviecatalogue.filmdetail.FilmDetailActivity
 import com.alurwa.moviecatalogue.utils.Constants
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class FilmFragment : MovieFragmentAbstract() {
     override fun navigateToDetail(extraId: Int) {
@@ -55,11 +62,49 @@ class FilmFragment : MovieFragmentAbstract() {
             .also { requireContext().startActivity(it) }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun setupList(list: List<CarouselMenu>) {
+        super.setupList(list)
+    }
+
+    override fun onNotLoading() {
+        super.onNotLoading()
+        Timber.d("OnNotLoading method")
+        viewModel.stateNestedScrollViewFilm?.also {
+            binding.nsvMovie.scrollY = it
+        }
+    }
+
+    override fun setupLinearLayout(linearLayoutManager: LinearLayoutManager, index: Int) {
+        viewModel.stateFilm?.let {
+            linearLayoutManager.onRestoreInstanceState(it.get(index))
+        }
+    }
+
     override fun getCarousels() {
         lifecycleScope.launch {
             viewModel.filmMenu.collectLatest {
                 submitList(it)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        val list = mutableListOf<Parcelable?>()
+
+        for (i in 0 until binding.llList.childCount) {
+
+            val child = ListNestedCarouselItemBinding.bind(binding.llList.getChildAt(i))
+
+            list.add(child.rcv.layoutManager?.onSaveInstanceState())
+        }
+
+        viewModel.stateFilm = list
+        viewModel.stateNestedScrollViewFilm = binding.nsvMovie.scrollY
+
+        super.onDestroyView()
     }
 }

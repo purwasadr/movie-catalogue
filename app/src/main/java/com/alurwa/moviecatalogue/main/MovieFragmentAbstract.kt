@@ -38,6 +38,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
+import com.alurwa.moviecatalogue.core.adapter.MovieLoadStateAdapter
 import com.alurwa.moviecatalogue.core.model.CarouselMenu
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
 import com.alurwa.moviecatalogue.databinding.ListNestedCarouselItemBinding
@@ -51,7 +52,7 @@ import timber.log.Timber
 abstract class MovieFragmentAbstract : Fragment() {
     private var _binding: FragmentMovieBinding? = null
 
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     val viewModel by activityViewModels<MainViewModel>()
 
@@ -85,12 +86,18 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     abstract fun navigateToList(which: Int)
 
+    abstract fun setupLinearLayout(linearLayoutManager: LinearLayoutManager, index: Int)
+
+    open fun onNotLoading() {
+    }
+
     fun submitList(list: List<CarouselMenu>) {
         arrayAdapter = Array(list.size) { pos ->
             MovieAdapter(true) { id ->
                 navigateToDetail(id)
             }.also { movieAdapter ->
                 lifecycleScope.launch {
+
                     movieAdapter.submitData(list[pos].pagingData)
                 }
             }
@@ -101,7 +108,7 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     // Fill the list of carousels with LinearLayout instead of using RecyclerView
     // because LinearLayout never recycling item view
-    private fun setupList(list: List<CarouselMenu>) {
+    open fun setupList(list: List<CarouselMenu>) {
         arrayAdapter?.forEachIndexed { index, movieAdapter ->
             val view = ListNestedCarouselItemBinding.inflate(layoutInflater)
 
@@ -109,7 +116,16 @@ abstract class MovieFragmentAbstract : Fragment() {
 
             view.rcv.layoutManager = LinearLayoutManager(
                 requireContext(), LinearLayoutManager.HORIZONTAL, false
-            )
+            ).also { setupLinearLayout(it, index) }
+
+//            view.rcv.layoutManager = LinearLayoutManager(
+//                requireContext(), LinearLayoutManager.HORIZONTAL, false
+//            ).also {
+//                val stateFilm = viewModel.stateFilm
+//                if (stateFilm != null) {
+//                    it.onRestoreInstanceState(stateFilm.get(index))
+//                }
+//            }
             view.rcv.setHasFixedSize(true)
 
             GravitySnapHelper(Gravity.START).also { snapHelper ->
@@ -117,7 +133,9 @@ abstract class MovieFragmentAbstract : Fragment() {
                 snapHelper.maxFlingDistance = CommonUtil.dpToPx(requireContext(), 200)
             }.attachToRecyclerView(view.rcv)
 
-            view.rcv.adapter = movieAdapter
+            view.rcv.adapter = movieAdapter.withLoadStateFooter(
+                MovieLoadStateAdapter()
+            )
 
             view.llHeader.setOnClickListener {
                 navigateToList(index)
@@ -152,22 +170,28 @@ abstract class MovieFragmentAbstract : Fragment() {
                         loadState is LoadState.Error
                     }
 
-                    if (isError) {
-                        binding.btnRetry.isVisible = true
-                        binding.pb.isVisible = false
-                        binding.nsvMovie.isVisible = false
-                    } else if (isNotLoading) {
-                        Timber.d("Boos balue")
-                        binding.btnRetry.isVisible = false
-                        binding.pb.isVisible = false
-                        binding.nsvMovie.isVisible = true
-                    } else {
-                        binding.btnRetry.isVisible = false
-                        binding.pb.isVisible = true
-                        binding.nsvMovie.isVisible = false
+                    when {
+                        isError -> {
+                            binding.btnRetry.isVisible = true
+                            binding.pb.isVisible = false
+                            binding.nsvMovie.isVisible = false
+                            Timber.d("isError")
+                        }
+                        isNotLoading -> {
+                            binding.btnRetry.isVisible = false
+                            binding.pb.isVisible = false
+                            binding.nsvMovie.isVisible = true
+                            Timber.d("isNotLoading")
+                            onNotLoading()
+                        }
+                        else -> {
+                            binding.btnRetry.isVisible = false
+                            binding.pb.isVisible = true
+                            binding.nsvMovie.isVisible = false
+                            Timber.d("Else in loadState")
+                        }
                     }
                 }
-            //  }
         }
     }
 

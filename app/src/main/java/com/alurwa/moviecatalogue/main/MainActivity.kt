@@ -30,7 +30,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.alurwa.moviecatalogue.R
@@ -51,16 +51,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     private val navController by lazy {
-        findNavController(R.id.nav_host_fragment)
+        val navHostFragment = supportFragmentManager.findFragmentById(
+            R.id.nav_host_fragment
+        ) as NavHostFragment
+
+        navHostFragment.navController
     }
 
     override fun onCreate(
         savedInstanceState: Bundle?
     ) {
         super.onCreate(savedInstanceState)
+
         setContentView(binding.root)
         setupToolbar()
-
+        setupOnDestinationChange()
         setupBottomNavigation(savedInstanceState)
     }
 
@@ -74,6 +79,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomNavMain.setupWithNavController(navController)
+    }
+
+    private fun setupOnDestinationChange() {
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            supportActionBar?.also {
+                it.show()
+            }
+        }
     }
 
     private fun getIsShowPosterPref(): Boolean {

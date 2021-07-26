@@ -24,6 +24,7 @@
 
 package com.alurwa.moviecatalogue.main
 
+import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -41,6 +42,9 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: IMovieCatalogueRepository
 ) : ViewModel() {
+    var stateFilm: List<Parcelable?>? = null
+    var stateNestedScrollViewFilm: Int? = null
+
     val filmMenu = flow {
         val carouselList = listOf(
             CarouselMenu(

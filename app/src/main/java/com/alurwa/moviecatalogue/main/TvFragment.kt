@@ -26,6 +26,7 @@ package com.alurwa.moviecatalogue.main
 
 import android.content.Intent
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alurwa.moviecatalogue.boxlist.BoxListActivity
 import com.alurwa.moviecatalogue.core.common.FilmOrTv
 import com.alurwa.moviecatalogue.tvdetail.TvDetailActivity
@@ -53,6 +54,9 @@ class TvFragment : MovieFragmentAbstract() {
             .putExtra(BoxListActivity.EXTRA_FILM_OR_MOVIE, FilmOrTv.TV.code)
             .putExtra(BoxListActivity.EXTRA_MOVIE_SORT, movieSortEnum)
             .also { requireContext().startActivity(it) }
+    }
+
+    override fun setupLinearLayout(linearLayoutManager: LinearLayoutManager, index: Int) {
     }
 
     override fun getCarousels() {
