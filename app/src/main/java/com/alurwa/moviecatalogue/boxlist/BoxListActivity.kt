@@ -111,8 +111,13 @@ class BoxListActivity : AppCompatActivity() {
                 )
             )
             list.layoutManager = gridLayoutManager
-            list.adapter = adapter.withLoadStateHeaderAndFooter(
-                MovieLoadStateAdapter(),
+//            list.adapter = adapter.withLoadStateHeaderAndFooter(
+//                MovieLoadStateAdapter(),
+//                MovieLoadStateAdapter() {
+//                    adapter.retry()
+//                }
+//            )
+            list.adapter = adapter.withLoadStateFooter(
                 MovieLoadStateAdapter() {
                     adapter.retry()
                 }
@@ -130,17 +135,17 @@ class BoxListActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-          //  lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                adapter.loadStateFlow
-                    .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-                    // Only emit when REFRESH LoadState for RemoteMediator changes.
-                    .distinctUntilChangedBy { it.refresh }
-                    // Only react to cases where Remote REFRESH completes i.e., NotLoading.
-                    .filter { it.refresh is LoadState.NotLoading }
-                    .collect {
-                        binding.list.scrollToPosition(0)
-                        Timber.d("binding.list.scrollToPosition(0)")
-                    }
+            //  lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            adapter.loadStateFlow
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                // Only emit when REFRESH LoadState for RemoteMediator changes.
+                .distinctUntilChangedBy { it.refresh }
+                // Only react to cases where Remote REFRESH completes i.e., NotLoading.
+                .filter { it.refresh is LoadState.NotLoading }
+                .collect {
+                    binding.list.scrollToPosition(0)
+                    Timber.d("binding.list.scrollToPosition(0)")
+                }
         }
     }
 
