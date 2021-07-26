@@ -24,12 +24,14 @@
 
 package com.alurwa.moviecatalogue.core.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class Cast(
     val name: String,
     val profilePath: String?,
     val character: String
-) : Parcelable
+) {
+
+    val fullProfilePath: String?
+        get() = profilePath?.let {
+            "https://image.tmdb.org/t/p/w185$it"
+        }
+}
