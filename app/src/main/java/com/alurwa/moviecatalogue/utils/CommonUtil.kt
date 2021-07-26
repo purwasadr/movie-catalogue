@@ -26,6 +26,9 @@ package com.alurwa.moviecatalogue.utils
 
 import android.content.Context
 import android.util.TypedValue
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import java.util.Locale
 
 object CommonUtil {
@@ -64,4 +67,12 @@ object CommonUtil {
             // Avoid using system resource
             context.resources.displayMetrics
         ).toInt()
+
+    fun hideKeyboard(context: Context, focus: View?) {
+        if (focus != null) {
+            (context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as
+                    InputMethodManager
+                ).hideSoftInputFromWindow(focus.windowToken, 0)
+        }
+    }
 }
