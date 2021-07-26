@@ -49,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
                     android:scaleType="centerCrop"
-                    imageBackdrop="@{tvDetail.backdropPath}"
+                    imageLoader="@{tvDetail.fullBackdropPath}"
                     android:contentDescription="@string/backdrop_img_desc"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@color/black" />
@@ -74,7 +74,7 @@
 
                     <ImageView
                         android:id="@+id/img_poster"
-                        imagePoster="@{tvDetail.posterPath}"
+                        imageLoader="@{tvDetail.fullPosterPath}"
                         android:layout_width="100dp"
                         android:layout_height="150dp"
                         android:elevation="8dp"
