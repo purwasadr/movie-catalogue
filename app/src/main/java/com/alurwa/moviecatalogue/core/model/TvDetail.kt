@@ -39,4 +39,14 @@ data class TvDetail(
     val genres: List<Genre>,
     val seasons: List<Season>,
     val cast: List<Cast>
-)
+) {
+    val fullPosterPath: String?
+        get() = posterPath?.let {
+            "https://image.tmdb.org/t/p/w185$it"
+        }
+
+    val fullBackdropPath: String?
+        get() = backdropPath?.let {
+            "https://image.tmdb.org/t/p/w500$it"
+        }
+}

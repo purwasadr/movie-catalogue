@@ -30,4 +30,9 @@ data class Tv(
     val firstAirDate: String,
     val posterPath: String?,
     val voteAverage: Number
-)
+) {
+    val fullPosterPath: String?
+        get() = posterPath?.let {
+            "https://image.tmdb.org/t/p/w185$it"
+        }
+}
