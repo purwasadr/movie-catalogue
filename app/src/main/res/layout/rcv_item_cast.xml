@@ -29,7 +29,7 @@
 
             <ImageView
                 android:id="@+id/img_cast"
-                loadProfileImage="@{cast.profilePath}"
+                imageLoader="@{cast.fullProfilePath}"
                 android:layout_width="110dp"
                 android:layout_height="125dp"
                 android:contentDescription="@string/desc_cast_profile_image"

@@ -26,7 +26,7 @@
 
             <ImageView
                 android:id="@+id/img_rcv"
-                imagePoster="@{isShowPoster ? movie.posterPath : null}"
+                app:imageLoader="@{isShowPoster ? movie.fullPosterPath : null}"
                 android:layout_width="0dp"
                 android:contentDescription="@string/desc_poster_image_in_list"
                 android:layout_height="0dp"
