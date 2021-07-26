@@ -24,74 +24,44 @@
 
 package com.alurwa.moviecatalogue.core.data
 
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiService
 import com.alurwa.moviecatalogue.core.data.source.remote.response.TvListResponse
 import com.alurwa.moviecatalogue.core.model.Movie
 import com.alurwa.moviecatalogue.main.MovieSortEnum
 import com.alurwa.moviecatalogue.utils.DataMapper
-import retrofit2.HttpException
-import timber.log.Timber
-import java.io.IOException
 
-class TvPagingSource(
-    private val apiService: ApiService,
-    private val sort: MovieSortEnum? = null,
-    private val query: String? = null
-) : PagingSource<Int, Movie>() {
+class TvPagingSource() : AppPagingSource<TvListResponse, Movie>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
-        val position = params.key ?: STARTING_PAGING_INDEX
-        return try {
-            val response = when {
-                sort != null -> getTvApi(sort, position)
-                query != null -> {
-                    apiService.searchTv(query, position)
-                }
-                else -> {
-                    throw IllegalArgumentException()
-                }
-            }
+    private lateinit var apiServiceCallback: suspend (position: Int) -> TvListResponse
 
-            val maxPage = response.totalPages
-            val tvData = DataMapper.tvListResponseToDomain(response.results)
-            val nextKey = if (position == maxPage || maxPage == 0) {
-                null
+    constructor(
+        apiService: ApiService,
+        sort: MovieSortEnum,
+    ) : this() {
+        apiServiceCallback = {
+            if (sort == MovieSortEnum.DISCOVER) {
+                apiService.getDiscoverTv(sort.code, it)
             } else {
-                position + 1
+                apiService.getTv(sort.code, it)
             }
-
-            LoadResult.Page(
-                data = tvData,
-                prevKey = if (position == 1) null else position - 1,
-                nextKey = nextKey
-            )
-        } catch (ex: IOException) {
-            Timber.d(ex)
-            LoadResult.Error(ex)
-        } catch (ex: HttpException) {
-            Timber.d(ex)
-            LoadResult.Error(ex)
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-        return state.anchorPosition?.let { pos ->
-            state.closestPageToPosition(pos)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(pos)?.nextKey?.minus(1)
+    constructor(
+        apiService: ApiService,
+        query: String,
+    ) : this() {
+        apiServiceCallback = { position ->
+            apiService.searchTv(query, position)
         }
     }
 
-    private suspend fun getTvApi(sort: MovieSortEnum, position: Int): TvListResponse {
-        return if (sort == MovieSortEnum.DISCOVER) {
-            apiService.getDiscoverTv(sort.code, position)
-        } else {
-            apiService.getTv(sort.code, position)
-        }
-    }
+    override suspend fun response(position: Int): TvListResponse =
+        apiServiceCallback.invoke(position)
 
-    companion object {
-        const val STARTING_PAGING_INDEX = 1
-    }
+    override fun getTotalPage(response: TvListResponse): Int =
+        response.totalPages
+
+    override fun responseToDomain(response: TvListResponse): List<Movie> =
+        DataMapper.tvListResponseToDomain(response.results)
 }
