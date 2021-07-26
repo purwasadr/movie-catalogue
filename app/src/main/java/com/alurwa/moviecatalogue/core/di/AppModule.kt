@@ -24,37 +24,18 @@
 
 package com.alurwa.moviecatalogue.core.di
 
-import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
-import com.alurwa.moviecatalogue.core.data.MovieCatalogueRepository
-import com.alurwa.moviecatalogue.core.data.source.local.ILocalDataSource
-import com.alurwa.moviecatalogue.core.data.source.local.LocalDataSource
-import com.alurwa.moviecatalogue.core.data.source.remote.IRemoteDataSource
-import com.alurwa.moviecatalogue.core.data.source.remote.RemoteDataSource
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class AppModule {
+object AppModule {
 
     @Singleton
-    @Binds
-    abstract fun provideMovieCatalogueRepository(
-        movieCatalogueRepository: MovieCatalogueRepository
-    ): IMovieCatalogueRepository
-
-    @Singleton
-    @Binds
-    abstract fun provideRemoteDataSource(
-        remoteDataSource: RemoteDataSource
-    ): IRemoteDataSource
-
-    @Singleton
-    @Binds
-    abstract fun provideLocalDataSource(
-        localDataSource: LocalDataSource
-    ): ILocalDataSource
+    @Provides
+    fun provideDispatchersIO() = Dispatchers.IO
 }
