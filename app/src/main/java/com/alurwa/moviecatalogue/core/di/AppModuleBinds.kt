@@ -22,18 +22,39 @@
  * SOFTWARE.
  */
 
-package com.alurwa.moviecatalogue.utils
+package com.alurwa.moviecatalogue.core.di
 
-import android.content.Context
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import com.alurwa.moviecatalogue.core.data.IMovieCatalogueRepository
+import com.alurwa.moviecatalogue.core.data.MovieCatalogueRepository
+import com.alurwa.moviecatalogue.core.data.source.local.ILocalDataSource
+import com.alurwa.moviecatalogue.core.data.source.local.LocalDataSource
+import com.alurwa.moviecatalogue.core.data.source.remote.IRemoteDataSource
+import com.alurwa.moviecatalogue.core.data.source.remote.RemoteDataSource
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-object KeyboardUtil {
-    fun hideKeyboard(context: Context, focus: View?) {
-        if (focus != null) {
-            (context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(focus.windowToken, 0)
-        }
-    }
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class AppModuleBinds {
+
+    @Singleton
+    @Binds
+    abstract fun provideMovieCatalogueRepository(
+        movieCatalogueRepository: MovieCatalogueRepository
+    ): IMovieCatalogueRepository
+
+    @Singleton
+    @Binds
+    abstract fun provideRemoteDataSource(
+        remoteDataSource: RemoteDataSource
+    ): IRemoteDataSource
+
+    @Singleton
+    @Binds
+    abstract fun provideLocalDataSource(
+        localDataSource: LocalDataSource
+    ): ILocalDataSource
 }
