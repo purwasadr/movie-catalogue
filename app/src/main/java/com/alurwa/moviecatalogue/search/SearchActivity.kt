@@ -25,14 +25,11 @@
 package com.alurwa.moviecatalogue.search
 
 import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -70,14 +67,7 @@ class SearchActivity : AppCompatActivity() {
     private val mViewModel by viewModels<SearchViewModel>()
 
     private val adapter by lazy {
-        BoxMovieAdapter() {
-            navigateToDetail(it)
-        }
-        /* MovieAdapter(SharedPreferencesUtil.getIsShowPosterPreferences(applicationContext)) {
-             navigateToDetail(it)
-         }
-
-         */
+        BoxMovieAdapter() { navigateToDetail(it) }
     }
 
     private val filmOrTv: Int by lazy {
@@ -220,14 +210,14 @@ class SearchActivity : AppCompatActivity() {
         with(searchView) {
             maxWidth = 10000
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
-            queryHint = "Masukkan teks"
+            queryHint = queryHint()
             inputType = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null && query.isNotEmpty()) {
-                    hideKeyboard(applicationContext, currentFocus)
+                    CommonUtil.hideKeyboard(applicationContext, currentFocus)
                     currentQueryString = query
                     searchMovies(query)
                     supportActionBar?.title = query
@@ -272,12 +262,12 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideKeyboard(context: Context, focus: View?) {
-        if (focus != null) {
-            (context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(focus.windowToken, 0)
+    private fun queryHint(): String =
+        if (filmOrTv == FilmOrTv.FILM.code) {
+            "Search Film"
+        } else {
+            "Search TV"
         }
-    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         //   outState.putString(QUERY_STRING_STATE, currentQueryString)
