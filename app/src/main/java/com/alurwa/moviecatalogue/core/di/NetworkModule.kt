@@ -29,7 +29,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.Dispatchers
 import javax.inject.Singleton
 
 @Module
@@ -39,8 +38,4 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideApiService(): ApiService = ApiService.create()
-
-    @Singleton
-    @Provides
-    fun provideDispatchersIO() = Dispatchers.IO
 }
