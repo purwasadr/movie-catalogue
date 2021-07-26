@@ -40,21 +40,11 @@ import com.google.android.material.chip.ChipGroup
 object BindingAdapters {
 
     @JvmStatic
-    @BindingAdapter("imagePoster")
-    fun imagePoster(imageView: ImageView, posterPath: String?) {
-        if (!posterPath.isNullOrEmpty()) {
+    @BindingAdapter("imageLoader")
+    fun imageLoader(imageView: ImageView, imagePath: String?) {
+        if (!imagePath.isNullOrEmpty()) {
             Glide.with(imageView.context)
-                .load(Uri.parse("https://image.tmdb.org/t/p/w185$posterPath"))
-                .into(imageView)
-        }
-    }
-
-    @JvmStatic
-    @BindingAdapter("imageBackdrop")
-    fun imageBackdrop(imageView: ImageView, backdropPath: String?) {
-        if (!backdropPath.isNullOrEmpty()) {
-            Glide.with(imageView.context)
-                .load(Uri.parse("https://image.tmdb.org/t/p/w500$backdropPath"))
+                .load(Uri.parse(imagePath))
                 .into(imageView)
         }
     }
@@ -62,6 +52,7 @@ object BindingAdapters {
     @JvmStatic
     @BindingAdapter("chipGenres")
     fun chipGenres(chipGroup: ChipGroup, genres: List<Genre>?) {
+        chipGroup.removeAllViews()
         genres?.forEach {
             val chip = Chip(chipGroup.context)
 
@@ -112,21 +103,11 @@ object BindingAdapters {
     fun txtPrice(txt: TextView, price: Int?) {
         if (price != null) {
             val result = if (price == 0) {
-                "N/A"
+                "-"
             } else {
                 "$" + NumberFormatUtil.withComma(price)
             }
             txt.text = result
-        }
-    }
-
-    @JvmStatic
-    @BindingAdapter("loadProfileImage")
-    fun loadProfileImage(imageView: ImageView, profilePath: String?) {
-        if (!profilePath.isNullOrEmpty()) {
-            Glide.with(imageView.context)
-                .load(Uri.parse("https://image.tmdb.org/t/p/w185$profilePath"))
-                .into(imageView)
         }
     }
 
@@ -154,14 +135,14 @@ object BindingAdapters {
             val result = if (runtime % 60 == 0 && runtime >= 60) {
                 "$ba j "
             } else if (runtime < 60) {
-                "$runtime m"
+                "$runtime min"
             } else {
-                "$ba j " + (runtime % 60) + " m"
+                "$ba j " + (runtime % 60) + " min"
             }
 
             txt.text = result
         } else {
-            txt.text = "N/A"
+            txt.text = "-"
         }
     }
 }
