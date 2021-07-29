@@ -28,6 +28,7 @@ import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.PagingSource
 import com.alurwa.moviecatalogue.core.data.source.local.ILocalDataSource
 import com.alurwa.moviecatalogue.core.data.source.remote.IRemoteDataSource
 import com.alurwa.moviecatalogue.core.data.source.remote.network.ApiResponse
@@ -53,27 +54,11 @@ class MovieCatalogueRepository @Inject constructor(
     private val apiService: ApiService,
 ) : IMovieCatalogueRepository {
 
-    override fun getFilms(sort: MovieSortEnum): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = false,
-                initialLoadSize = 20,
-            ),
-            pagingSourceFactory = { MoviePagingSource(apiService, sort) }
-        ).flow
-    }
+    override fun getFilms(sort: MovieSortEnum): Flow<PagingData<Movie>> =
+        handlePager(MoviePagingSource(apiService, sort))
 
-    override fun getSearchMovies(query: String): Flow<PagingData<Movie>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = false,
-                initialLoadSize = 20,
-            ),
-            pagingSourceFactory = { MoviePagingSource(apiService, query) }
-        ).flow
-    }
+    override fun getSearchMovies(query: String): Flow<PagingData<Movie>> =
+        handlePager(MoviePagingSource(apiService, query))
 
     override fun getFilmDetail(id: Int): Flow<Resource<FilmDetail?>> =
         object : NetworkBoundResource<FilmDetail?, FilmDetailResponse>() {
@@ -98,19 +83,7 @@ class MovieCatalogueRepository @Inject constructor(
         }.asFlow()
 
     override fun getTvList(sort: MovieSortEnum): Flow<PagingData<Movie>> =
-        Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = false,
-                initialLoadSize = 20,
-            ),
-            pagingSourceFactory = {
-                TvPagingSource(
-                    apiService = apiService,
-                    sort = sort
-                )
-            }
-        ).flow
+        handlePager(TvPagingSource(apiService, sort))
 
     override fun getTvDetail(id: Int): Flow<Resource<TvDetail?>> =
         object : NetworkBoundResource<TvDetail?, TvDetailResponse>() {
@@ -133,12 +106,19 @@ class MovieCatalogueRepository @Inject constructor(
         }.asFlow()
 
     override fun getTvSearch(query: String): Flow<PagingData<Movie>> =
+        handlePager(TvPagingSource(apiService, query))
+
+    private fun <Key : Any, Value : Any> handlePager(
+        pagingSource: PagingSource<Key, Value>
+    ): Flow<PagingData<Value>> =
         Pager(
             config = PagingConfig(
                 pageSize = 20,
                 enablePlaceholders = false,
                 initialLoadSize = 20,
             ),
-            pagingSourceFactory = { TvPagingSource(apiService, query = query) }
+            pagingSourceFactory = {
+                pagingSource
+            }
         ).flow
 }
