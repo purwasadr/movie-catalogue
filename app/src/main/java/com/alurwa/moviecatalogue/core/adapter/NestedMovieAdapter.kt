@@ -24,39 +24,51 @@
 
 package com.alurwa.moviecatalogue.core.adapter
 
-import android.content.res.Resources
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alurwa.moviecatalogue.core.model.CarouselMenu
 import com.alurwa.moviecatalogue.databinding.ListNestedCarouselItemBinding
+import com.alurwa.moviecatalogue.utils.CommonUtil
 import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-/**
- * This class is not use anymore because not use recyclerview again in carousels menu
- */
 class NestedMovieAdapter(
     private val scope: CoroutineScope,
+    private val lifecycle: Lifecycle,
     private val onClickCallback: (position: Int) -> Unit,
     private val onClickHeaderCallback: (which: Int) -> Unit
 ) : RecyclerView.Adapter<NestedMovieAdapter.ViewHolder>() {
 
-    //  private val viewPool = RecyclerView.RecycledViewPool()
+    private val viewPool = RecyclerView.RecycledViewPool()
 
     private lateinit var arrayAdapter: Array<MovieAdapter>
 
     private val carousels: MutableList<CarouselMenu> = mutableListOf()
 
-    fun submitData(vpData: List<CarouselMenu>) {
+    private val arrayLoadState = arrayListOf<LoadState?>(null, null, null, null)
 
+    private var listenerOnError: (() -> Unit)? = null
+
+    private var listenerOnFinish: (() -> Unit)? = null
+
+    private var listenerOnLoading: (() -> Unit)? = null
+
+    fun submitData(vpData: List<CarouselMenu>) {
         arrayAdapter = Array(vpData.size) {
             MovieAdapter() { pos ->
                 onClickCallback.invoke(pos)
+            }.also { movieAdapter ->
+                setupLoadingState(movieAdapter, it)
             }
         }
 
@@ -69,14 +81,6 @@ class NestedMovieAdapter(
         carousels.clear()
         carousels.addAll(vpData)
 
-        /*   arrayAdapter = Array(vpList.size) {
-               MovieAdapter() {
-
-               }
-           }
-
-         */
-
         notifyDataSetChanged()
     }
 
@@ -87,7 +91,10 @@ class NestedMovieAdapter(
                 parent,
                 false
             )
-        )
+        ).also {
+            it.list.setRecycledViewPool(viewPool)
+            Timber.d("onCreateViewHolder")
+        }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
@@ -98,6 +105,8 @@ class NestedMovieAdapter(
     inner class ViewHolder(
         private val binding: ListNestedCarouselItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+        val list = binding.rcv
+
         fun bind(position: Int) {
             val adapter = arrayAdapter[position]
 
@@ -109,45 +118,85 @@ class NestedMovieAdapter(
 
                 rcv.layoutManager = LinearLayoutManager(
                     binding.root.context,
-                    LinearLayoutManager.HORIZONTAL, false
-                )
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                ).also {
+                    it.initialPrefetchItemCount = 4
+                }
 
                 rcv.setHasFixedSize(true)
 
                 GravitySnapHelper(Gravity.START).also {
                     it.snapToPadding = true
+                    it.maxFlingDistance = CommonUtil.dpToPx(binding.root.context, 200)
                 }.attachToRecyclerView(rcv)
 
-                rcv.adapter = adapter
-
-                //   rcv.setRecycledViewPool(viewPool)
-
-                /*  scope.launch() {
-                      adapter.submitData(carouselMenu.pagingData)
-                  }
-
-                 */
+                rcv.adapter = adapter.withLoadStateFooter(
+                    MovieLoadStateAdapter()
+                )
 
                 llHeader.setOnClickListener {
                     onClickHeaderCallback.invoke(position)
                 }
+
+                Timber.d("Bind ViewHolder")
             }
         }
     }
 
-    fun refreshMovie() {
+    fun retryMovie() {
         arrayAdapter.forEach {
             it.retry()
         }
     }
 
-    private val Int.dpToPx: Int
-        get() = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            this.toFloat(),
-            Resources.getSystem().displayMetrics
-        ).toInt()
+    fun setOnError(listener: () -> Unit) {
+        listenerOnError = listener
+    }
 
-    private val Int.pxToDp: Int
-        get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+    fun setOnNotLoading(listener: () -> Unit) {
+        listenerOnFinish = listener
+    }
+
+    fun setOnLoading(listener: () -> Unit) {
+        listenerOnLoading = listener
+    }
+
+    private fun setupLoadingState(movieAdapter: MovieAdapter, index: Int) {
+        scope.launch {
+            // Launches a coroutine that collects items from a flow when the Activity
+            // is at least started. It will automatically cancel when the activity is stopped and
+            // start collecting again whenever it's started again.
+            movieAdapter.loadStateFlow
+                .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+                .distinctUntilChangedBy { it.refresh }
+                .collect {
+                    arrayLoadState[index] = it.refresh
+
+                    val isNotLoading = arrayLoadState.all { loadState ->
+                        Timber.d((loadState is LoadState.NotLoading).toString())
+                        loadState is LoadState.NotLoading
+                    }
+
+                    val isError = arrayLoadState.any { loadState ->
+                        loadState is LoadState.Error
+                    }
+
+                    when {
+                        isError -> {
+                            listenerOnError?.invoke()
+                         //   Timber.d("isError")
+                        }
+                        isNotLoading -> {
+                            listenerOnFinish?.invoke()
+                        //    Timber.d("isNotLoading")
+                        }
+                        else -> {
+                            listenerOnLoading?.invoke()
+                         //   Timber.d("Else in loadState")
+                        }
+                    }
+                }
+        }
+    }
 }
