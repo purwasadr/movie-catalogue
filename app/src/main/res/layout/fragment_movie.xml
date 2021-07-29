@@ -23,21 +23,9 @@
         android:text="Retry"
         android:visibility="gone" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_movie"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_carousels"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:id="@+id/ll_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="8dp"
-            android:paddingBottom="16dp" >
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        android:layout_height="match_parent"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
