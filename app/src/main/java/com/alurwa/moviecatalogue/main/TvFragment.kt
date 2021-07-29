@@ -57,6 +57,7 @@ class TvFragment : MovieFragmentAbstract() {
     }
 
     override fun setupLinearLayout(linearLayoutManager: LinearLayoutManager, index: Int) {
+
     }
 
     override fun getCarousels() {
