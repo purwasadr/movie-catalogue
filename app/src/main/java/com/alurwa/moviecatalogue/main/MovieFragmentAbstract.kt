@@ -25,29 +25,17 @@
 package com.alurwa.moviecatalogue.main
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alurwa.moviecatalogue.core.adapter.MovieAdapter
-import com.alurwa.moviecatalogue.core.adapter.MovieLoadStateAdapter
+import com.alurwa.moviecatalogue.core.adapter.NestedMovieAdapter
 import com.alurwa.moviecatalogue.core.model.CarouselMenu
 import com.alurwa.moviecatalogue.databinding.FragmentMovieBinding
-import com.alurwa.moviecatalogue.databinding.ListNestedCarouselItemBinding
-import com.alurwa.moviecatalogue.utils.CommonUtil
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChangedBy
-import kotlinx.coroutines.launch
-import timber.log.Timber
 
 abstract class MovieFragmentAbstract : Fragment() {
     private var _binding: FragmentMovieBinding? = null
@@ -56,9 +44,14 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     val viewModel by activityViewModels<MainViewModel>()
 
-    var arrayAdapter: Array<MovieAdapter>? = null
-
-    var arrayLoadState: Array<LoadState?> = arrayOf(null, null, null, null)
+    val adapter by lazy {
+        NestedMovieAdapter(
+            viewLifecycleOwner.lifecycleScope,
+            viewLifecycleOwner.lifecycle,
+            { navigateToDetail(it) },
+            { navigateToList(it) }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,8 +70,9 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupCarouselsList()
         setupRetryBtn()
+        setupLoadingState()
         getCarousels()
     }
 
@@ -88,118 +82,41 @@ abstract class MovieFragmentAbstract : Fragment() {
 
     abstract fun setupLinearLayout(linearLayoutManager: LinearLayoutManager, index: Int)
 
-    open fun onNotLoading() {
-    }
-
     fun submitList(list: List<CarouselMenu>) {
-        arrayAdapter = Array(list.size) { pos ->
-            MovieAdapter(true) { id ->
-                navigateToDetail(id)
-            }.also { movieAdapter ->
-                lifecycleScope.launch {
-
-                    movieAdapter.submitData(list[pos].pagingData)
-                }
-            }
-        }
-
-        setupList(list)
+        adapter.submitData(list)
     }
 
-    // Fill the list of carousels with LinearLayout instead of using RecyclerView
-    // because LinearLayout never recycling item view
-    open fun setupList(list: List<CarouselMenu>) {
-        arrayAdapter?.forEachIndexed { index, movieAdapter ->
-            val view = ListNestedCarouselItemBinding.inflate(layoutInflater)
-
-            view.txtTitle.text = list.get(index).title
-
-            view.rcv.layoutManager = LinearLayoutManager(
-                requireContext(), LinearLayoutManager.HORIZONTAL, false
-            ).also { setupLinearLayout(it, index) }
-
-//            view.rcv.layoutManager = LinearLayoutManager(
-//                requireContext(), LinearLayoutManager.HORIZONTAL, false
-//            ).also {
-//                val stateFilm = viewModel.stateFilm
-//                if (stateFilm != null) {
-//                    it.onRestoreInstanceState(stateFilm.get(index))
-//                }
-//            }
-            view.rcv.setHasFixedSize(true)
-
-            GravitySnapHelper(Gravity.START).also { snapHelper ->
-                snapHelper.snapToPadding = true
-                snapHelper.maxFlingDistance = CommonUtil.dpToPx(requireContext(), 200)
-            }.attachToRecyclerView(view.rcv)
-
-            view.rcv.adapter = movieAdapter.withLoadStateFooter(
-                MovieLoadStateAdapter()
-            )
-
-            view.llHeader.setOnClickListener {
-                navigateToList(index)
-            }
-
-            setupLoadingState(movieAdapter, index)
-
-            binding.llList.addView(view.root)
+    private fun setupCarouselsList() {
+        with(binding) {
+            listCarousels.setHasFixedSize(true)
+            listCarousels.layoutManager = LinearLayoutManager(requireContext())
+            listCarousels.adapter = adapter
         }
     }
 
     abstract fun getCarousels()
 
-    // Handle Progress Bar
-    private fun setupLoadingState(movieAdapter: MovieAdapter, index: Int) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            // Launches a coroutine that collects items from a flow when the Activity
-            // is at least started. It will automatically cancel when the activity is stopped and
-            // start collecting again whenever it's started again.
-            movieAdapter.loadStateFlow
-                .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
-                .distinctUntilChangedBy { it.refresh }
-                .collect {
-                    arrayLoadState[index] = it.refresh
-
-                    val isNotLoading = arrayLoadState.all { loadState ->
-                        Timber.d((loadState is LoadState.NotLoading).toString())
-                        loadState is LoadState.NotLoading
-                    }
-
-                    val isError = arrayLoadState.any { loadState ->
-                        loadState is LoadState.Error
-                    }
-
-                    when {
-                        isError -> {
-                            binding.btnRetry.isVisible = true
-                            binding.pb.isVisible = false
-                            binding.nsvMovie.isVisible = false
-                            Timber.d("isError")
-                        }
-                        isNotLoading -> {
-                            binding.btnRetry.isVisible = false
-                            binding.pb.isVisible = false
-                            binding.nsvMovie.isVisible = true
-                            Timber.d("isNotLoading")
-                            onNotLoading()
-                        }
-                        else -> {
-                            binding.btnRetry.isVisible = false
-                            binding.pb.isVisible = true
-                            binding.nsvMovie.isVisible = false
-                            Timber.d("Else in loadState")
-                        }
-                    }
-                }
+    private fun setupLoadingState() {
+        adapter.setOnError {
+            binding.btnRetry.isVisible = true
+            binding.pb.isVisible = false
+            binding.listCarousels.isVisible = false
+        }
+        adapter.setOnNotLoading {
+            binding.btnRetry.isVisible = false
+            binding.pb.isVisible = false
+            binding.listCarousels.isVisible = true
+        }
+        adapter.setOnLoading {
+            binding.btnRetry.isVisible = false
+            binding.pb.isVisible = true
+            binding.listCarousels.isVisible = false
         }
     }
 
     private fun setupRetryBtn() {
         binding.btnRetry.setOnClickListener {
-            arrayAdapter?.forEach {
-                it.retry()
-            }
+            adapter.retryMovie()
         }
     }
 
