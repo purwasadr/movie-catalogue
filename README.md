@@ -9,6 +9,12 @@ This project is currently under development
 Movie Catalogue use [TheMovieDB API](https://developers.themoviedb.org) to get information
 about movie
 
+## Screenshot
+
+![Home](screenshots/phone1.png "Movie and tv show")
+![Search](screenshots/phone2.png "Search page")
+![Detail](screenshots/phonee.png "Detail page")
+
 ## License
 ```
 MIT License
