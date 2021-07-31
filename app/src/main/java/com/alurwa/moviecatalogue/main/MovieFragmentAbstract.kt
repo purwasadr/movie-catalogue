@@ -32,6 +32,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alurwa.moviecatalogue.core.adapter.NestedMovieAdapter
 import com.alurwa.moviecatalogue.core.model.CarouselMenu
@@ -90,6 +91,7 @@ abstract class MovieFragmentAbstract : Fragment() {
         with(binding) {
             listCarousels.setHasFixedSize(true)
             listCarousels.layoutManager = LinearLayoutManager(requireContext())
+          //  listCarousels.setItemViewCacheSize(4)
             listCarousels.adapter = adapter
         }
     }
@@ -97,20 +99,24 @@ abstract class MovieFragmentAbstract : Fragment() {
     abstract fun getCarousels()
 
     private fun setupLoadingState() {
-        adapter.setOnError {
-            binding.btnRetry.isVisible = true
-            binding.pb.isVisible = false
-            binding.listCarousels.isVisible = false
-        }
-        adapter.setOnNotLoading {
-            binding.btnRetry.isVisible = false
-            binding.pb.isVisible = false
-            binding.listCarousels.isVisible = true
-        }
-        adapter.setOnLoading {
-            binding.btnRetry.isVisible = false
-            binding.pb.isVisible = true
-            binding.listCarousels.isVisible = false
+        adapter.setLoadStateListener {
+            when (it) {
+                is LoadState.Error -> {
+                    binding.btnRetry.isVisible = true
+                    binding.pb.isVisible = false
+                    binding.listCarousels.isVisible = false
+                }
+                is LoadState.NotLoading -> {
+                    binding.btnRetry.isVisible = false
+                    binding.pb.isVisible = false
+                    binding.listCarousels.isVisible = true
+                }
+                is LoadState.Loading -> {
+                    binding.btnRetry.isVisible = false
+                    binding.pb.isVisible = true
+                    binding.listCarousels.isVisible = false
+                }
+            }
         }
     }
 
