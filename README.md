@@ -13,7 +13,7 @@ about movie
 
 ![Home](screenshots/phone1.png "Movie and tv show")
 ![Search](screenshots/phone2.png "Search page")
-![Detail](screenshots/phonee.png "Detail page")
+![Detail](screenshots/phone3.png "Detail page")
 
 ## License
 ```
