@@ -89,9 +89,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/material_on_background_emphasis_high_type"
-                    android:textSize="20sp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintBottom_toTopOf="@id/txt_runtime"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/card_poster"
@@ -106,9 +105,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="2dp"
-                    android:fontFamily="sans-serif"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/card_poster"
                     app:layout_constraintStart_toEndOf="@id/card_poster"
                     app:layout_constraintTop_toBottomOf="@id/txt_title"
@@ -132,10 +130,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:fontFamily="sans-serif"
                     android:text="@{movieDetail.voteAverage.toString()}"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/txt_runtime"
                     app:layout_constraintStart_toEndOf="@id/img_runtime"
                     app:layout_constraintTop_toTopOf="@id/txt_runtime"
@@ -189,9 +186,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:text="@string/overview_txt"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/card_poster" />
 
@@ -204,6 +200,7 @@
                     android:layout_marginEnd="16dp"
                     android:text="@{movieDetail.overview}"
                     android:textAlignment="textStart"
+                    android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -232,9 +229,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@string/cast_detail"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle1"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/chip_group" />
 
@@ -246,8 +242,7 @@
                     android:scrollbars="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/txt_cast_info"
-                    tools:listitem="@layout/rcv_item_cast" />
+                    app:layout_constraintTop_toBottomOf="@id/txt_cast_info" />
 
                 <TextView
                     android:id="@+id/txt_status_info"
@@ -255,8 +250,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif-medium"
                     android:text="@string/status"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rcv_cast" />
@@ -268,6 +263,7 @@
                     android:layout_marginStart="16dp"
                     android:fontFamily="sans-serif"
                     android:text="@{movieDetail.status}"
+                    android:textAppearance="@style/TextAppearance.App.Body2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_status_info" />
@@ -278,8 +274,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif-medium"
                     android:text="@string/release_date"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_status_val" />
@@ -290,6 +286,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:textAppearance="@style/TextAppearance.App.Body2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_release_date_info" />
@@ -300,8 +297,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif-medium"
                     android:text="@string/original_language"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_release_date_val" />
@@ -312,6 +309,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="@{CommonUtil.INSTANCE.getLanguageName(movieDetail.originalLanguage) ?? `-`}"
+                    android:textAppearance="@style/TextAppearance.App.Body2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_original_language_info"
@@ -323,8 +321,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif-medium"
                     android:text="@string/budget_detail"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_original_language_val" />
@@ -335,6 +333,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:textAppearance="@style/TextAppearance.App.Body2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_budget_info" />
@@ -345,8 +344,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif-medium"
                     android:text="@string/revenue"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_budget_val" />
@@ -357,6 +356,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:textAppearance="@style/TextAppearance.App.Body2"
                     android:textColor="?android:attr/textColorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_revenue_info" />
